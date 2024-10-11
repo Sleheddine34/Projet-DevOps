@@ -46,8 +46,8 @@ pipeline {
                 script {
                     withSonarQubeEnv('SonarQubeServer') { // Replace 'SonarQubeServer' with the actual name of your SonarQube instance
                         sh 'mvn clean verify sonar:sonar \
-                            -Dsonar.login=$SONAR_LOGIN \
-                            -Dsonar.password=$SONAR_PASSWORD'
+                            -Dsonar.login=$admin \
+                            -Dsonar.password=$201JMt2434**
                     }
                 }
             }
