@@ -6,7 +6,8 @@ pipeline {
         maven '$M2_HOME'
     }
 
-   stages {
+
+    stages {
         stage('Clone Timesheet Project') {
             steps {
                 git branch: 'master',
@@ -39,7 +40,8 @@ pipeline {
                 sh 'mvn compile'     
             }
         }  
-         stage('MVN SONARQUBE') {
+
+        stage('MVN SONARQUBE') {
             steps {
                 script {
                     withSonarQubeEnv('SonarQubeServer') { // Replace 'SonarQubeServer' with the actual name of your SonarQube instance
@@ -49,6 +51,6 @@ pipeline {
                     }
                 }
             }
+        }
     }
-  }
 }
