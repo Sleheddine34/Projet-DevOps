@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    environment {
+        // Replace with your actual SonarQube server name configured in Jenkins
+        SONARQUBE_SERVER = 'SonarQube-Server-Name'
+    }
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Clean and build the project
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                // Use SonarQube environment to run the analysis
+                withSonarQubeEnv('SonarQube-Server-Name') {
+                    sh '''
+                        mvn sonar:sonar \
+                        -Dsonar.projectKey=gestion-station-ski \
+                        -Dsonar.host.url=http://your-sonarqube-server:9000 \
+                        -Dsonar.login=your-sonarqube-token \
+                        -Dsonar.maven.plugin.version=3.9.1.2184
+                    '''
+                }
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
