@@ -20,13 +20,12 @@ pipeline {
 
      stage('MVN SONARQUBE') {
     steps {
-        
-            withSonarQubeEnv(installationName: 'SonarQubeServer') { // This should match the name in the Jenkins configuration
-                sh 'mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar'
-
-                }
-            }
+        withSonarQubeEnv('SonarQubeServer') { 
+            sh 'mvn -X clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar'
         }
+    }
+}
+
      }
 }
 
