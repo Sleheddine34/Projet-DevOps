@@ -17,6 +17,17 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
+
+     stage('MVN SONARQUBE') {
+    steps {
+        script {
+            withSonarQubeEnv('SonarQubeServer') { // This should match the name in the Jenkins configuration
+                sh '''mvn clean verify sonar:sonar -Dsonar.login=$admin -Dsonar.password=$201JMt2434**'''
+            }
+        }
+    }
+}
+
     }
 }
 
