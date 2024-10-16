@@ -9,7 +9,6 @@ pipeline {
     stages {
         stage('GIT') {
             steps {
-                echo "Getting project from Git"
                 git branch: 'master',
                     url: 'https://github.com/Sleheddine34/Projet-DevOps.git'
             }
