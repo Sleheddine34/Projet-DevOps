@@ -7,7 +7,7 @@ pipeline {
     }
 
     stages {
-        stage('GIT') {
+        stage('Checkout') {
             steps {
                 git branch: 'master',
                     url: 'https://github.com/Sleheddine34/Projet-DevOps.git'
