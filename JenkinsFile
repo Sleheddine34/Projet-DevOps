@@ -23,15 +23,16 @@ pipeline {
                 sh 'mvn compile'
             }
         }
-        stage('MVN SONARQUBE') {
+         stage('MVN SONARQUBE') {
             environment {
                 SONARQUBE_URL = 'http://192.168.33.10:9000'
             }
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh 'mvn sonar:sonar -Dsonar.host.url=$SONARQUBE_URL'
+                    sh "mvn sonar:sonar -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.login=sqa_1d41bcf119b3a8387e93a547909bd5a2d672be3b"
                 }
             }
         }
+
     }
 }
