@@ -25,7 +25,7 @@ pipeline {
         }
         stage('MVN SONARQUBE') {
             environment {
-                SONARQUBE_URL = 'http://<ip-sonarqube>:9000'
+                SONARQUBE_URL = 'http://192.168.33.10:9000'
             }
             steps {
                 withSonarQubeEnv('SonarQube') {
