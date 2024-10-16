@@ -7,32 +7,23 @@ pipeline {
     }
 
     stages {
-        stage('GIT') {
+        stage('Checkout') {
             steps {
                 git branch: 'master',
-                    url: 'https://github.com/hwafa/timesheetproject.git'
+                    url: 'https://github.com/Sleheddine34/Projet-DevOps.git'
             }
         }
-        stage('MVN CLEAN') {
+        stage('Compile Stage') {
             steps {
-                sh 'mvn clean'
+                sh 'mvn clean compile'
             }
         }
-        stage('MVN COMPILE') {
+        stage('SonarQube Analysis') {
             steps {
-                sh 'mvn compile'
-            }
-        }
-         stage('MVN SONARQUBE') {
-            environment {
-                SONARQUBE_URL = 'http://192.168.33.10:9000'
-            }
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh "mvn sonar:sonar -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.login=sqa_1d41bcf119b3a8387e93a547909bd5a2d672be3b"
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    sh "mvn sonar:sonar -Dsonar.projectKey=your_project_key -Dsonar.host.url=http://http://192.168.33.10:9000 -Dsonar.login=$SONAR_TOKEN"
                 }
             }
         }
-
     }
 }
