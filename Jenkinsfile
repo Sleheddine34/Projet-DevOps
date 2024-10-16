@@ -10,7 +10,7 @@ pipeline {
         stage('GIT') {
             steps {
                 git branch: 'master',
-                    url: 'https://github.com/hwafa/timesheetproject.git'
+                    url: 'https://github.com/Sleheddine34/Projet-DevOps.git'
             }
         }
         stage('Compile Stage') {
