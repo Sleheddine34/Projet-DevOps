@@ -18,5 +18,12 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
+       stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('SonarQubeServer') { // This matches the name configured in Jenkins
+            sh "mvn sonar:sonar -Dsonar.projectKey=tp-foyer -Dsonar.login=${SONAR_AUTH_TOKEN}"
+        }
+    }
+}
     }
 }
