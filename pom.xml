@@ -13,12 +13,10 @@
     <version>5.0.0</version>
     <name>tp-foyer</name>
     <description>tp-foyer</description>
-    
     <properties>
         <java.version>17</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.projectKey>tn.esprit:tp-foyer</sonar.projectKey> <!-- Project Key -->
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -48,7 +46,6 @@
             <version>2.1.0</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -64,16 +61,18 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.9.0.2155</version> <!-- Use the latest version -->
             </plugin>
         </plugins>
     </build>
-
+    <!-- Deploy to Nexus -->
+    <distributionManagement>
+        <repository>
+            <id>deploymentRepo</id>
+            <name>Nexus Repository</name>
+            <url>http://192.168.50.4:8081/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
 </project>
