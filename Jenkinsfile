@@ -1,33 +1,36 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'JAVA_HOME' // Ensure this matches the JDK version you have installed (17)
-        maven 'M2_HOME' // Ensure this matches your Maven installation
-    }
-
     stages {
-        stage('Checkout') {
+        // Récupération du code depuis GitHub
+        stage('GIT') { 
             steps {
-                git branch: 'joseph',
-                    url: 'https://github.com/Sleheddine34/Projet-DevOps.git'
+                echo "Getting Project from Git"
+                git url: 'https://github.com/Sleheddine34/Projet-DevOps.git', branch: 'joseph'
             }
         }
-        stage('Compile Stage') {
+
+        // Nettoyage du projet avec Maven
+        stage('MVN CLEAN') { 
             steps {
-                sh 'mvn clean compile'
+                echo "Cleaning Project with Maven"
+                sh 'mvn clean'
             }
         }
-        stage('SonarQube Analysis') {
+
+        // Compilation du projet avec Maven
+        stage('MVN COMPILE') {
             steps {
-                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                    sh "mvn sonar:sonar -Dsonar.projectKey=JenkinsFile -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=$SONAR_TOKEN"
-                }
+                echo "Compiling Project with Maven"
+                sh 'mvn compile'
             }
         }
-        stage('Deploy to Nexus') {
+
+        // Analyse de la qualité du code avec SonarQube
+        stage('MVN SONARQUBE') {
             steps {
-                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.50.4:8081/repository/maven-releases/'
+                echo "Analyzing code with SonarQube"
+                sh 'mvn sonar:sonar -Dsonar.projectKey=votre_projet_key -Dsonar.host.url=http://192.168.33.10:9000 -Dsonar.login=votre_token'
             }
         }
     }
