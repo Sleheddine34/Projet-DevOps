@@ -1,36 +1,42 @@
 pipeline {
     agent any
 
+    tools {
+        jdk 'JAVA_HOME'
+        maven 'M2_HOME'
+    }
+
     stages {
         // Récupération du code depuis GitHub
-        stage('GIT') { 
+        stage('Checkout') { 
             steps {
                 echo "Getting Project from Git"
                 git url: 'https://github.com/Sleheddine34/Projet-DevOps.git', branch: 'joseph'
             }
         }
 
-        // Nettoyage du projet avec Maven
-        stage('MVN CLEAN') { 
+        // Nettoyage et compilation du projet avec Maven
+        stage('Compile Stage') { 
             steps {
                 echo "Cleaning Project with Maven"
-                sh 'mvn clean'
-            }
-        }
-
-        // Compilation du projet avec Maven
-        stage('MVN COMPILE') {
-            steps {
-                echo "Compiling Project with Maven"
-                sh 'mvn compile'
+                sh 'mvn clean compile'
             }
         }
 
         // Analyse de la qualité du code avec SonarQube
-        stage('MVN SONARQUBE') {
+        stage('SonarQube Analysis') {
             steps {
-                echo "Analyzing code with SonarQube"
-                sh 'mvn sonar:sonar -Dsonar.projectKey=votre_projet_key -Dsonar.host.url=http://192.168.33.10:9000 -Dsonar.login=votre_token'
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    echo "Analyzing code with SonarQube"
+                    sh "mvn sonar:sonar -Dsonar.projectKey=votre_projet_key -Dsonar.host.url=http://192.168.33.10:9000 -Dsonar.login=$SONAR_TOKEN"
+                }
+            }
+        }
+
+        // Déploiement (ajoutez ce stage si nécessaire)
+        stage('Deploy to Nexus') {
+            steps {
+                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
             }
         }
     }
