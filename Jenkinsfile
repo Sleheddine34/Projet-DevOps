@@ -33,14 +33,6 @@ pipeline {
                 sh 'mvn sonar:sonar -Dsonar.projectKey=tn.esprit:tp-foyer -Dsonar.host.url=http://192.168.33.10:9000 -Dsonar.login=sqa_aa003a5022a04329ce3dadb919e5c72418552c2f'
             }
         }
-
-        // Déploiement vers Nexus
-        stage('Deploy to Nexus') {
-            steps {
-                echo "Deploying project to Nexus"
-                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.50.4:8081/repository/maven-releases/'
-            }
-        }
     }
 
     post {
