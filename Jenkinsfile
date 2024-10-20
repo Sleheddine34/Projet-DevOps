@@ -1,15 +1,34 @@
 pipeline {
-  agent any
-  options {
-    buildDiscarder(logRotator(numToKeepStr:'5'))
-  }
-  stages {
-    stage('Scan') {
-      steps {
-        withSonarQubeEnv('sq1') {
-          sh 'mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
-        }
-      }
+    agent any
+
+    tools {
+        jdk 'JAVA_HOME'
+        maven 'M2_HOME'
     }
-  }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master',
+                    url: 'https://github.com/Sleheddine34/Projet-DevOps.git'
+            }
+        }
+        stage('Compile Stage') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    sh "mvn sonar:sonar -Dsonar.projectKey=JenkinsFile -Dsonar.host.url=http://192.168.33.10:9000 -Dsonar.login=$SONAR_TOKEN"
+                }
+            }
+        }
+        stage('Deploy to Nexus') {
+    steps {
+        sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
+          }
+       }
+    }
 }
