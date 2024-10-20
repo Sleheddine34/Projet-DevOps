@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         // Replace with your actual SonarQube server name configured in Jenkins
-        SONARQUBE_SERVER = 'sq1'
+        SONARQUBE_SERVER = 'SonarQube'
     }
     stages {
         stage('Build') {
@@ -16,7 +16,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 // Use SonarQube environment to run the analysis
-                withSonarQubeEnv('sq1') {
+                withSonarQubeEnv('SonarQube') {
                     sh '''
                         mvn sonar:sonar \
                         -Dsonar.projectKey=gestion-station-ski \
