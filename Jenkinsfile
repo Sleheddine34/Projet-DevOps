@@ -6,8 +6,8 @@ pipeline {
         maven '$M2_HOME'
     }
 
-    stages {
-        stage('GIT') {
+   stages {
+        stage('Checkout') {
             steps {
                 git branch: 'master',
                     url: 'https://github.com/Sleheddine34/Projet-DevOps.git'
@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Compile Stage') {
             steps {
-                sh 'mvn clean compile -X'
+                sh 'mvn clean compile'
             }
         }
     }
