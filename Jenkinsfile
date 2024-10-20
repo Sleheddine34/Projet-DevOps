@@ -1,36 +1,38 @@
 pipeline {
     agent any
-    environment {
-        // Replace with your actual SonarQube server name configured in Jenkins
-        SONARQUBE_SERVER = 'SonarQube'
+
+    tools {
+        jdk 'JAVA_HOME'
+        maven 'M2_HOME'
     }
+
     stages {
-        stage('Build') {
+        stage('GIT') {
             steps {
-                script {
-                    // Clean and build the project
-                    sh 'mvn clean package -DskipTests'
-                }
+                git branch: 'master',
+                    url: 'https://github.com/hwafa/timesheetproject.git'
             }
         }
-        stage('SonarQube Analysis') {
+        stage('MVN CLEAN') {
             steps {
-                // Use SonarQube environment to run the analysis
+                sh 'mvn clean'
+            }
+        }
+        stage('MVN COMPILE') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+         stage('MVN SONARQUBE') {
+            environment {
+                SONARQUBE_URL = 'http://192.168.33.10:9000'
+            }
+            steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh '''
-                        mvn sonar:sonar \
-                        -Dsonar.projectKey=gestion-station-ski \
-                        -Dsonar.host.url=http://192.168.1.22:9000 \
-                        -Dsonar.login=squ_11a1c80c4224ea09db96778205183377f350cf36 \
-                        -Dsonar.maven.plugin.version=3.9.1.2184
-                    '''
+                    sh "mvn sonar:sonar -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.login=squ_77746f6cb69cc6b21d898275a6f50cdfa7405e97"
                 }
             }
         }
-    }
-    post {
-        always {
-            cleanWs()
-        }
+
     }
 }
