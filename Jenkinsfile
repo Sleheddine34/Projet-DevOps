@@ -30,7 +30,7 @@ pipeline {
         stage('MVN SONARQUBE') {
             steps {
                 echo "Analyzing code with SonarQube"
-                sh 'mvn sonar:sonar -Dsonar.projectKey=tn.esprit:tp-foyer -Dsonar.host.url=http://192.168.33.10:9000 -Dsonar.login=sqa_aa003a5022a04329ce3dadb919e5c72418552c2f'
+                sh 'mvn sonar:sonar -Dsonar.projectKey=tn.esprit:tp-foyer -Dsonar.host.url=http://192.168.33.10:9000 -Dsonar.login=sqa_c454a45c9a349e8975f7096ac3e5436da30ec05e'
             }
         }
     }
