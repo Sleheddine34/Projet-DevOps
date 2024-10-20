@@ -7,7 +7,7 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('GIT') {
             steps {
                 git branch: 'master',
                     url: 'https://github.com/Sleheddine34/Projet-DevOps.git'
@@ -17,6 +17,6 @@ pipeline {
             steps {
                 sh 'mvn clean compile'
             }
-          }
-      }
-  }
+        }
+       }
+     }
