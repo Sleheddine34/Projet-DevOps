@@ -19,6 +19,11 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
+        stage('Test Stage') {
+            steps {
+                sh 'mvn test'
+            }
+        }
         stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
