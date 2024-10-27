@@ -55,7 +55,7 @@
 
     </dependencies>
      
-</distributionManagement>
+
 
     <build>
         <plugins>
