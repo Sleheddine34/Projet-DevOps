@@ -18,7 +18,7 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
-        stage('Test Stage') { // Added missing brace here
+        stage('Test Stage') {
             steps {
                 sh 'mvn test'
             }
