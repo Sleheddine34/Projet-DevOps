@@ -43,14 +43,21 @@ pipeline {
             }
         }
        
-  stage('deploy Docker Image') {
-            steps {
-                
-                    // Build Docker image using the Docker CLI command
-                    sh 'docker push masdmz/alpine:latest'
-                
+stage('Push Docker Image') {
+    steps {
+        script {
+            // Login to Docker Hub (using credentials stored in Jenkins)
+            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                // Ensure successful login
+                sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
             }
+            
+            // Push the image to Docker Hub
+            sh 'docker push masdmz/alpine:latest'
         }
+    }
+}
+
         
     }
 }
