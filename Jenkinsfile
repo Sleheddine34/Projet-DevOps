@@ -25,14 +25,12 @@ pipeline {
         }
     }
 }
-      stage('Build Docker Image') {
+  stage('Build Docker Image') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
-                        // Build Docker image from Dockerfile and tag it correctly
-                        def dockerImage = docker.build("masdmz/alpine:latest", ".")
-                    }
-                }
+                
+                    // Build Docker image using the Docker CLI command
+                    sh "docker build -t masdmz/alpine:latest ."
+                
             }
         }
         
