@@ -25,6 +25,11 @@ pipeline {
         }
     }
 }
+       stage('Build Docker Image') {
+           steps {
+                                   docker.build("masdmz/alpine:latest", ".")
+                }
+       }
         
     }
 }
