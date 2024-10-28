@@ -25,11 +25,14 @@ pipeline {
         }
     }
 }
-       stage('Build Docker Image') {
-           steps {
-                                   docker.build("masdmz/alpine:latest", ".")
+      stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build Docker image from Dockerfile and tag it
+                    def dockerImage = docker.build("masdmz/alpine:latest", ".")
                 }
-       }
+            }
+        }
         
     }
 }
