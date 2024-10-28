@@ -34,22 +34,15 @@ pipeline {
                 sh 'ls target'
             }
         }
-  stage('Build Docker Image') {
+  /*stage('Build Docker Image') {
             steps {
                 
                     // Build Docker image using the Docker CLI command
                     sh "docker build -t masdmz/alpine:latest ."
                 
             }
-        }
-        stage('Build Docker Image') {
-            steps {
-                
-                    // Build Docker image using the Docker CLI command
-                    sh "docker push masdmz/alpine:latest"
-                
-            }
-        }
+        }*/
+
         
     }
 }
