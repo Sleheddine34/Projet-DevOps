@@ -42,6 +42,14 @@ pipeline {
                 
             }
         }
+        stage('Build Docker Image') {
+            steps {
+                
+                    // Build Docker image using the Docker CLI command
+                    sh "docker push masdmz/alpine:latest"
+                
+            }
+        }
         
     }
 }
