@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Test Stage') {
             steps {
-                sh 'mvn test'
+                sh 'mvn clean test'
             }
         }
         stage('SonarQube Analysis') {
