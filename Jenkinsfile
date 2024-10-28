@@ -28,8 +28,10 @@ pipeline {
       stage('Build Docker Image') {
             steps {
                 script {
-                    // Build Docker image from Dockerfile and tag it
-                    def dockerImage = docker.build("masdmz/alpine:latest", ".")
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
+                        // Build Docker image from Dockerfile and tag it correctly
+                        def dockerImage = docker.build("masdmz/alpine:latest", ".")
+                    }
                 }
             }
         }
