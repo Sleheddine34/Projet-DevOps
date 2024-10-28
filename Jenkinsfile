@@ -25,10 +25,6 @@ pipeline {
         }
     }
 }
-        stage('Deploy to Nexus') {
-    steps {
-        sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.1.22:8081/repository/maven-releases/'
-          }
-       }   
+        
     }
 }
