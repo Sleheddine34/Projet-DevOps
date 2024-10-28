@@ -29,7 +29,7 @@ pipeline {
             steps {
                 
                     // Build Docker image using the Docker CLI command
-                    sh "docker build -t masdmz/alpine:latest ."
+                    sh "docker build -t masdmz/alpine:latest -f Dockerfile ."
                 
             }
         }
