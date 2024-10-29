@@ -26,31 +26,43 @@ pipeline {
             }
         }
 
-        // Stage 4: Analyzing code quality with SonarQube
-      //  stage('MVN SONARQUBE') {
-        //    steps {
-          //      echo "Analyzing code quality with SonarQube"
-            //    sh '''
-              //      mvn sonar:sonar \
-                //    -Dsonar.projectKey=tn.esprit:tp-foyer \
-                  //  -Dsonar.host.url=http://192.168.33.10:9000 \
-                   // -Dsonar.login=sqa_c454a45c9a349e8975f7096ac3e5436da30ec05e
-               // '''
-           // }
-       // }
+        // Stage 4: Packaging the project using Maven
+        stage('MVN PACKAGE') {
+            steps {
+                echo "Packaging project with Maven"
+                sh 'mvn package'
+            }
+        }
 
-        // Stage 5: Deploying artifacts to Nexus
-       //   stage('Deploy to Nexus') {
-        //      steps {
-         //         echo "Deploying artifacts to Nexus repository"
-          //        sh '''
-            //          mvn deploy -DskipTests \
-            //          -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/
-          //        '''
-         //     }
-    //      }
+        // Uncomment if you want to analyze code quality with SonarQube
+        /*
+        stage('MVN SONARQUBE') {
+            steps {
+                echo "Analyzing code quality with SonarQube"
+                sh '''
+                    mvn sonar:sonar \
+                    -Dsonar.projectKey=tn.esprit:tp-foyer \
+                    -Dsonar.host.url=http://192.168.33.10:9000 \
+                    -Dsonar.login=sqa_c454a45c9a349e8975f7096ac3e5436da30ec05e
+                '''
+            }
+        }
+        */
 
-        // Stage 6: Building Docker image
+        // Uncomment if you want to deploy artifacts to Nexus
+        /*
+        stage('Deploy to Nexus') {
+            steps {
+                echo "Deploying artifacts to Nexus repository"
+                sh '''
+                    mvn deploy -DskipTests \
+                    -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/
+                '''
+            }
+        }
+        */
+
+        // Stage 5: Building Docker image
         stage('Building Docker Image') {
             steps {
                 echo "Building Docker image for project"
@@ -58,13 +70,15 @@ pipeline {
             }
         }
 
-        // Stage 7: Pushing Docker image to Docker Hub
+        // Stage 6: Pushing Docker image to Docker Hub
         stage('Push Docker Image to DockerHub') {
             steps {
-                // Hardcoded credentials
+                echo "Pushing Docker image to Docker Hub"
+                // Avoid using hardcoded credentials in a real project
                 sh '''
-                   sudo docker login -u yousseeef -p Lool1234&
-                   sudo docker push yousseeef/tp-foyer-5.0.0:5.0.0
+                    echo "Logging in to Docker Hub"
+                    echo "Lool1234&" | docker login -u yousseeef --password-stdin
+                    docker push yousseeef/tp-foyer:5.0.0
                 '''
             }
         }
