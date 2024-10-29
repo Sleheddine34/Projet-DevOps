@@ -57,9 +57,11 @@ stage('Push Docker Image') {
         }
     }
 }
-       stage('Deploy with Docker Compose') {
+  stage('Deploy with Docker Compose') {
     steps {
         script {
+            // List the contents of the current directory to confirm the presence of docker-compose.yml
+            sh 'ls -la'
             // Run Docker Compose to bring up services from the file in the repository
             sh 'docker-compose -f ./docker-compose.yml up -d'
         }
