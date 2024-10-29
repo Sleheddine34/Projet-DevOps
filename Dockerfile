@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the JAR file from the target directory into the container
-COPY target/tp-foyer-5.0.0.jar tp-foyer.jar
+COPY target/tp-foyer-1.0.0.jar tp-foyer-1.0.0.jar
 
 # Expose the port that your Spring Boot application runs on
 EXPOSE 8080
