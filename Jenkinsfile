@@ -43,7 +43,7 @@ pipeline {
             }
         }
        
-stage('Push Docker Image') {
+/*stage('Push Docker Image') {
     steps {
         script {
             // Login to Docker Hub (using credentials stored in Jenkins)
@@ -56,7 +56,7 @@ stage('Push Docker Image') {
             sh 'docker push masdmz/alpine:latest'
         }
     }
-}
+}*/
   stage('Deploy with Docker Compose') {
     steps {
         script {
