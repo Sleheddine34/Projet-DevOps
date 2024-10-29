@@ -64,7 +64,7 @@ pipeline {
                 // Hardcoded credentials
                 sh '''
                    sudo docker login -u yousseeef -p Lool1234&
-                   sudo docker push yousseeef/tp-foyer:1.0.0
+                   sudo docker push yousseeef/tp-foyer-1.0.0:1.0.0
                 '''
             }
         }
