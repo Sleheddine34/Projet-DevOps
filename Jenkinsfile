@@ -1,10 +1,7 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'JAVA_HOME'   // Ensure this is the correct name of the JDK tool in Jenkins
-        maven 'M2_HOME'   // Ensure this is the correct name of the Maven tool in Jenkins
-    }
+ 
 
     stages {
         // Stage 1: Cloning code from GitHub
