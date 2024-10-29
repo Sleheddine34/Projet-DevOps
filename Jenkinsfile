@@ -1,8 +1,6 @@
 pipeline {
     agent any
 
- 
-
     stages {
         // Stage 1: Cloning code from GitHub
         stage('GIT') { 
@@ -61,7 +59,7 @@ pipeline {
         }
 
         // Stage 7: Pushing Docker image to Docker Hub
-      stage('Push Docker Image to DockerHub') {
+        stage('Push Docker Image to DockerHub') {
             steps {
                 // Hardcoded credentials
                 sh '''
@@ -70,7 +68,7 @@ pipeline {
                 '''
             }
         }
-
+    }
 
     post {
         always {
