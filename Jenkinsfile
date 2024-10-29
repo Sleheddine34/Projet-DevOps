@@ -61,21 +61,16 @@ pipeline {
         }
 
         // Stage 7: Pushing Docker image to Docker Hub
-        stage('Deploy Docker Image') {
+      stage('Push Docker Image to DockerHub') {
             steps {
-                withCredentials([string(credentialsId: 'dockerhub-jenkins-token', variable: 'dockerhub_token')]) {
-                    echo "Logging into Docker Hub"
-                    sh '''
-                        set +x  # Hides sensitive information
-                        docker login -u boohyy -p ${dockerhub_token} || exit 1
-                        set -x
-                    '''
-                    echo "Pushing Docker image to Docker Hub"
-                    sh 'docker push boohyy/tp-foyer:1.0.0'
-                }
+                // Hardcoded credentials
+                sh '''
+                   sudo docker login -u boohyy -p Lool1234&
+                   sudo docker push boohyy/tp-foyer:1.0.0
+                '''
             }
         }
-    }
+
 
     post {
         always {
