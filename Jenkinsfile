@@ -27,34 +27,34 @@ pipeline {
         }
 
         // Stage 4: Analyzing code quality with SonarQube
-        stage('MVN SONARQUBE') {
-            steps {
-                echo "Analyzing code quality with SonarQube"
-                sh '''
-                    mvn sonar:sonar \
-                    -Dsonar.projectKey=tn.esprit:tp-foyer \
-                    -Dsonar.host.url=http://192.168.33.10:9000 \
-                    -Dsonar.login=sqa_c454a45c9a349e8975f7096ac3e5436da30ec05e
-                '''
-            }
-        }
+      //  stage('MVN SONARQUBE') {
+        //    steps {
+          //      echo "Analyzing code quality with SonarQube"
+            //    sh '''
+              //      mvn sonar:sonar \
+                //    -Dsonar.projectKey=tn.esprit:tp-foyer \
+                  //  -Dsonar.host.url=http://192.168.33.10:9000 \
+                   // -Dsonar.login=sqa_c454a45c9a349e8975f7096ac3e5436da30ec05e
+               // '''
+           // }
+       // }
 
         // Stage 5: Deploying artifacts to Nexus
-        stage('Deploy to Nexus') {
-            steps {
-                echo "Deploying artifacts to Nexus repository"
-                sh '''
-                    mvn deploy -DskipTests \
-                    -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/
-                '''
-            }
-        }
+       //   stage('Deploy to Nexus') {
+        //      steps {
+         //         echo "Deploying artifacts to Nexus repository"
+          //        sh '''
+            //          mvn deploy -DskipTests \
+            //          -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/
+          //        '''
+         //     }
+    //      }
 
         // Stage 6: Building Docker image
         stage('Building Docker Image') {
             steps {
                 echo "Building Docker image for project"
-                sh 'docker build -t boohyy/tp-foyer:1.0.0 .'
+                sh 'docker build -t yousseeef/tp-foyer:1.0.0 .'
             }
         }
 
@@ -63,8 +63,8 @@ pipeline {
             steps {
                 // Hardcoded credentials
                 sh '''
-                   sudo docker login -u boohyy -p Lool1234&
-                   sudo docker push boohyy/tp-foyer:1.0.0
+                   sudo docker login -u yousseeef -p Lool1234&
+                   sudo docker push yousseeef/tp-foyer:1.0.0
                 '''
             }
         }
