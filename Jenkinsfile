@@ -54,7 +54,7 @@ pipeline {
         stage('Building Docker Image') {
             steps {
                 echo "Building Docker image for project"
-                sh 'docker build -t yousseeef/tp-foyer:1.0.0 .'
+                sh 'docker build -t yousseeef/tp-foyer:5.0.0 .'
             }
         }
 
@@ -64,7 +64,7 @@ pipeline {
                 // Hardcoded credentials
                 sh '''
                    sudo docker login -u yousseeef -p Lool1234&
-                   sudo docker push yousseeef/tp-foyer-1.0.0:1.0.0
+                   sudo docker push yousseeef/tp-foyer-5.0.0:5.0.0
                 '''
             }
         }
