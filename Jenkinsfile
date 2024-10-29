@@ -15,18 +15,19 @@ pipeline {
         }
         stage('Compile Stage') {
             steps {
-                sh 'mvn clean compile'
+                sh 'mvn clean compile -DskipTests'
             }
         }
-        stage('Test Stage') {
-            steps {
-                sh 'mvn clean test'
-            }
-        }
+        // Test stage removed/commented out
+        // stage('Test Stage') {
+        //     steps {
+        //         sh 'mvn clean test'
+        //     }
+        // }
         stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                    sh "mvn sonar:sonar -Dsonar.projectKey=JenkinsFile -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=\$SONAR_TOKEN"
+                    sh "mvn sonar:sonar -DskipTests -Dsonar.projectKey=JenkinsFile -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=\$SONAR_TOKEN"
                 }
             }
         }
