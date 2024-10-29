@@ -2,43 +2,70 @@ pipeline {
     agent any
 
     stages {
-        // Récupération du code depuis GitHub
+        // Stage 1: Cloning code from GitHub
         stage('GIT') { 
             steps {
-                echo "Getting Project from Git"
+                echo "Cloning project from GitHub"
                 git url: 'https://github.com/Sleheddine34/Projet-DevOps.git', branch: 'joseph'
             }
         }
 
-        // Nettoyage du projet avec Maven
+        // Stage 2: Cleaning the project using Maven
         stage('MVN CLEAN') { 
             steps {
-                echo "Cleaning Project with Maven"
+                echo "Cleaning project with Maven"
                 sh 'mvn clean'
             }
         }
 
-        // Compilation du projet avec Maven
+        // Stage 3: Compiling the project using Maven
         stage('MVN COMPILE') {
             steps {
-                echo "Compiling Project with Maven"
+                echo "Compiling project with Maven"
                 sh 'mvn compile'
             }
         }
 
-        // Analyse de la qualité du code avec SonarQube
-        stage('MVN SONARQUBE') {
+        // Stage 4: Analyzing code quality with SonarQube
+      //  stage('MVN SONARQUBE') {
+        //    steps {
+          //      echo "Analyzing code quality with SonarQube"
+            //    sh '''
+              //      mvn sonar:sonar \
+                //    -Dsonar.projectKey=tn.esprit:tp-foyer \
+                  //  -Dsonar.host.url=http://192.168.33.10:9000 \
+                   // -Dsonar.login=sqa_c454a45c9a349e8975f7096ac3e5436da30ec05e
+               // '''
+           // }
+       // }
+
+        // Stage 5: Deploying artifacts to Nexus
+       //   stage('Deploy to Nexus') {
+        //      steps {
+         //         echo "Deploying artifacts to Nexus repository"
+          //        sh '''
+            //          mvn deploy -DskipTests \
+            //          -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/
+          //        '''
+         //     }
+    //      }
+
+        // Stage 6: Building Docker image
+        stage('Building Docker Image') {
             steps {
-                echo "Analyzing code with SonarQube"
-                sh 'mvn sonar:sonar -Dsonar.projectKey=tn.esprit:tp-foyer -Dsonar.host.url=http://192.168.33.10:9000 -Dsonar.login=sqa_c454a45c9a349e8975f7096ac3e5436da30ec05e'
+                echo "Building Docker image for project"
+                sh 'docker build -t yousseeef/tp-foyer:1.0.0 .'
             }
         }
 
-        // Déploiement sur Nexus
-        stage('Deploy to Nexus') {
+        // Stage 7: Pushing Docker image to Docker Hub
+        stage('Push Docker Image to DockerHub') {
             steps {
-                echo "Deploying to Nexus"
-                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
+                // Hardcoded credentials
+                sh '''
+                   sudo docker login -u yousseeef -p Lool1234&
+                   sudo docker push yousseeef/tp-foyer:1.0.0
+                '''
             }
         }
     }
