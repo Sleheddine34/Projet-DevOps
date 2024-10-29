@@ -1,22 +1,51 @@
 pipeline {
     agent any
 
-    tools {
-        jdk '$JAVA_HOME'
-        maven '$M2_HOME'
-    }
-
     stages {
-        stage('GIT') {
+        // Récupération du code depuis GitHub
+        stage('GIT') { 
             steps {
-                git branch: 'master',
-                    url: 'https://github.com/hwafa/timesheetproject.git'
+                echo "Getting Project from Git"
+                git url: 'https://github.com/Sleheddine34/Projet-DevOps.git', branch: 'joseph'
             }
         }
-        stage('Compile Stage') {
+
+        // Nettoyage du projet avec Maven
+        stage('MVN CLEAN') { 
             steps {
-                sh 'mvn clean compile'
+                echo "Cleaning Project with Maven"
+                sh 'mvn clean'
             }
+        }
+
+        // Compilation du projet avec Maven
+        stage('MVN COMPILE') {
+            steps {
+                echo "Compiling Project with Maven"
+                sh 'mvn compile'
+            }
+        }
+
+        // Analyse de la qualité du code avec SonarQube
+        stage('MVN SONARQUBE') {
+            steps {
+                echo "Analyzing code with SonarQube"
+                sh 'mvn sonar:sonar -Dsonar.projectKey=tn.esprit:tp-foyer -Dsonar.host.url=http://192.168.33.10:9000 -Dsonar.login=sqa_c454a45c9a349e8975f7096ac3e5436da30ec05e'
+            }
+        }
+
+        // Déploiement sur Nexus
+        stage('Deploy to Nexus') {
+            steps {
+                echo "Deploying to Nexus"
+                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Job Finished"
         }
     }
 }
