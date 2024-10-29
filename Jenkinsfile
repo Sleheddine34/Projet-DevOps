@@ -34,7 +34,7 @@ pipeline {
                 sh 'ls target'
             }
         }
-  stage('Build Docker Image') {
+ /* stage('Build Docker Image') {
             steps {
                 
                     // Build Docker image using the Docker CLI command
@@ -56,7 +56,7 @@ stage('Push Docker Image') {
             sh 'docker push masdmz/alpine:latest'
         }
     }
-}
+}*/
        stage('Deploy with Docker Compose') {
     steps {
         script {
