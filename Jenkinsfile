@@ -57,6 +57,15 @@ stage('Push Docker Image') {
         }
     }
 }
+       stage('Deploy with Docker Compose') {
+    steps {
+        script {
+            // Run Docker Compose to bring up services from the file in the repository
+            sh 'docker-compose -f ./docker-compose.yml up -d'
+        }
+    }
+}
+
 
         
     }
