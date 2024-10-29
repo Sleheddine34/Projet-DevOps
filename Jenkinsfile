@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'JAVA_HOME'
-        maven 'M2_HOME'
-    }
-
     stages {
         // Récupération du code depuis GitHub
         stage('GIT') { 
@@ -44,26 +39,6 @@ pipeline {
             steps {
                 echo "Deploying to Nexus"
                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
-            }
-        }
-
-        // Building Docker image
-        stage('Building image') {
-            steps {
-                echo "Building Docker image"
-                sh 'docker build -t boohyy/tp-foyer:1.0.0 .'
-            }
-        }
-
-        // Deploying Docker image
-        stage('Deploy image') {
-            steps {
-                withCredentials([string(credentialsId: 'dockerhub-jenkins-token', variable: 'dockerhub_token')]) {
-                    echo "Logging into Docker Hub"
-                    sh "docker login -u boohyy -p ${dockerhub_token}"
-                    echo "Pushing Docker image"
-                    sh 'docker push boohyy/tp-foyer:1.0.0'
-                }
             }
         }
     }
