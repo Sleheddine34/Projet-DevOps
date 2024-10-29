@@ -34,8 +34,7 @@ pipeline {
             }
         }
 
-        // Uncomment if you want to analyze code quality with SonarQube
-        /*
+         
         stage('MVN SONARQUBE') {
             steps {
                 echo "Analyzing code quality with SonarQube"
@@ -47,10 +46,8 @@ pipeline {
                 '''
             }
         }
-        */
+        
 
-        // Uncomment if you want to deploy artifacts to Nexus
-        /*
         stage('Deploy to Nexus') {
             steps {
                 echo "Deploying artifacts to Nexus repository"
@@ -60,7 +57,7 @@ pipeline {
                 '''
             }
         }
-        */
+       
 
         // Stage 5: Building Docker image
         stage('Building Docker Image') {
