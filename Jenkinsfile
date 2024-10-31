@@ -38,20 +38,13 @@ pipeline {
                 sh 'ls target'
             }
         }
-          stage('List Files') {
-            steps {
-                sh 'ls -la'
-            }
-        }
-  stage('Build Docker Image') {
-            steps {
-                
-                    // Build Docker image using the Docker CLI command
-                   sh "docker build -t mohamed855/my-alpine:latest ."
-
-                
-            }
-        }
+      stage('Build Docker Image') {
+    steps {
+        sh 'pwd' // Print the working directory
+        sh 'ls -la' // List files to confirm Dockerfile is present
+        sh "docker build -t mohamed855/my-alpine:latest ."
+    }
+}
 
   stage('Deploy with Docker Compose') {
     steps {
