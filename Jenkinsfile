@@ -41,10 +41,8 @@ pipeline {
             }
         }
       stage('Build Docker Image') {
-    steps {
-        sh 'pwd' // Print the working directory
-        sh 'ls -la' // List files to confirm Dockerfile is present
-        sh "docker build -t mohamed855/my-alpine:latest ."
+    steps {  
+      sh "docker build -t mohamed855/my-alpine:latest ."
     }
 }
 
