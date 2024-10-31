@@ -7,10 +7,11 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+         stage('Checkout') {
             steps {
-                git branch: 'master',
-                    url: 'https://github.com/Sleheddine34/Projet-DevOps.git'
+                // Replace 'your-branch-name' with the correct branch name
+                checkout([$class: 'GitSCM', branches: [[name: '*/testSleh']], 
+                          userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']]])
             }
         }
         stage('Compile Stage') {
