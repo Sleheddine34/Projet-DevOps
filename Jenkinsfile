@@ -36,5 +36,21 @@ pipeline {
                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.50.4:8081/repository/maven-releases/'
             }
         }
+                stage('Build') {
+            steps {
+                // Compile and package the application
+                sh 'mvn clean package'
+                // Verify that the .jar file exists
+                sh 'ls target'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                
+                    // Build Docker image using the Docker CLI command
+                    sh "docker build -t sleheddine/alpine:latest ."
+                
+            }
+        }
     }
 }
