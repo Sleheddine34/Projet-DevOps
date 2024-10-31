@@ -6,13 +6,15 @@ pipeline {
         maven 'M2_HOME'
     }
 
-    stages {
-        stage('Checkout') {
+  stages {
+         stage('Checkout') {
             steps {
-                git branch: 'master',
-                    url: 'https://github.com/Sleheddine34/Projet-DevOps.git'
+                // Replace 'your-branch-name' with the correct branch name
+                checkout([$class: 'GitSCM', branches: [[name: '*/Mohamed_Chouaibi']], 
+                          userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']]])
             }
         }
+        
         stage('Compile Stage') {
             steps {
                 sh 'mvn clean compile'
