@@ -30,6 +30,14 @@ pipeline {
         sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8082/repository/maven-releases/'
           }
        }
+        stage('Build') {
+            steps {
+                // Compile and package the application
+                sh 'mvn clean package'
+                // Verify that the .jar file exists
+                sh 'ls target'
+            }
+        }
   stage('Build Docker Image') {
             steps {
                 
