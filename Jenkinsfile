@@ -38,6 +38,11 @@ pipeline {
                 sh 'ls target'
             }
         }
+          stage('List Files') {
+            steps {
+                sh 'ls -la'
+            }
+        }
   stage('Build Docker Image') {
             steps {
                 
