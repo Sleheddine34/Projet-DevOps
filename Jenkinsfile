@@ -9,7 +9,7 @@ pipeline {
                 git url: 'https://github.com/Sleheddine34/Projet-DevOps.git', branch: 'joseph'
             }
         }
-
+/*
         // Stage 2: Cleaning the project using Maven
         stage('MVN CLEAN') { 
             steps {
@@ -58,7 +58,7 @@ pipeline {
             }
         }
        
-
+*/
         // Stage 5: Building Docker image
         stage('Building Docker Image') {
             steps {
@@ -77,6 +77,16 @@ pipeline {
                     echo "Lool1234&" | docker login -u yousseeef --password-stdin
                     docker push yousseeef/tp-foyer:5.0.0
                 '''
+            }
+        }
+          stage('Run Docker Compose') {
+            steps {
+                script {
+                    sh '''
+                        sudo docker-compose down 
+                        sudo docker-compose up -d
+                    '''
+                }
             }
         }
     }
