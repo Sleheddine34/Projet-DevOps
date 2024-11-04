@@ -83,8 +83,9 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        sudo docker-compose down 
-                        sudo docker-compose up -d
+                        echo "vagrant" | sudo -S docker-compose down
+                        sudo -S docker-compose up -d
+
                     '''
                 }
             }
