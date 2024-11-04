@@ -79,16 +79,16 @@ pipeline {
                 '''
             }
         }
-          stage('Run Docker Compose') {
+           stage('Deploy with Docker Compose') {
             steps {
-                script {
-                    sh '''
-                        sudo docker-compose down 
-                        sudo docker-compose up -d
-                    '''
-                }
-            }
+              script {
+              // List the contents of the current directory to confirm the presence of docker-compose.yml
+              sh 'ls -la'
+              // Run Docker Compose to bring up services from the file in the repository
+              sh 'docker-compose -f ./docker-compose.yml up -d'
         }
+    }
+}
     }
 
     post {
