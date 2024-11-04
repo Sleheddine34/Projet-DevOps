@@ -9,15 +9,15 @@ pipeline {
                 git url: 'https://github.com/Sleheddine34/Projet-DevOps.git', branch: 'joseph'
             }
         }
-/*
+
         // Stage 2: Cleaning the project using Maven
         stage('MVN CLEAN') { 
             steps {
                 echo "Cleaning project with Maven"
-                sh 'mvn clean'
+                sh 'mvn clean package'
             }
         }
-
+/*
         // Stage 3: Compiling the project using Maven
         stage('MVN COMPILE') {
             steps {
