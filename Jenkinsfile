@@ -7,9 +7,9 @@ pipeline {
     }
 
     stages {
-         stage('Checkout') {
+         stage('Git') {
             steps {
-                // Replace 'your-branch-name' with the correct branch name
+                echo "Getting project from GIT";
                 checkout([$class: 'GitSCM', branches: [[name: '*/testSleh']], 
                           userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']]])
             }
@@ -25,13 +25,13 @@ pipeline {
         //         sh 'mvn clean test'
         //     }
         // }
-//         stage('SonarQube Analysis') {
-//             steps {
-//                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-//                     sh "mvn sonar:sonar -DskipTests -Dsonar.projectKey=JenkinsFile -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=\$SONAR_TOKEN"
-//                 }
-//             }
-//         }
+        stage('SonarQube Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    sh "mvn sonar:sonar -DskipTests -Dsonar.projectKey=JenkinsFile -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=\$SONAR_TOKEN"
+                }
+            }
+        }
 //         stage('Deploy to Nexus') {
 //             steps {
 //                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.50.4:8081/repository/maven-releases/'
