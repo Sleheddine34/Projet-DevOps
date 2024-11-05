@@ -18,33 +18,17 @@ services:
     image: sleheddine/alpine:latest
     restart: on-failure
     ports:
-      - 8089:8089
+      - 8082:8082
     environment:
       SPRING_APPLICATION_JSON: '{
         "spring.datasource.url" : "jdbc:mysql://mysqldb:3306/tpfoyer_db?createDatabaseIfNotExist=true",
         "spring.datasource.username" : "root",
-        "spring.datasource.password" : "Daddine123",
+        "spring.datasource.password" : Daddine123,
         "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
         "spring.jpa.hibernate.ddl-auto" : "update"
       }'
     stdin_open: true
     tty: true
 
-  jenkins:
-    image: jenkins/jenkins:lts
-    ports:
-      - 8088:8080
-    volumes:
-      - tp-foyer_jenkins_data:/var/jenkins_home
-
-  nexus:
-    image: sonatype/nexus3
-    ports:
-      - 8081:8081
-    volumes:
-      - tp-foyer_nexus_data:/nexus-data
-
 volumes:
   db:
-  tp-foyer_jenkins_data:
-  tp-foyer_nexus_data:
