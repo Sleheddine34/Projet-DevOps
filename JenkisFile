@@ -7,23 +7,28 @@ pipeline {
     }
 
     stages {
-         stage('Checkout') {
+        stage('Checkout') {
             steps {
-                // Replace 'your-branch-name' with the correct branch name
-                checkout([$class: 'GitSCM', branches: [[name: '*/salih']], 
-                          userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']]])
+                // Retry checkout up to 3 times in case of network issues
+                retry(3) {
+                    checkout([$class: 'GitSCM', branches: [[name: '*/salih']], 
+                              userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']]])
+                }
             }
         }
-        stage('Compile Stage') {
+
+        stage('Compile') {
             steps {
                 sh 'mvn clean compile'
             }
         }
-        stage('Test Stage') {
+
+        stage('Test') {
             steps {
                 sh 'mvn test'
             }
         }
+
         stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token2', variable: 'SONAR_TOKEN')]) {
@@ -31,27 +36,27 @@ pipeline {
                 }
             }
         }
+
+        stage('Package') {
+            steps {
+                // Compile and package the application, skipping tests as they’ve been run in the Test stage
+                sh 'mvn clean package -DskipTests'
+                // Verify that the .jar file exists
+                sh 'ls target'
+            }
+        }
+
         stage('Deploy to Nexus') {
             steps {
                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
             }
         }
 
-        stage('Build') {
-            steps {
-                // Compile and package the application
-                sh 'mvn clean package'
-                // Verify that the .jar file exists
-                sh 'ls target'
-            }
-        }
         stage('Build Docker Image') {
             steps {
-                    // Build Docker image using the Docker CLI command
-                    sh "docker build -t 223jmt2638/alpine:latest ."
-                
+                // Build Docker image using the Docker CLI command
+                sh "docker build -t 223jmt2638/alpine:latest ."
             }
         }
-
     }
 }
