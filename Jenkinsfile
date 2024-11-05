@@ -16,6 +16,7 @@ pipeline {
         }
         stage('Compile Stage') {
             steps {
+                
                 sh 'mvn clean compile -DskipTests';
                 sh 'mvn clean package'
             }
@@ -45,8 +46,9 @@ pipeline {
         }
                 stage('Push Docker Image to DockerHub') {
             steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                 sh '''
-                    docker login -u sleheddine -p Daddine123
+                    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
                     docker push sleheddine/tp-foyer:5.0.0
                 '''
             }
