@@ -49,7 +49,9 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                 sh '''
                     docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+                    docker tag sleheddine/tp-foyer:5.0.0 sleheddine/tp-foyer:latest
                     docker push sleheddine/tp-foyer:5.0.0
+                    docker push sleheddine/tp-foyer:latest
                 '''
                 }
             }
