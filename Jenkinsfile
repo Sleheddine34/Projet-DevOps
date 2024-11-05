@@ -37,14 +37,11 @@ pipeline {
                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.50.4:8081/repository/maven-releases/'
             }
         }
-//                 stage('Build') {
-//             steps {
-//                 // Compile and package the application
-//                 sh 'mvn clean package'
-//                 // Verify that the .jar file exists
-//                 sh 'ls target'
-//             }
-//         }
+        stage('Build Docker Image') {
+            steps {
+                sh 'sudo docker build -t sleheddine/tp-foyer:5.0.0 .'
+            }
+        }
 //         stage('Build Docker Image') {
 //             steps {
                 
