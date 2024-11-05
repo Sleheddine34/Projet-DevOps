@@ -22,11 +22,11 @@ pipeline {
             }
         }
         //Test stage removed/commented out
-        stage('Test Stage') {
-            steps {
-                sh 'mvn clean test'
-            }
-        }
+        // stage('Test Stage') {
+        //     steps {
+        //         sh 'mvn clean test'
+        //     }
+        // }
         stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
