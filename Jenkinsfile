@@ -51,6 +51,7 @@ pipeline {
                     docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
                     docker push sleheddine/tp-foyer:5.0.0
                 '''
+                }
             }
         }
 //         stage('Build Docker Image') {
