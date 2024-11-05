@@ -30,7 +30,6 @@
         <dependency>
              <groupId>org.hibernate</groupId>
              <artifactId>hibernate-core</artifactId>
-             <version>5.4.30.Final</version> <!-- Utilisez la version compatible avec votre projet -->
         </dependency>
 
 
