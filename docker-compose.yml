@@ -18,7 +18,7 @@ services:
       retries: 5
 
   app-timesheet:
-    image: sleheddine/tp-foyer-5.0.0
+    image: sleheddine/tp-foyer:5.0.0
     depends_on:
       mysqldb:
         condition: service_healthy
