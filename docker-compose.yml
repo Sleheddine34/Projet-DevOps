@@ -13,7 +13,7 @@ services:
       - db:/var/lib/mysql
 
   app-tpfoyer:
-    image: docker-myapp:latest  # Updated image name
+    image: medhelmibennjima/alpine  # Updated image name
     depends_on:
       - mysqldb
     restart: on-failure
