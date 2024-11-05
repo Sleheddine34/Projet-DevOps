@@ -17,7 +17,7 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
-/*
+
         // Stage 3: Compiling the project using Maven
         stage('MVN COMPILE') {
             steps {
@@ -58,7 +58,7 @@ pipeline {
             }
         }
        
-*/
+
         // Stage 5: Building Docker image
         stage('Building Docker Image') {
             steps {
