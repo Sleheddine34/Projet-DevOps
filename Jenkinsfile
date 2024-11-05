@@ -54,6 +54,16 @@ pipeline {
                 }
             }
         }
+                stage('Run Docker Compose') {
+            steps {
+                script {
+                    sh '''
+                        docker-compose down 
+                        docker-compose up -d
+                    '''
+                }
+            }
+        }
 //           stage('Deploy with Docker Compose') {
 //             steps {
 //               script {
