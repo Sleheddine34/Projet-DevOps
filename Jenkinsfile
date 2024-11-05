@@ -46,8 +46,8 @@ pipeline {
                 stage('Push Docker Image to DockerHub') {
             steps {
                 sh '''
-                    sudo docker login -u sleheddine -p Daddine123
-                    sudo docker push sleheddine/tp-foyer:5.0.0
+                    docker login -u sleheddine -p Daddine123
+                    docker push sleheddine/tp-foyer:5.0.0
                 '''
             }
         }
