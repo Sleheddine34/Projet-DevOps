@@ -11,14 +11,20 @@ services:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   app-timesheet:
+      image: sleheddine/tp-foyer-5.0.0
     depends_on:
-      - mysqldb
-    image: sleheddine/tp-foyer-5.0.0
+      mysqldb:
+          condition: service_healthy
     restart: on-failure
     ports:
-      - 8082:8082
+      - 8089:8089
     environment:
       SPRING_APPLICATION_JSON: '{
         "spring.datasource.url" : "jdbc:mysql://mysqldb:3306/tpfoyer_db?createDatabaseIfNotExist=true",
