@@ -40,7 +40,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'sudo docker build -t sleheddine/tp-foyer:5.0.0 .'
+                sh 'docker build -t sleheddine/tp-foyer:5.0.0 .'
             }
         }
 //         stage('Build Docker Image') {
