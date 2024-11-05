@@ -34,7 +34,7 @@ services:
         "spring.jpa.hibernate.ddl-auto": "update",
         "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQL5InnoDBDialect",
         "server.port": 8089,
-        "server.servlet.context-path": "/tpfoyer"
+        "server.servlet.context-path": "/tpfoyer",
         "logging.level.org.springframework": "DEBUG"
 
       }'
