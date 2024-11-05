@@ -32,7 +32,7 @@ services:
         "spring.datasource.password" : "Daddine123",
         "spring.jpa.show-sql": true,
         "spring.jpa.hibernate.ddl-auto": "update",
-        "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQL5InnoDBDialect",
+        "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQL57Dialect",
         "server.port": 8089,
         "server.servlet.context-path": "/tpfoyer",
         "logging.level.org.springframework": "DEBUG"
