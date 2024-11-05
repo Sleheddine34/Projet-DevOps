@@ -10,11 +10,16 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Increase Git buffer size to handle large repositories and retry up to 3 times
-                sh 'git config --global http.postBuffer 524288000' // Sets buffer to 500MB
+                sh 'git config --global http.postBuffer 1048576000' // Sets buffer to 1GB
                 retry(3) {
-                    checkout([$class: 'GitSCM', branches: [[name: '*/salih']], 
-                              userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']],
-                              extensions: [[$class: 'CloneOption', shallow: true, depth: 1]]])
+                    timeout(time: 10, unit: 'MINUTES') {
+                        checkout([$class: 'GitSCM', branches: [[name: '*/salih']], 
+                                  userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']],
+                                  extensions: [
+                                      [$class: 'CloneOption', shallow: true, depth: 1],
+                                      [$class: 'CheckoutOption', timeout: 15]
+                                  ]])
+                    }
                 }
             }
         }
