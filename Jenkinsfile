@@ -21,7 +21,7 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
-        Test stage removed/commented out
+        //Test stage removed/commented out
         stage('Test Stage') {
             steps {
                 sh 'mvn clean test'
