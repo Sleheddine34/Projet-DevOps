@@ -1,3 +1,5 @@
+version: '3.8'  # Specify the Docker Compose version
+
 services:
   mysqldb:
     image: mysql:5.7
@@ -6,7 +8,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Allows empty password; for production, set a root password
       MYSQL_DATABASE: tpfoyer_db
     ports:
-      - 3306:3306
+      - "3306:3306"
     volumes:
       - db:/var/lib/mysql
 
@@ -16,7 +18,7 @@ services:
       - mysqldb
     restart: on-failure
     ports:
-      - 8089:8089  # Changed to use port 8089 to avoid conflicts
+      - "5000:8089"  # Expose app on port 5000 of the host
     environment:
       SPRING_APPLICATION_JSON: >-
         {
