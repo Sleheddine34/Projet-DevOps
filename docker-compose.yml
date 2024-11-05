@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     environment: 
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      - MYSQL_DATABASE=tpfoyer_db
+      MYSQL_DATABASE=tpfoyer_db
     ports:
       - "3306:3306"
     volumes:
