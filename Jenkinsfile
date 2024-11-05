@@ -32,11 +32,11 @@ pipeline {
                 }
             }
         }
-//         stage('Deploy to Nexus') {
-//             steps {
-//                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.50.4:8081/repository/maven-releases/'
-//             }
-//         }
+        stage('Deploy to Nexus') {
+            steps {
+                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.50.4:8081/repository/maven-releases/'
+            }
+        }
 //                 stage('Build') {
 //             steps {
 //                 // Compile and package the application
