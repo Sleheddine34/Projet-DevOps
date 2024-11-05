@@ -16,7 +16,8 @@ pipeline {
         }
         stage('Compile Stage') {
             steps {
-                sh 'mvn clean compile -DskipTests'
+                sh 'mvn clean compile -DskipTests';
+                sh 'mvn clean package'
             }
         }
         // Test stage removed/commented out
