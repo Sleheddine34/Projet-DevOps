@@ -60,9 +60,10 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        sh 'ls -la'  // Liste le contenu du répertoire
-                        docker-compose down 
+                        sh 'ls -la'  
+                        docker-compose down -v 
                         docker-compose up -d
+                        sh 'docker-compose ps'
                     '''
                 }
             }
