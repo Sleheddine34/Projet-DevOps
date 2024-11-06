@@ -53,9 +53,18 @@ pipeline {
                     docker push sleheddine/tp-foyer:5.0.0
                     docker push sleheddine/tp-foyer:latest
                 '''
+                    }
                 }
             }
-        }
+                stage('Clean Up Previous Containers') {
+                    steps {
+                        script {
+            // Supprime tous les conteneurs liés à ce projet pour éviter des conflits
+                            sh 'docker-compose down -v || true'
+                    }
+                }
+            }
+
                 stage('Run Docker Compose') {
             steps {
                 script {
@@ -69,13 +78,13 @@ pipeline {
                 }
             }
         }
-                stage('View Logs') {
-                    steps {
-                        script {
-                            sh 'docker-compose logs -f app-timesheet'
-                    }
-             }
-        }
+        //         stage('View Logs') {
+        //             steps {
+        //                 script {
+        //                     sh 'docker-compose logs -f app-timesheet'
+        //             }
+        //      }
+        // }
 
 //           stage('Deploy with Docker Compose') {
 //             steps {
