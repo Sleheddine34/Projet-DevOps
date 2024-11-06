@@ -60,10 +60,11 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        sh 'ls -la'  
+                        pwd
+                        ls -la
                         docker-compose down -v 
                         docker-compose up -d
-                        sh 'docker-compose ps'
+                        docker-compose ps
                     '''
                 }
             }
