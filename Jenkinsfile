@@ -86,10 +86,10 @@ pipeline {
                                 mail to: 'sleheddinedhaouadi@gmail.com',
                                      subject: 'Jenkins Notification: Docker Image Pushed',
                                      body: 'A new Docker image has been successfully pushed to DockerHub.'
+                        }
+                    }
                 }
             }
-        }
-    }
     //         post {
     //     success {
     //         mail bcc: '', body: 'A new Docker image has been successfully pushed to DockerHub.', cc: '', 
