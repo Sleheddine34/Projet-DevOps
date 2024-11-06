@@ -78,18 +78,18 @@ pipeline {
                 }
             }
         }
-            post {
-        success {
-            mail bcc: '', body: 'A new Docker image has been successfully pushed to DockerHub.', cc: '', 
-                 from: 'daddine.dhaouadi@gmail.com', replyTo: '', subject: 'Jenkins Notification: Docker Image Pushed', 
-                 to: 'daddine.dhaouadi@gmail.com'
-        }
-        failure {
-            mail bcc: '', body: 'The Jenkins build failed during the process.', cc: '', 
-                 from: 'daddine.dhaouadi@gmail.com', replyTo: '', subject: 'Jenkins Notification: Build Failure', 
-                 to: 'daddine.dhaouadi@gmail.com'
-        }
-    }
+    //         post {
+    //     success {
+    //         mail bcc: '', body: 'A new Docker image has been successfully pushed to DockerHub.', cc: '', 
+    //              from: 'daddine.dhaouadi@gmail.com', replyTo: '', subject: 'Jenkins Notification: Docker Image Pushed', 
+    //              to: 'daddine.dhaouadi@gmail.com'
+    //     }
+    //     failure {
+    //         mail bcc: '', body: 'The Jenkins build failed during the process.', cc: '', 
+    //              from: 'daddine.dhaouadi@gmail.com', replyTo: '', subject: 'Jenkins Notification: Build Failure', 
+    //              to: 'daddine.dhaouadi@gmail.com'
+    //     }
+    // }
         //         stage('View Logs') {
         //             steps {
         //                 script {
