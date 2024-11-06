@@ -19,12 +19,13 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
-            steps {
-                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                    sh "mvn sonar:sonar -DskipTests -Dsonar.projectKey=jenkinsfile -Dsonar.host.url=http://192.168.50.5:9000 -Dsonar.login=\$SONAR_TOKEN"
-                }
-            }
+    steps {
+        withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+            sh "mvn clean verify sonar:sonar -DskipTests -Dsonar.projectKey=tp-foyer -Dsonar.host.url=http://192.168.50.5:9000 -Dsonar.login=\$SONAR_TOKEN"
         }
+    }
+}
+
         stage('Deploy to Nexus') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
