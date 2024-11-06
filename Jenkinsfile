@@ -69,6 +69,14 @@ pipeline {
                 }
             }
         }
+                stage('View Logs') {
+                    steps {
+                        script {
+                            sh 'docker-compose logs -f app-timesheet'
+                    }
+             }
+        }
+
 //           stage('Deploy with Docker Compose') {
 //             steps {
 //               script {
