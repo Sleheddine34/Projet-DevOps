@@ -34,7 +34,7 @@ pipeline {
             }
         }
 
-         /*
+         
         stage('MVN SONARQUBE') {
             steps {
                 echo "Analyzing code quality with SonarQube"
@@ -57,7 +57,7 @@ pipeline {
                 '''
             }
         }
-       */
+       
 
         // Stage 5: Building Docker image
         stage('Building Docker Image') {
