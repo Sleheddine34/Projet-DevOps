@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mysqldb:
-    container_name: tpfoyer_mysql
+#    container_name: tpfoyer_mysql
     image: mysql:5.7
     restart: unless-stopped
     environment: 
@@ -19,7 +19,7 @@ services:
       retries: 5
 
   app-timesheet:
-    container_name: tpfoyer_app_timesheet
+#    container_name: tpfoyer_app_timesheet
     image: sleheddine/tp-foyer:5.0.0
     depends_on:
       mysqldb:
