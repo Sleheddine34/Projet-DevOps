@@ -38,7 +38,7 @@ services:
         "server.port": "8089",
         "server.servlet.context-path": "/tpfoyer",
         "logging.level.org.springframework": "DEBUG",
-        "management.endpoints.web.exposure.include" : "*",
+        "management.endpoints.web.exposure.include" : "prometheus",
         "management.endpoint.prometheus.enabled" : true
 
       }'
