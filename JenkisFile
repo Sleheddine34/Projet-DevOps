@@ -65,7 +65,7 @@ pipeline {
                 sh "docker build -t 223jmt2638/alpine:latest ."
             }
         }
-stage('Push Docker Image') {
+/*stage('Push Docker Image') {
     steps {
         script {
             // Login to Docker Hub (using credentials stored in Jenkins)
@@ -78,6 +78,6 @@ stage('Push Docker Image') {
             sh 'docker push 223jmt2638/alpine:latest'
         }
     }
-}
+}*/
     }
 }
