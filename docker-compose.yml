@@ -13,7 +13,7 @@ services:
       - db:/var/lib/mysql
 
   app-tpfoyer:
-    image: medhelmibennjima/alpine  # Updated image name
+    mage: medhelmibennnjima/tp-foyer:5.0.0  # Updated image name
     depends_on:
       - mysqldb
     restart: on-failure
