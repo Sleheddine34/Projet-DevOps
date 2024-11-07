@@ -66,6 +66,8 @@ pipeline {
                         docker-compose down -v
                         docker-compose up -d
                         docker-compose ps
+                        sleep 10  # Attendre 10 secondes pour que l'application démarre
+                        curl -f http://192.168.50.4:8089/actuator/prometheus || echo "Prometheus endpoint is not accessible"
                     '''
                 }
             }
