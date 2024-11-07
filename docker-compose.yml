@@ -25,7 +25,6 @@ services:
         "spring.datasource.username" : "root",
         "spring.datasource.password" : null,
         "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-        "server.port": 8089,
         "spring.jpa.hibernate.ddl-auto" : "update",
         "management.endpoints.web.exposure.include" : "prometheus",
         "management.endpoint.prometheus.enabled" : true
