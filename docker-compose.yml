@@ -5,8 +5,8 @@ services:
     image: mysql:5.7
     restart: unless-stopped
     environment: 
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_DATABASE=tpfoyer_db
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: tpfoyer_db
     ports:
       - 3306:3306
     volumes:
@@ -25,7 +25,10 @@ services:
         "spring.datasource.username" : "root",
         "spring.datasource.password" : null,
         "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-        "spring.jpa.hibernate.ddl-auto" : "update"
+        "server.port": 8089,
+        "spring.jpa.hibernate.ddl-auto" : "update",
+        "management.endpoints.web.exposure.include" : "prometheus",
+        "management.endpoint.prometheus.enabled" : true
       }'
     stdin_open: true
     tty: true
