@@ -66,21 +66,20 @@ pipeline {
                         docker-compose down -v
                         docker-compose up -d
                         docker-compose ps
-                        sleep 10  # Attendre 10 secondes pour que l'application démarre
-                        curl -f http://192.168.50.4:8089/actuator/prometheus || echo "Prometheus endpoint is not accessible"
                     '''
                 }
             }
         }
-        stage('Send Email Notification') {
-            steps {
-                script {
-                    // Envoi d'un email de notification
-                    mail to: 'sleheddinedhaouadi@gmail.com',
-                         subject: 'Jenkins Notification: Docker Image Pushed',
-                         body: 'A new Docker image has been successfully pushed to DockerHub.'
-                }
-            }
-        }
+        
+        // stage('Send Email Notification') {
+        //     steps {
+        //         script {
+        //             // Envoi d'un email de notification
+        //             mail to: 'sleheddinedhaouadi@gmail.com',
+        //                  subject: 'Jenkins Notification: Docker Image Pushed',
+        //                  body: 'A new Docker image has been successfully pushed to DockerHub.'
+        //         }
+        //     }
+        // }
     }
 }
