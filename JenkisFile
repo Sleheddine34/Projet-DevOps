@@ -86,7 +86,7 @@ pipeline {
             sh 'ls -la'
             // Run Docker Compose to bring up services from the file in the repository
             // sh 'docker-compose -f ./docker-compose up.yml -d'
-            sh 'docker-compose up -d'
+            sh 'docker compose up -d'
         }
     }
 }
