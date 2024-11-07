@@ -38,12 +38,13 @@ pipeline {
                 }
             }
         }
-         stage('Build Docker Image') {
-            steps {
-                // Build the Docker image with your specified tag
-                sh 'docker build -t medhelmibennnjima/tp-foyer:5.0.0 .'
+             stage('Build Docker Image') {
+        steps {
+            // Specify the Dockerfile path using the `-f` option
+            sh 'docker build -t medhelmibennnjima/tp-foyer:5.0.0 -f src/Dockerfile .'
             }
         }
+
         stage('Push Docker Image to DockerHub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: '	dockerhub-credentials-id', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
