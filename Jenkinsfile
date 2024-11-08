@@ -1,8 +1,6 @@
 pipeline {
     agent any
     environment {
-        SMTP_HOST = 'smtp.gmail.com'
-        SMTP_PORT = '465'
         SMTP_USERNAME = 'chouaibimohamed87@gmail.com'  // replace with your Gmail address
         SMTP_PASSWORD = 'tyid nmej ndqy gmpf'    // replace with your Gmail App password
     }
@@ -30,12 +28,7 @@ pipeline {
                 emailext(
                     subject: 'DevOps Pipeline Report',
                     body: 'The pipeline has completed successfully. No action required.',
-                    to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn',
-                    smtpHost: env.SMTP_HOST,
-                    smtpPort: env.SMTP_PORT,
-                    smtpUser: env.SMTP_USERNAME,
-                    smtpPassword: env.SMTP_PASSWORD,
-                    ssl: true
+                    to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn'
                 )
             }
         }
@@ -46,36 +39,21 @@ pipeline {
             emailext (
                 subject: 'Build Successful',
                 body: 'The Jenkins build was successful.',
-                to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn',
-                smtpHost: env.SMTP_HOST,
-                smtpPort: env.SMTP_PORT,
-                smtpUser: env.SMTP_USERNAME,
-                smtpPassword: env.SMTP_PASSWORD,
-                ssl: true
+                to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn'
             )
         }
         failure {
             emailext (
                 subject: 'Build Failed',
                 body: 'The Jenkins build has failed.',
-                to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn',
-                smtpHost: env.SMTP_HOST,
-                smtpPort: env.SMTP_PORT,
-                smtpUser: env.SMTP_USERNAME,
-                smtpPassword: env.SMTP_PASSWORD,
-                ssl: true
+                to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn'
             )
         }
         always {
             emailext (
                 subject: 'Build Status',
                 body: 'The Jenkins build has finished.',
-                to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn',
-                smtpHost: env.SMTP_HOST,
-                smtpPort: env.SMTP_PORT,
-                smtpUser: env.SMTP_USERNAME,
-                smtpPassword: env.SMTP_PASSWORD,
-                ssl: true
+                to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn'
             )
         }
     }
