@@ -41,45 +41,56 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            script {
-                def duration = currentBuild.durationString
-                emailext(
-                    subject: "Build Successful - Green Banner",
-                    body: """
-                        <h3 style="color:green;">The Jenkins build was successful.</h3>
-                        <p>Time Taken: ${duration}</p>
-                    """,
-                    to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn'
-                )
-            }
-        }
-        failure {
-            script {
-                def duration = currentBuild.durationString
-                emailext(
-                    subject: "Build Failed - Red Banner",
-                    body: """
-                        <h3 style="color:red;">The Jenkins build has failed.</h3>
-                        <p>Time Taken: ${duration}</p>
-                    """,
-                    to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn'
-                )
-            }
-        }
-        always {
-            script {
-                def duration = currentBuild.durationString
-                emailext(
-                    subject: "Build Status - Completed",
-                    body: """
-                        The Jenkins build has finished.
-                        <p>Time Taken: ${duration}</p>
-                    """,
-                    to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn'
-                )
-            }
-        }
+post {
+    failure {
+        emailext (
+            subject: "Jenkins Build Failed: ${currentBuild.fullDisplayName}",
+            body: """
+                <html>
+                <body>
+                    <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                        <tr>
+                            <td bgcolor="#FF0000" align="center" style="color:white; font-size:20px; font-weight:bold;">
+                                The Jenkins build has failed.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="font-size:16px;">
+                                Time Taken: ${currentBuild.durationString} and counting
+                            </td>
+                        </tr>
+                    </table>
+                </body>
+                </html>
+            """,
+            to: "chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn"
+        )
     }
+
+    success {
+        emailext (
+            subject: "Jenkins Build Success: ${currentBuild.fullDisplayName}",
+            body: """
+                <html>
+                <body>
+                    <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                        <tr>
+                            <td bgcolor="#00FF00" align="center" style="color:white; font-size:20px; font-weight:bold;">
+                                The Jenkins build has succeeded.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="font-size:16px;">
+                                Time Taken: ${currentBuild.durationString} 
+                            </td>
+                        </tr>
+                    </table>
+                </body>
+                </html>
+            """,
+            to: "chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn"
+        )
+    }
+}
+
 }
