@@ -34,27 +34,7 @@ pipeline {
                 sh 'ls target'
             }
         }
-       stage('Clean Up Previous Containers') {
-            steps {
-                script {
-                    // Supprime tous les conteneurs liés à ce projet pour éviter des conflits
-                    sh 'docker-compose down -v || true'
-                }
-            }
-        }
-        stage('Run Docker Compose') {
-            steps {
-                script {
-                    sh '''
-                        pwd
-                        ls -la
-                        docker-compose down -v
-                        docker-compose up -d
-                        docker-compose ps
-                    '''
-                }
-            }
-        }
+      
   stage('Build Docker Image') {
             steps {
                 
@@ -78,16 +58,27 @@ pipeline {
         }
     }
 }
-  stage('Deploy with Docker Compose') {
-    steps {
-        script {
-            // List the contents of the current directory to confirm the presence of docker-compose.yml
-            sh 'ls -la'
-            // Run Docker Compose to bring up services from the file in the repository
-            sh 'docker-compose -f ./docker-compose.yml up -d'
+  stage('Clean Up Previous Containers') {
+            steps {
+                script {
+                    // Supprime tous les conteneurs liés à ce projet pour éviter des conflits
+                    sh 'docker-compose down -v || true'
+                }
+            }
         }
-    }
-}
+        stage('Run Docker Compose') {
+            steps {
+                script {
+                    sh '''
+                        pwd
+                        ls -la
+                        docker-compose down -v
+                        docker-compose up -d
+                        docker-compose ps
+                    '''
+                }
+            }
+        }
 
 
         
