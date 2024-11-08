@@ -1,11 +1,9 @@
 pipeline {
     agent any
 
-  
-
     stages {
         // Stage 1: Cloning code from GitHub
-        stage('GIT') { 
+        stage('GIT') {
             steps {
                 echo "Cloning project from GitHub"
                 git url: 'https://github.com/Sleheddine34/Projet-DevOps.git', branch: 'joseph'
@@ -36,7 +34,7 @@ pipeline {
         }
 
         // Stage 3: Compile Project using Maven
-        stage('MVN CLEAN & COMPILE') { 
+        stage('MVN CLEAN & COMPILE') {
             steps {
                 echo "Cleaning and compiling project with Maven"
                 sh 'mvn clean compile'
@@ -52,17 +50,16 @@ pipeline {
         }
 
         // Stage 5: SonarQube Static Code Analysis
-stage('Scan : SonarQube') {
-    steps {
-        echo "Running SonarQube analysis..."
-        withSonarQubeEnv('sq1') {
-            withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
-                sh "mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}"
+        stage('Scan : SonarQube') {
+            steps {
+                echo "Running SonarQube analysis..."
+                withSonarQubeEnv('sq1') {
+                    withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+                        sh "mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}"
+                    }
+                }
             }
         }
-    }
-}
-
 
         // Stage 6: Deploy to Nexus Repository
         stage('Deploy to Nexus') {
