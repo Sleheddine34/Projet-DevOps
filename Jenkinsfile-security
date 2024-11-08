@@ -120,56 +120,56 @@ stage('Security Scan: Trivy') {
 
 
         // Stage 13: Security Scan: OWASP Dependency-Check
-        stage('Security Scan: OWASP Dependency-Check') {
-    steps {
-        echo "Running OWASP Dependency-Check..."
-        sh '''
-        docker run --rm -v "$(pwd)":/src -w /src owasp/dependency-check --project tn.esprit:tp-foyer --scan /src --format ALL
-        '''
-    }
+       // stage('Security Scan: OWASP Dependency-Check') {
+  //  steps {
+   //     echo "Running OWASP Dependency-Check..."
+    //    sh '''
+    //    docker run --rm -v "$(pwd)":/src -w /src owasp/dependency-check --project tn.esprit:tp-foyer --scan /src --format ALL
+  //      '''
+ //   }
 }
 
 
         // Stage 14: Email Notification
-        stage('Email Notification') {
-            steps {
-                mail bcc: '', 
-                     body: '''
-Final Report: The pipeline has completed successfully. No action required.
-''', 
-                     cc: '', 
-                     from: '', 
-                     replyTo: '', 
-                     subject: 'Succès de la pipeline DevOps Project', 
-                     to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
-            }
-        }
-    }
+     //   stage('Email Notification') {
+        //    steps {
+         //       mail bcc: '', 
+         //            body: '''
+//Final Report: The pipeline has completed successfully. No action required.
+// ''', 
+              //       cc: '', 
+               //      from: '', 
+               //      replyTo: '', 
+                 //    subject: 'Succès de la pipeline DevOps Project', 
+                 //    to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
+           // }
+      //  }
+   // }
 
-    post {
-        success {
-            emailext (
-                subject: "Build Success: ${currentBuild.fullDisplayName}",
-                body: "Le build a réussi ! Consultez les détails à ${env.BUILD_URL}",
-                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
-                to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
-            )
-        }
-        failure {
-            emailext (
-                subject: "Build Failure: ${currentBuild.fullDisplayName}",
-                body: "Le build a échoué ! Vérifiez les détails à ${env.BUILD_URL}",
-                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
-                to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
-            )
-        }
-        always {
-            emailext (
-                subject: "Build Notification: ${currentBuild.fullDisplayName}",
-                body: "Consultez les détails du build à ${env.BUILD_URL}",
-                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
-                to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
-            )
-        }
-    }
+  //  post {
+   //     success {
+     //       emailext (
+              //  subject: "Build Success: ${currentBuild.fullDisplayName}",
+             //   body: "Le build a réussi ! Consultez les détails à ${env.BUILD_URL}",
+            //    recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
+            //    to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
+         //   )
+    //    }
+       // failure {
+       //     emailext (
+          //      subject: "Build Failure: ${currentBuild.fullDisplayName}",
+         //       body: "Le build a échoué ! Vérifiez les détails à ${env.BUILD_URL}",
+           //     recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
+              //  to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
+          // )
+ //       }
+     //   always {
+         //   emailext (
+          //      subject: "Build Notification: ${currentBuild.fullDisplayName}",
+             //   body: "Consultez les détails du build à ${env.BUILD_URL}",
+            //    recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
+              //  to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
+           // )
+     //   }
+ //   }
 }
