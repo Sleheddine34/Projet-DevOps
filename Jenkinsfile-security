@@ -1,0 +1,110 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define environment variables
+        DOCKER_IMAGE = 'yousseeef/tp-foyer:5.0.0'
+        PROJECT_KEY = 'tn.esprit:tp-foyer'
+        SONAR_HOST_URL = 'http://192.168.33.10:9000'
+        SONAR_TOKEN = 'sqa_c454a45c9a349e8975f7096ac3e5436da30ec05e'
+    }
+
+    stages {
+
+        stage('Clone Repository') {
+            steps {
+                echo 'Cloning the project repository...'
+                git url: 'https://github.com/Sleheddine34/Projet-DevOps.git', branch: 'joseph'
+            }
+        }
+
+        stage('Dependency Vulnerability Scan') {
+            steps {
+                echo 'Running OWASP Dependency-Check...'
+                sh '''
+                    docker run --rm \
+                    -v $(pwd):/src \
+                    -w /src \
+                    owasp/dependency-check \
+                    --project ${PROJECT_KEY} \
+                    --scan /src \
+                    --format ALL
+                '''
+            }
+        }
+
+        stage('Static Application Security Testing (SAST)') {
+            steps {
+                echo 'Running SAST with SonarQube...'
+                withSonarQubeEnv('SonarQube') {
+                    sh '''
+                        mvn sonar:sonar \
+                        -Dsonar.projectKey=${PROJECT_KEY} \
+                        -Dsonar.host.url=${SONAR_HOST_URL} \
+                        -Dsonar.login=${SONAR_TOKEN}
+                    '''
+                }
+            }
+        }
+
+        stage('Container Security Scan') {
+            steps {
+                echo 'Running Docker Image Scan with Trivy...'
+                sh '''
+                    docker run --rm \
+                    -v /var/run/docker.sock:/var/run/docker.sock \
+                    -v $(pwd):/app aquasec/trivy image ${DOCKER_IMAGE}
+                '''
+            }
+        }
+
+        stage('Dynamic Application Security Testing (DAST)') {
+            steps {
+                echo 'Running DAST with OWASP ZAP...'
+                sh '''
+                    docker run --rm -t owasp/zap2docker-stable zap-baseline.py \
+                    -t http://localhost:8089/tpfoyer \
+                    -r zap_report.html
+                '''
+            }
+        }
+
+        stage('Infrastructure as Code (IaC) Scan') {
+            steps {
+                echo 'Running IaC Scan with Checkov...'
+                sh '''
+                    docker run --rm \
+                    -v $(pwd):/iac \
+                    bridgecrew/checkov -d /iac
+                '''
+            }
+        }
+
+        stage('Approval for Deployment') {
+            steps {
+                script {
+                    input message: "Security checks completed. Do you approve deployment?"
+                }
+            }
+        }
+
+        stage('Send Security Report Notification') {
+            steps {
+                echo 'Sending notification about the security checks results...'
+                mail to: 'fakhfakh4321@gmail.com',
+                     subject: 'DevSecOps Security Report',
+                     body: 'All security checks completed. Please review the results in Jenkins.'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning workspace...'
+            cleanWs()
+        }
+        failure {
+            echo 'Security checks failed. Please review the pipeline logs.'
+        }
+    }
+}
