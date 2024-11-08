@@ -102,13 +102,13 @@ pipeline {
             }
         }
 
-        // Stage 11: Security Scan: Nmap
-        stage('Security Scan: Nmap') {
-            steps {
-                echo "Starting Nmap security scan..."
-                sh 'nmap -sS -p 1-65535 -v localhost'
-            }
-        }
+       stage('Security Scan: Nmap') {
+    steps {
+        echo "Starting Nmap security scan..."
+        sh 'nmap -sT -p 1-65535 -v localhost'
+    }
+}
+
 
         // Stage 12: Security Scan: Trivy (Docker Image Vulnerabilities)
         stage('Security Scan: Trivy') {
