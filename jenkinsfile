@@ -42,7 +42,7 @@ pipeline {
              stage('Build Docker Image') {
         steps {
             // Specify the Dockerfile path using the `-f` option
-            sh 'docker build -t medhelmibennnjima/alpine:latest .'
+            sh 'docker build -t medhelmibennnjima/alpine .'
             }
         }
 
@@ -51,8 +51,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh '''
                         docker login -u $DOCKER_USER -p $DOCKER_PASS
-                        docker tag medhelmibennjima/alpine:latest medhelmibennjima/alpine:5.0.0
-                        docker push medhelmibennjima/alpine:5.0.0
+                        docker tag medhelmibennjima/alpine medhelmibennjima/alpine:latest
+                        docker push medhelmibennjima/alpine
                         docker push medhelmibennjima/alpine:latest
                     '''
                 }
