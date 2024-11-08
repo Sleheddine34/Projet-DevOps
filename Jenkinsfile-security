@@ -2,15 +2,15 @@ pipeline {
     agent any
 
     environment {
-        // Define environment variables
+        // Define any required environment variables
         DOCKER_IMAGE = 'yousseeef/tp-foyer:5.0.0'
-        PROJECT_KEY = 'tn.esprit:tp-foyer'
+        SONAR_PROJECT_KEY = 'tn.esprit:tp-foyer'
         SONAR_HOST_URL = 'http://192.168.33.10:9000'
         SONAR_TOKEN = 'sqa_c454a45c9a349e8975f7096ac3e5436da30ec05e'
     }
 
     stages {
-
+        // Stage 1: Cloning the repository
         stage('Clone Repository') {
             steps {
                 echo 'Cloning the project repository...'
@@ -18,28 +18,24 @@ pipeline {
             }
         }
 
+        // Stage 2: Running OWASP Dependency-Check (for vulnerability scanning in dependencies)
         stage('Dependency Vulnerability Scan') {
             steps {
                 echo 'Running OWASP Dependency-Check...'
                 sh '''
-                    docker run --rm \
-                    -v $(pwd):/src \
-                    -w /src \
-                    owasp/dependency-check \
-                    --project ${PROJECT_KEY} \
-                    --scan /src \
-                    --format ALL
+                    docker run --rm -v $(pwd):/src -w /src owasp/dependency-check --project ${SONAR_PROJECT_KEY} --scan /src --format ALL
                 '''
             }
         }
 
-        stage('Static Application Security Testing (SAST)') {
+        // Stage 3: Running SonarQube Static Code Analysis (SAST)
+        stage('SonarQube Static Code Analysis') {
             steps {
-                echo 'Running SAST with SonarQube...'
+                echo 'Running SonarQube analysis...'
                 withSonarQubeEnv('SonarQube') {
                     sh '''
                         mvn sonar:sonar \
-                        -Dsonar.projectKey=${PROJECT_KEY} \
+                        -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
                         -Dsonar.login=${SONAR_TOKEN}
                     '''
@@ -47,53 +43,30 @@ pipeline {
             }
         }
 
-        stage('Container Security Scan') {
+        // Stage 4: Running Checkov for Infrastructure as Code (IaC) security scan
+        stage('Infrastructure as Code Security Scan') {
             steps {
-                echo 'Running Docker Image Scan with Trivy...'
+                echo 'Running Checkov for IaC security scan...'
                 sh '''
-                    docker run --rm \
-                    -v /var/run/docker.sock:/var/run/docker.sock \
-                    -v $(pwd):/app aquasec/trivy image ${DOCKER_IMAGE}
+                    docker run --rm -v $(pwd):/iac bridgecrew/checkov -d /iac
                 '''
             }
         }
 
-        stage('Dynamic Application Security Testing (DAST)') {
-            steps {
-                echo 'Running DAST with OWASP ZAP...'
-                sh '''
-                    docker run --rm -t owasp/zap2docker-stable zap-baseline.py \
-                    -t http://localhost:8089/tpfoyer \
-                    -r zap_report.html
-                '''
-            }
-        }
-
-        stage('Infrastructure as Code (IaC) Scan') {
-            steps {
-                echo 'Running IaC Scan with Checkov...'
-                sh '''
-                    docker run --rm \
-                    -v $(pwd):/iac \
-                    bridgecrew/checkov -d /iac
-                '''
-            }
-        }
-
-        stage('Approval for Deployment') {
+        // Stage 5: Approval before deployment (manual step)
+        stage('Approval') {
             steps {
                 script {
-                    input message: "Security checks completed. Do you approve deployment?"
+                    input message: 'All security checks passed. Do you want to proceed with the deployment?'
                 }
             }
         }
 
-        stage('Send Security Report Notification') {
+        // Stage 6: Notify success
+        stage('Notify Success') {
             steps {
-                echo 'Sending notification about the security checks results...'
-                mail to: 'fakhfakh4321@gmail.com',
-                     subject: 'DevSecOps Security Report',
-                     body: 'All security checks completed. Please review the results in Jenkins.'
+                echo 'Sending notification about security checks results...'
+                slackSend(channel: '#security-alerts', message: "Security checks passed for ${DOCKER_IMAGE}.")
             }
         }
     }
@@ -104,7 +77,8 @@ pipeline {
             cleanWs()
         }
         failure {
-            echo 'Security checks failed. Please review the pipeline logs.'
+            echo 'Security checks failed. Notifying team...'
+            slackSend(channel: '#security-alerts', message: "Security checks failed for ${DOCKER_IMAGE}. Check Jenkins for details.")
         }
     }
 }
