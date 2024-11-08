@@ -27,6 +27,9 @@ services:
           "spring.datasource.password": "",  # Set this to your MySQL root password if you have one
           "spring.jpa.show-sql": true,
           "spring.jpa.hibernate.ddl-auto": "update"
+          management.endpoint.prometheus.enabled=true
+          management.endpoints.web.exposure.include=prometheus
+
         }
     stdin_open: true
     tty: true
