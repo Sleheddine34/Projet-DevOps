@@ -50,55 +50,55 @@ pipeline {
         }
 
         // Stage 5: SonarQube Static Code Analysis
-        stage('Scan : SonarQube') {
-            steps {
-                withSonarQubeEnv('sq1') {  // Make sure this is the correct SonarQube server config name
-                    // Use the SonarQube token securely from environment variables
-                    sh 'mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
-                }
-            }
-        }
+     //   stage('Scan : SonarQube') {
+        //    steps {
+            //    withSonarQubeEnv('sq1') {  // Make sure this is the correct SonarQube server config name
+            // Use the SonarQube token securely from environment variables
+            //        sh 'mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
+         //       }
+        //    }
+    //    }
 
         // Stage 6: Deploy to Nexus Repository
-        stage('Deploy to Nexus') {
-            steps {
-                echo "Deploying artifacts to Nexus..."
-                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
-            }
-        }
+     //   stage('Deploy to Nexus') {
+       //     steps {
+          //      echo "Deploying artifacts to Nexus..."
+          //      sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
+          //  }
+      //  }
 
         // Stage 7: Building Docker Image
-        stage('Building Docker Image') {
-            steps {
-                echo "Building Docker image..."
-                sh 'docker build -t yousseeef/tp-foyer:5.0.0 .'
-            }
-        }
+      //  stage('Building Docker Image') {
+        //    steps {
+          //      echo "Building Docker image..."
+           //     sh 'docker build -t yousseeef/tp-foyer:5.0.0 .'
+         //   }
+     //   }
 
         // Stage 8: Push Docker Image to DockerHub
-        stage('Push Docker Image to DockerHub') {
-            steps {
-                echo "Pushing Docker image to DockerHub..."
-                withCredentials([string(credentialsId: 'dockerhub-jenkins-token', variable: 'dockerhub_token')]) {
-                    sh "docker login -u yousseeef -p ${dockerhub_token}"
-                    sh 'docker push yousseeef/tp-foyer:5.0.0'
-                }
-            }
-        }
+      //  stage('Push Docker Image to DockerHub') {
+       //     steps {
+          //      echo "Pushing Docker image to DockerHub..."
+           //     withCredentials([string(credentialsId: 'dockerhub-jenkins-token', variable: 'dockerhub_token')]) {
+            //        sh "docker login -u yousseeef -p ${dockerhub_token}"
+            //        sh 'docker push yousseeef/tp-foyer:5.0.0'
+          //      }
+         //   }
+      //  }
 
         // Stage 9: Run Docker Compose
-        stage('Run Docker Compose') {
-            steps {
-                echo "Running Docker Compose..."
-                sh 'docker-compose down && docker-compose up -d'
-            }
-        }
+      //  stage('Run Docker Compose') {
+       //     steps {
+       //         echo "Running Docker Compose..."
+       //         sh 'docker-compose down && docker-compose up -d'
+       //     }
+      //  }
 
         // Stage 10: Start Monitoring Docker Containers
         stage('Start Monitoring Containers') {
             steps {
                 echo "Starting monitoring containers..."
-                sh 'docker start be79135ec1cc'
+                sh 'docker start aab0f831dce5'
             }
         }
 
