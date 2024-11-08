@@ -4,7 +4,7 @@ pipeline {
         SMTP_HOST = 'smtp.gmail.com'
         SMTP_PORT = '465'
         SMTP_USERNAME = 'chouaibimohamed87@gmail.com'  // replace with your Gmail address
-        SMTP_PASSWORD = 'your_app_password_here'    // replace with your Gmail App password
+        SMTP_PASSWORD = 'tyid nmej ndqy gmpf'    // replace with your Gmail App password
     }
     tools {
         jdk 'JAVA_HOME'
