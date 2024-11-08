@@ -42,7 +42,7 @@ pipeline {
              stage('Build Docker Image') {
         steps {
             // Specify the Dockerfile path using the `-f` option
-            sh 'docker build -t medhelmibennnjima/alpine:latest .'
+            sh 'docker build -t medhelmibennjima/alpine:latest .'
             }
         }
 
