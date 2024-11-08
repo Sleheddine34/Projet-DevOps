@@ -77,7 +77,6 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build>
 
 <plugin>
     <groupId>org.jacoco</groupId>
@@ -98,8 +97,8 @@
         </execution>
     </executions>
 </plugin>
-
-
+             
+    </build>
 
          
     <!-- Deploy to Nexus -->
