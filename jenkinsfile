@@ -70,5 +70,15 @@ pipeline {
         }
     }
 }
+stage('Send Email Notification') {
+             steps {
+                 script {
+                     // Envoi d'un email de notification
+                    mail to: 'medhelmi.bennjima@esprit.tn',
+                          subject: 'Jenkins Notification: Docker Image Pushed',
+                         body: 'A new Docker image has been successfully pushed to DockerHub.'
+                }
+             }
+         }
     }
 }
