@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         SMTP_USERNAME = 'chouaibimohamed87@gmail.com'  // replace with your Gmail address
-        SMTP_PASSWORD = 'tyid nmej ndqy gmpf'    // replace with your Gmail App password
+        SMTP_PASSWORD = 'bzax aqyg viby gkai'    // replace with your Gmail App password
     }
     tools {
         jdk 'JAVA_HOME'
