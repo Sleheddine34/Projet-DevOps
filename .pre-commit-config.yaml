@@ -1,0 +1,9 @@
+- repo: https://github.com/pre-commit/mirrors-eslint
+  rev: v8.30.0  # Specify the version of the hook you want to use
+  hooks:
+    - id: eslint
+      files: \.js$
+- repo: https://github.com/pre-commit/pygrep-hooks
+  rev: v1.7.0
+  hooks:
+    - id: trailing-whitespace
