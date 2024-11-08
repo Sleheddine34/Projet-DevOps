@@ -51,7 +51,11 @@
             <version>2.1.0</version>
         </dependency>
 
-
+        <dependency>
+             <groupId>io.micrometer</groupId>
+             <artifactId>micrometer-registry-prometheus</artifactId>
+             <scope>runtime</scope>
+         </dependency>   
 
     </dependencies>
 
@@ -79,11 +83,7 @@
             <url>http://192.168.1.22:8081/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
-         <dependency>
-    <groupId>io.micrometer</groupId>
-    <artifactId>micrometer-registry-prometheus</artifactId>
-    <scope>runtime</scope>
-</dependency>
+  
 
 
 </project>
