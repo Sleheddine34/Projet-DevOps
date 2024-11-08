@@ -23,7 +23,7 @@ pipeline {
             steps {
                 echo 'Running OWASP Dependency-Check...'
                 sh '''
-                    docker run --rm -v $(pwd):/src -w /src owasp/dependency-check --project ${SONAR_PROJECT_KEY} --scan /src --format ALL
+                    docker run --rm -v "$(pwd)":/src -w /src owasp/dependency-check --project ${SONAR_PROJECT_KEY} --scan /src --format ALL
                 '''
             }
         }
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 echo 'Running Checkov for IaC security scan...'
                 sh '''
-                    docker run --rm -v $(pwd):/iac bridgecrew/checkov -d /iac
+                    docker run --rm -v "$(pwd)":/iac bridgecrew/checkov -d /iac
                 '''
             }
         }
