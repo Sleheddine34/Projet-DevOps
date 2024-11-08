@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import tn.esprit.tpfoyer.entity.Etudiant;
 import tn.esprit.tpfoyer.repository.EtudiantRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -33,6 +34,9 @@ public class EtudiantServiceImpl implements IEtudiantService {
     public Etudiant recupererEtudiantParCin(long cin)
     {
         return etudiantRepository.findEtudiantByCinEtudiant(cin);
+    }
+    public List<Etudiant> findByReservationsAnneeUniversitaire() {
+        return etudiantRepository.findByReservationsAnneeUniversitaire(LocalDate.now());
     }
 
 
