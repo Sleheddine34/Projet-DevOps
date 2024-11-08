@@ -13,32 +13,33 @@ import java.util.List;
 @AllArgsConstructor
 public class EtudiantServiceImpl implements IEtudiantService {
 
-
-    EtudiantRepository etudiantRepository;
+    private final EtudiantRepository etudiantRepository;
 
     public List<Etudiant> retrieveAllEtudiants() {
         return etudiantRepository.findAll();
     }
+
     public Etudiant retrieveEtudiant(Long etudiantId) {
-        return etudiantRepository.findById(etudiantId).get();
+        return etudiantRepository.findById(etudiantId).orElse(null); // Use orElse to avoid NullPointerException
     }
-    public Etudiant addEtudiant(Etudiant c) {
-        return etudiantRepository.save(c);
+
+    public Etudiant addEtudiant(Etudiant etudiant) {
+        return etudiantRepository.save(etudiant);
     }
-    public Etudiant modifyEtudiant(Etudiant c) {
-        return etudiantRepository.save(c);
+
+    public Etudiant modifyEtudiant(Etudiant etudiant) {
+        return etudiantRepository.save(etudiant);
     }
+
     public void removeEtudiant(Long etudiantId) {
         etudiantRepository.deleteById(etudiantId);
     }
-    public Etudiant recupererEtudiantParCin(long cin)
-    {
+
+    public Etudiant recupererEtudiantParCin(long cin) {
         return etudiantRepository.findEtudiantByCinEtudiant(cin);
     }
-    public List<Etudiant> findByReservationsAnneeUniversitaire() {
-        return etudiantRepository.findByReservationsAnneeUniversitaire(LocalDate.now());
+
+    public List<Etudiant> findByReservationsAnneeUniversitaire(LocalDate anneeUniversitaire) {
+        return etudiantRepository.findByReservationsAnneeUniversitaire(anneeUniversitaire);
     }
-
-
-
 }

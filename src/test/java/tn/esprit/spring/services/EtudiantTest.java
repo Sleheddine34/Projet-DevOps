@@ -100,14 +100,17 @@ class EtudiantServiceTest {
     void testFindByReservationsAnneeUniversitaire() {
         // Given
         Etudiant etudiant = new Etudiant(1, "John", "Doe", 123456, null, null);
-        when(etudiantRepository.findByReservationsAnneeUniversitaire(LocalDate.now())).thenReturn(Arrays.asList(etudiant));
+        LocalDate currentDate = LocalDate.now();
+        when(etudiantRepository.findByReservationsAnneeUniversitaire(currentDate)).thenReturn(Arrays.asList(etudiant));
 
         // When
-        List<Etudiant> result = etudiantService.findByReservationsAnneeUniversitaire();
+        List<Etudiant> result = etudiantService.findByReservationsAnneeUniversitaire(currentDate);
+
         // Then
         assertEquals(1, result.size());
         assertEquals("John", result.get(0).getNomEtudiant());
-        verify(etudiantRepository, times(1)).findByReservationsAnneeUniversitaire(LocalDate.now());
+        verify(etudiantRepository, times(1)).findByReservationsAnneeUniversitaire(currentDate);
     }
+
 
 }
