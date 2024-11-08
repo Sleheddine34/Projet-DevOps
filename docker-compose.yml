@@ -27,9 +27,10 @@ services:
           "server.port": 8089,
           "spring.datasource.password": "",  # Set this to your MySQL root password if you have one
           "spring.jpa.show-sql": true,
-          "spring.jpa.hibernate.ddl-auto": "update"
-          management.endpoint.prometheus.enabled=true
-          management.endpoints.web.exposure.include=prometheus
+          "spring.jpa.hibernate.ddl-auto": "update",
+          "server.servlet.context-path": "/tpfoyer",
+          "management.endpoint.prometheus.enabled": true,
+          "management.endpoints.web.exposure.include": "prometheus"
 
         }
     stdin_open: true
