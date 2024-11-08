@@ -13,7 +13,7 @@ services:
       - db:/var/lib/mysql
 
   app-tpfoyer:
-    mage: medhelmibennnjima/apline  # Updated image name
+    image: medhelmibennnjima/apline:latest  # Updated image name
     depends_on:
       - mysqldb
     restart: on-failure
