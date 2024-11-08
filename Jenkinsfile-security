@@ -50,10 +50,11 @@ pipeline {
         }
 
         // Stage 5: SonarQube Static Code Analysis
-         stage('Scan : SonarQube') {
+        stage('Scan : SonarQube') {
             steps {
-                withSonarQubeEnv('sq1') {
-                    sh 'mvn sonar:sonar'
+                withSonarQubeEnv('sq1') {  // Make sure this is the correct SonarQube server config name
+                    // Use the SonarQube token securely from environment variables
+                    sh 'mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
                 }
             }
         }
