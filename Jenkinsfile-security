@@ -110,13 +110,14 @@ pipeline {
 }
 
 
-        // Stage 12: Security Scan: Trivy (Docker Image Vulnerabilities)
-        stage('Security Scan: Trivy') {
-            steps {
-                echo "Scanning Docker image for vulnerabilities using Trivy..."
-                sh 'trivy image --no-progress --severity CRITICAL yousseeef/tp-foyer:5.0.0'
-            }
-        }
+       // Stage 12: Security Scan: Trivy (Docker Image Vulnerabilities)
+stage('Security Scan: Trivy') {
+    steps {
+        echo "Scanning Docker image for vulnerabilities using Trivy..."
+        sh 'trivy image --no-progress --severity CRITICAL yousseeef/tp-foyer:5.0.0'
+    }
+}
+
 
         // Stage 13: Security Scan: OWASP Dependency-Check
         stage('Security Scan: OWASP Dependency-Check') {
