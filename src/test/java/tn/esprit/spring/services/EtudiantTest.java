@@ -1,10 +1,9 @@
-package tn.esprit.spring.services;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.tpfoyer.entity.Etudiant;
 import tn.esprit.tpfoyer.repository.EtudiantRepository;
 import tn.esprit.tpfoyer.service.EtudiantServiceImpl;
@@ -15,21 +14,16 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)  // Automatically initializes mocks
 class EtudiantServiceTest {
 
     @InjectMocks
-    private EtudiantServiceImpl etudiantService;
+    private EtudiantServiceImpl etudiantService;  // The service being tested
 
     @Mock
-    private EtudiantRepository etudiantRepository;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+    private EtudiantRepository etudiantRepository;  // Mocked repository
 
     @Test
     void testRetrieveAllEtudiants() {
@@ -61,11 +55,6 @@ class EtudiantServiceTest {
         verify(etudiantRepository, times(1)).save(any());
     }
 
-    public Etudiant updateEtudiant(Etudiant etudiant) {
-        return etudiantRepository.save(etudiant);
-    }
-
-
     @Test
     void testRetrieveEtudiant() {
         // Given
@@ -92,9 +81,6 @@ class EtudiantServiceTest {
         // Then
         verify(etudiantRepository, times(1)).deleteById(idEtudiant);
     }
-    public interface EtudiantRepository extends JpaRepository<Etudiant, Long> {
-        List<Etudiant> findByReservationsAnneeUniversitaire(LocalDate anneeUniversitaire);
-    }
 
     @Test
     void testFindByReservationsAnneeUniversitaire() {
@@ -111,6 +97,4 @@ class EtudiantServiceTest {
         assertEquals("John", result.get(0).getNomEtudiant());
         verify(etudiantRepository, times(1)).findByReservationsAnneeUniversitaire(currentDate);
     }
-
-
 }
