@@ -13,10 +13,12 @@
     <version>5.0.0</version>
     <name>tp-foyer</name>
     <description>tp-foyer</description>
+
     <properties>
         <java.version>17</java.version>
         <sonar.projectKey>tn.esprit:tp-foyer</sonar.projectKey> <!-- Project Key -->
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -45,12 +47,6 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.1.0</version>
         </dependency>
-              <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.1.0</version>
-        </dependency>
-        <!-- Prometheus dependency for monitoring -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
@@ -60,6 +56,7 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -74,13 +71,20 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <!-- SonarQube Plugin -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.9.0.2155</version> <!-- Use the latest version -->
+                <configuration>
+                    <sonar.projectKey>tn.esprit:tp-foyer</sonar.projectKey> <!-- Project Key -->
+                    <sonar.host.url>http://192.168.33.10:9000</sonar.host.url> <!-- SonarQube server URL -->
+                    <sonar.login>${env.SONAR_TOKEN}</sonar.login> <!-- Authentication token from environment variable -->
+                </configuration>
             </plugin>
         </plugins>
     </build>
+
     <!-- Deploy to Nexus -->
     <distributionManagement>
         <repository>

@@ -1,0 +1,175 @@
+pipeline {
+    agent any
+
+    stages {
+        // Stage 1: Cloning code from GitHub
+        stage('GIT') {
+            steps {
+                echo "Cloning project from GitHub"
+                git url: 'https://github.com/Sleheddine34/Projet-DevOps.git', branch: 'joseph'
+            }
+        }
+
+        // Stage 2: Pre-commit Security Hooks
+        stage('Pre-commit Security Hooks') {
+            steps {
+                script {
+                    sh '''
+                    if ! command -v pre-commit &> /dev/null
+                    then
+                        echo "pre-commit is not installed, installing in a virtual environment..."
+                        python3 -m venv venv
+                        . venv/bin/activate
+                        pip install pre-commit
+                    fi
+                    # Disable existing Git hooks to avoid conflicts
+                    git config --unset-all core.hooksPath
+                    # Install pre-commit hooks
+                    pre-commit install
+                    # Run pre-commit checks
+                    pre-commit run --all-files
+                    '''
+                }
+            }
+        }
+
+        // Stage 3: Compile Project using Maven
+        stage('MVN CLEAN & COMPILE') {
+            steps {
+                echo "Cleaning and compiling project with Maven"
+                sh 'mvn clean compile'
+            }
+        }
+
+        // Stage 4: Run JUnit/Mockito Tests
+        stage('JUnit/Mockito Tests') {
+            steps {
+                echo "Running JUnit tests..."
+                sh 'mvn test'
+            }
+        }
+
+        // Stage 5: SonarQube Static Code Analysis
+     //   stage('Scan : SonarQube') {
+        //    steps {
+            //    withSonarQubeEnv('sq1') {  // Make sure this is the correct SonarQube server config name
+            // Use the SonarQube token securely from environment variables
+            //        sh 'mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
+         //       }
+        //    }
+    //    }
+
+        // Stage 6: Deploy to Nexus Repository
+     //   stage('Deploy to Nexus') {
+       //     steps {
+          //      echo "Deploying artifacts to Nexus..."
+          //      sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
+          //  }
+      //  }
+
+        // Stage 7: Building Docker Image
+      //  stage('Building Docker Image') {
+        //    steps {
+          //      echo "Building Docker image..."
+           //     sh 'docker build -t yousseeef/tp-foyer:5.0.0 .'
+         //   }
+     //   }
+
+        // Stage 8: Push Docker Image to DockerHub
+      //  stage('Push Docker Image to DockerHub') {
+       //     steps {
+          //      echo "Pushing Docker image to DockerHub..."
+           //     withCredentials([string(credentialsId: 'dockerhub-jenkins-token', variable: 'dockerhub_token')]) {
+            //        sh "docker login -u yousseeef -p ${dockerhub_token}"
+            //        sh 'docker push yousseeef/tp-foyer:5.0.0'
+          //      }
+         //   }
+      //  }
+
+        // Stage 9: Run Docker Compose
+      //  stage('Run Docker Compose') {
+       //     steps {
+       //         echo "Running Docker Compose..."
+       //         sh 'docker-compose down && docker-compose up -d'
+       //     }
+      //  }
+
+        // Stage 10: Start Monitoring Docker Containers
+        stage('Start Monitoring Containers') {
+            steps {
+                echo "Starting monitoring containers..."
+                sh 'docker start aab0f831dce5'
+            }
+        }
+
+       stage('Security Scan: Nmap') {
+    steps {
+        echo "Starting Nmap security scan..."
+        sh 'nmap -sT -p 1-65535 -v localhost'
+    }
+}
+
+
+       // Stage 12: Security Scan: Trivy (Docker Image Vulnerabilities)
+stage('Security Scan: Trivy') {
+    steps {
+        echo "Scanning Docker image for vulnerabilities using Trivy..."
+        sh 'trivy image --no-progress --severity CRITICAL yousseeef/tp-foyer:5.0.0'
+    }
+}
+
+
+        // Stage 13: Security Scan: OWASP Dependency-Check
+       // stage('Security Scan: OWASP Dependency-Check') {
+  //  steps {
+   //     echo "Running OWASP Dependency-Check..."
+    //    sh '''
+    //    docker run --rm -v "$(pwd)":/src -w /src owasp/dependency-check --project tn.esprit:tp-foyer --scan /src --format ALL
+  //      '''
+ //   }
+}
+
+
+        // Stage 14: Email Notification
+     //   stage('Email Notification') {
+        //    steps {
+         //       mail bcc: '', 
+         //            body: '''
+//Final Report: The pipeline has completed successfully. No action required.
+// ''', 
+              //       cc: '', 
+               //      from: '', 
+               //      replyTo: '', 
+                 //    subject: 'Succès de la pipeline DevOps Project', 
+                 //    to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
+           // }
+      //  }
+   // }
+
+  //  post {
+   //     success {
+     //       emailext (
+              //  subject: "Build Success: ${currentBuild.fullDisplayName}",
+             //   body: "Le build a réussi ! Consultez les détails à ${env.BUILD_URL}",
+            //    recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
+            //    to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
+         //   )
+    //    }
+       // failure {
+       //     emailext (
+          //      subject: "Build Failure: ${currentBuild.fullDisplayName}",
+         //       body: "Le build a échoué ! Vérifiez les détails à ${env.BUILD_URL}",
+           //     recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
+              //  to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
+          // )
+ //       }
+     //   always {
+         //   emailext (
+          //      subject: "Build Notification: ${currentBuild.fullDisplayName}",
+             //   body: "Consultez les détails du build à ${env.BUILD_URL}",
+            //    recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
+              //  to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
+           // )
+     //   }
+ //   }
+}
