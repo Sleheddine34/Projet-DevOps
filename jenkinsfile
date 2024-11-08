@@ -7,10 +7,11 @@ pipeline {
     }
 
     stages {
-        stage('GIT') {
+        stage('Git') {
             steps {
-                git branch: 'master',
-                    url: 'https://github.com/Sleheddine34/Projet-DevOps.git'
+                echo "Getting project from GIT"
+                checkout([$class: 'GitSCM', branches: [[name: '*/helmi.bj']], 
+                          userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']]])
             }
         }
         
