@@ -6,17 +6,9 @@ pipeline {
         maven 'M2_HOME'
     }
 
-    environment {
-        // Define environment variables for security scanning
-        DOCKER_IMAGE = 'yousseeef/tp-foyer:5.0.0'
-        SONAR_PROJECT_KEY = 'tn.esprit:tp-foyer'
-        SONAR_HOST_URL = 'http://192.168.33.10:9000'
-        SONAR_TOKEN = 'sqa_c454a45c9a349e8975f7096ac3e5436da30ec05e'
-    }
-
     stages {
         // Stage 1: Cloning code from GitHub
-        stage('GIT') {
+        stage('GIT') { 
             steps {
                 echo "Cloning project from GitHub"
                 git url: 'https://github.com/Sleheddine34/Projet-DevOps.git', branch: 'joseph'
@@ -27,158 +19,160 @@ pipeline {
         stage('Pre-commit Security Hooks') {
             steps {
                 script {
-                    // Check if pre-commit is installed, otherwise install it
                     sh '''
                     if ! command -v pre-commit &> /dev/null
                     then
-                        echo "pre-commit is not installed, installing it in a virtual environment..."
+                        echo "pre-commit is not installed, installing in a virtual environment..."
                         python3 -m venv venv
                         . venv/bin/activate
                         pip install pre-commit
                     fi
                     # Disable existing Git hooks to avoid conflicts
                     git config --unset-all core.hooksPath
-                    # Install and run pre-commit hooks
+                    # Install pre-commit hooks
                     pre-commit install
+                    # Run pre-commit checks
                     pre-commit run --all-files
                     '''
                 }
             }
         }
 
-        // Stage 3: Dependency Vulnerability Scan (OWASP Dependency-Check)
-        stage('Dependency Vulnerability Scan') {
-            steps {
-                echo 'Running OWASP Dependency-Check...'
-                sh '''
-                    docker run --rm -v $(pwd):/src -w /src owasp/dependency-check --project ${SONAR_PROJECT_KEY} --scan /src --format ALL
-                '''
-            }
-        }
-
-        // Stage 4: Maven Clean and Compile
-        stage('MVN CLEAN & COMPILE') {
+        // Stage 3: Compile Project using Maven
+        stage('MVN CLEAN & COMPILE') { 
             steps {
                 echo "Cleaning and compiling project with Maven"
                 sh 'mvn clean compile'
             }
         }
 
+        // Stage 4: Run JUnit/Mockito Tests
+        stage('JUnit/Mockito Tests') {
+            steps {
+                echo "Running JUnit tests..."
+                sh 'mvn test'
+            }
+        }
+
         // Stage 5: SonarQube Static Code Analysis
-        stage('MVN SONARQUBE') {
+        stage('Scan : SonarQube') {
             steps {
-                echo "Analyzing code quality with SonarQube"
-                sh '''
-                    mvn sonar:sonar \
-                    -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-                    -Dsonar.host.url=${SONAR_HOST_URL} \
-                    -Dsonar.login=${SONAR_TOKEN}
-                '''
-            }
-        }
-
-        // Stage 6: Docker Image Build
-        stage('Building Docker Image') {
-            steps {
-                echo "Building Docker image for project"
-                sh 'docker build -t ${DOCKER_IMAGE} .'
-            }
-        }
-
-        // Stage 7: Docker Image Vulnerability Scan (Trivy)
-        stage('Docker Image Vulnerability Scan') {
-            steps {
-                echo 'Running Docker image vulnerability scan with Trivy...'
-                sh '''
-                    trivy image ${DOCKER_IMAGE}
-                '''
-            }
-        }
-
-        // Stage 8: Nmap Security Scan
-        stage('Security Scan : Nmap') {
-            steps {
-                script {
-                    // Execute Nmap scan on localhost or target IP
-                    sh '''
-                    echo "Starting Nmap Security Scan..."
-                    nmap -sS -p 1-65535 -v localhost
-                    '''
+                echo "Running SonarQube analysis..."
+                withSonarQubeEnv('sq1') {
+                    sh 'mvn sonar:sonar'
                 }
             }
         }
 
-        // Stage 9: Deploy to Nexus Repository
+        // Stage 6: Deploy to Nexus Repository
         stage('Deploy to Nexus') {
             steps {
-                echo "Deploying artifacts to Nexus repository"
-                sh '''
-                    mvn deploy -DskipTests \
-                    -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/
-                '''
+                echo "Deploying artifacts to Nexus..."
+                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
             }
         }
 
-        // Stage 10: Push Docker Image to Docker Hub
+        // Stage 7: Building Docker Image
+        stage('Building Docker Image') {
+            steps {
+                echo "Building Docker image..."
+                sh 'docker build -t yousseeef/tp-foyer:5.0.0 .'
+            }
+        }
+
+        // Stage 8: Push Docker Image to DockerHub
         stage('Push Docker Image to DockerHub') {
             steps {
-                echo "Pushing Docker image to Docker Hub"
-                // Avoid using hardcoded credentials in a real project
+                echo "Pushing Docker image to DockerHub..."
+                withCredentials([string(credentialsId: 'dockerhub-jenkins-token', variable: 'dockerhub_token')]) {
+                    sh "docker login -u yousseeef -p ${dockerhub_token}"
+                    sh 'docker push yousseeef/tp-foyer:5.0.0'
+                }
+            }
+        }
+
+        // Stage 9: Run Docker Compose
+        stage('Run Docker Compose') {
+            steps {
+                echo "Running Docker Compose..."
+                sh 'docker-compose down && docker-compose up -d'
+            }
+        }
+
+        // Stage 10: Start Monitoring Docker Containers
+        stage('Start Monitoring Containers') {
+            steps {
+                echo "Starting monitoring containers..."
+                sh 'docker start be79135ec1cc'
+            }
+        }
+
+        // Stage 11: Security Scan: Nmap
+        stage('Security Scan: Nmap') {
+            steps {
+                echo "Starting Nmap security scan..."
+                sh 'nmap -sS -p 1-65535 -v localhost'
+            }
+        }
+
+        // Stage 12: Security Scan: Trivy (Docker Image Vulnerabilities)
+        stage('Security Scan: Trivy') {
+            steps {
+                echo "Scanning Docker image for vulnerabilities using Trivy..."
+                sh 'trivy image --no-progress --severity CRITICAL yousseeef/tp-foyer:5.0.0'
+            }
+        }
+
+        // Stage 13: Security Scan: OWASP Dependency-Check
+        stage('Security Scan: OWASP Dependency-Check') {
+            steps {
+                echo "Running OWASP Dependency-Check..."
                 sh '''
-                    echo "Logging in to Docker Hub"
-                    echo "Lool1234&" | docker login -u yousseeef --password-stdin
-                    docker push ${DOCKER_IMAGE}
+                docker run --rm -v $(pwd):/src -w /src owasp/dependency-check --project tn.esprit:tp-foyer --scan /src --format ALL
                 '''
             }
         }
 
-        // Stage 11: Run Docker Compose
-        stage('Run Docker Compose') {
+        // Stage 14: Email Notification
+        stage('Email Notification') {
             steps {
-                script {
-                    sh '''
-                        sudo docker-compose down 
-                        sudo docker-compose up -d
-                    '''
-                }
-            }
-        }
-
-        // Stage 12: Send Email Notification
-        stage('Send Email Notification') {
-            steps {
-                script {
-                    mail to: 'fakhfakh4321@gmail.com',
-                         subject: 'Jenkins Notification: Security Scan Results',
-                         body: 'Security scans have been completed. Please check the results for vulnerabilities and other issues.'
-                }
+                mail bcc: '', 
+                     body: '''
+Final Report: The pipeline has completed successfully. No action required.
+''', 
+                     cc: '', 
+                     from: '', 
+                     replyTo: '', 
+                     subject: 'Succès de la pipeline DevOps Project', 
+                     to: 'hammaminawel22@gmail.com, nawel.hammami@esprit.tn'
             }
         }
     }
 
     post {
-        always {
-            echo "Job Finished"
-        }
         success {
-            script {
-                emailext (
-                    subject: "Build Success: ${currentBuild.fullDisplayName}",
-                    body: "The build was successful! View details at ${env.BUILD_URL}",
-                    recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
-                    to: 'fakhfakh4321@gmail.com, nawel.hammami@esprit.tn'
-                )
-            }
+            emailext (
+                subject: "Build Success: ${currentBuild.fullDisplayName}",
+                body: "Le build a réussi ! Consultez les détails à ${env.BUILD_URL}",
+                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
+                to: 'hammaminawel22@gmail.com, nawel.hammami@esprit.tn'
+            )
         }
         failure {
-            script {
-                emailext (
-                    subject: "Build Failure: ${currentBuild.fullDisplayName}",
-                    body: "The build failed! Check details at ${env.BUILD_URL}",
-                    recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
-                    to: 'fakhfakh4321@gmail.com, nawel.hammami@esprit.tn'
-                )
-            }
+            emailext (
+                subject: "Build Failure: ${currentBuild.fullDisplayName}",
+                body: "Le build a échoué ! Vérifiez les détails à ${env.BUILD_URL}",
+                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
+                to: 'hammaminawel22@gmail.com, nawel.hammami@esprit.tn'
+            )
+        }
+        always {
+            emailext (
+                subject: "Build Notification: ${currentBuild.fullDisplayName}",
+                body: "Consultez les détails du build à ${env.BUILD_URL}",
+                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
+                to: 'hammaminawel22@gmail.com, nawel.hammami@esprit.tn'
+            )
         }
     }
 }
