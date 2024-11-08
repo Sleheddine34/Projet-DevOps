@@ -144,7 +144,7 @@ Final Report: The pipeline has completed successfully. No action required.
                      from: '', 
                      replyTo: '', 
                      subject: 'Succès de la pipeline DevOps Project', 
-                     to: 'hammaminawel22@gmail.com, nawel.hammami@esprit.tn'
+                     to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
             }
         }
     }
@@ -155,7 +155,7 @@ Final Report: The pipeline has completed successfully. No action required.
                 subject: "Build Success: ${currentBuild.fullDisplayName}",
                 body: "Le build a réussi ! Consultez les détails à ${env.BUILD_URL}",
                 recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
-                to: 'hammaminawel22@gmail.com, nawel.hammami@esprit.tn'
+                to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
             )
         }
         failure {
@@ -163,7 +163,7 @@ Final Report: The pipeline has completed successfully. No action required.
                 subject: "Build Failure: ${currentBuild.fullDisplayName}",
                 body: "Le build a échoué ! Vérifiez les détails à ${env.BUILD_URL}",
                 recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
-                to: 'hammaminawel22@gmail.com, nawel.hammami@esprit.tn'
+                to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
             )
         }
         always {
@@ -171,7 +171,7 @@ Final Report: The pipeline has completed successfully. No action required.
                 subject: "Build Notification: ${currentBuild.fullDisplayName}",
                 body: "Consultez les détails du build à ${env.BUILD_URL}",
                 recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
-                to: 'hammaminawel22@gmail.com, nawel.hammami@esprit.tn'
+                to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
             )
         }
     }
