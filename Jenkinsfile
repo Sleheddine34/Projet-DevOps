@@ -1,6 +1,11 @@
 pipeline {
     agent any
-
+ environment {
+        SMTP_HOST = 'smtp.gmail.com'
+        SMTP_PORT = '465'
+        SMTP_USERNAME = 'chouaibimohamed87@gmail.com'  // replace with your Gmail address
+        SMTP_PASSWORD = 'tyid nmej ndqy gmpf'    // replace with your Gmail App password
+    }
     tools {
         jdk 'JAVA_HOME'
         maven 'M2_HOME'
@@ -88,36 +93,43 @@ Final Report: The pipeline has completed successfully. No action required.
         }
     }
 
-    post {
+      post {
         success {
-            script {
-                emailext (
-                    subject: "Build Success: ${currentBuild.fullDisplayName}",
-                    body: "Le build a réussi ! Consultez les détails à ${env.BUILD_URL}",
-                    recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
-                    to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn'
-                )
-            }
+            emailext (
+                subject: 'Build Successful',
+                body: 'The Jenkins build was successful.',
+                to: 'chouaibimohamed87@gmail.com',
+                smtpHost: env.SMTP_HOST,
+                smtpPort: env.SMTP_PORT,
+                smtpUser: env.SMTP_USERNAME,
+                smtpPassword: env.SMTP_PASSWORD,
+                ssl: true
+            )
         }
         failure {
-            script {
-                emailext (
-                    subject: "Build Failure: ${currentBuild.fullDisplayName}",
-                    body: "Le build a échoué ! Vérifiez les détails à ${env.BUILD_URL}",
-                    recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
-                    to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn'
-                )
-            }
+            emailext (
+                subject: 'Build Failed',
+                body: 'The Jenkins build has failed.',
+                to: 'chouaibimohamed87@gmail.com',
+                smtpHost: env.SMTP_HOST,
+                smtpPort: env.SMTP_PORT,
+                smtpUser: env.SMTP_USERNAME,
+                smtpPassword: env.SMTP_PASSWORD,
+                ssl: true
+            )
         }
         always {
-            script {
-                emailext (
-                    subject: "Build Notification: ${currentBuild.fullDisplayName}",
-                    body: "Consultez les détails du build à ${env.BUILD_URL}",
-                    recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
-                    to: 'chouaibimohamed87@gmail.com, mohamed.chouaibi@esprit.tn'
-                )
-            }
+            emailext (
+                subject: 'Build Status',
+                body: 'The Jenkins build has finished.',
+                to: 'chouaibimohamed87@gmail.com',
+                smtpHost: env.SMTP_HOST,
+                smtpPort: env.SMTP_PORT,
+                smtpUser: env.SMTP_USERNAME,
+                smtpPassword: env.SMTP_PASSWORD,
+                ssl: true
+            )
         }
     }
+  
 }
