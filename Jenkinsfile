@@ -44,7 +44,7 @@ pipeline {
             }
         }
        
- stage('Push Docker Image') {
+ \*stage('Push Docker Image') {
     steps {
         script {
             // Login to Docker Hub (using credentials stored in Jenkins)
@@ -57,7 +57,7 @@ pipeline {
             sh 'docker push masdmz/alpine:latest'
         }
     }
-}
+}*/
   stage('Clean Up Previous Containers') {
             steps {
                 script {
