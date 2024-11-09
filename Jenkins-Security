@@ -30,16 +30,13 @@ stage('Pre-commit Security Hooks') {
             if ! command -v pre-commit &> /dev/null
             then
                 echo "pre-commit n'est pas installé, installation dans un environnement virtuel..."
-                # Créer un environnement virtuel et l'activer
                 python3 -m venv venv
-                source venv/bin/activate
-                pip install --upgrade pip
+                . venv/bin/activate  # Use dot instead of source if source is not found
                 pip install pre-commit
             fi
             # Désactiver les hooks Git existants pour éviter les conflits
             git config --unset-all core.hooksPath
             # Installer les hooks de pre-commit
-            source venv/bin/activate
             pre-commit install
             # Exécuter les hooks de pre-commit pour vérifier tous les fichiers
             pre-commit run --all-files
@@ -47,6 +44,7 @@ stage('Pre-commit Security Hooks') {
         }
     }
 }
+
 
 
 
