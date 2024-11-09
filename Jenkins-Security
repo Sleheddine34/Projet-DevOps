@@ -46,7 +46,7 @@ stage('Pre-commit Security Hooks') {
 }
 
 
-stage('Security Scan : Nmap') {
+     stage('Security Scan : Nmap') {
     steps {
         script {
             echo "Starting Nmap Security Scan..."
@@ -54,6 +54,7 @@ stage('Security Scan : Nmap') {
         }
     }
 }
+
 
 
 
