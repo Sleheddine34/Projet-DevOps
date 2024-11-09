@@ -9,8 +9,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Increase Git buffer size to handle large repositories and retry up to 3 times
-                sh 'git config --global http.postBuffer 1048576000' // Sets buffer to 1GB
+                // Increase Git buffer size and retry checkout if necessary
+                sh 'git config --global http.postBuffer 1048576000' // 1GB buffer size
                 retry(3) {
                     timeout(time: 10, unit: 'MINUTES') {
                         checkout([$class: 'GitSCM', branches: [[name: '*/salih']], 
@@ -46,10 +46,8 @@ pipeline {
 
         stage('Package') {
             steps {
-                // Compile and package the application, skipping tests as they’ve been run in the Test stage
                 sh 'mvn clean package -DskipTests'
-                // Verify that the .jar file exists
-                sh 'ls target'
+                sh 'ls target'  // Verify that the .jar file exists
             }
         }
 
@@ -61,34 +59,28 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // Build Docker image using the Docker CLI command
                 sh "docker build -t 223jmt2638/alpine:latest ."
             }
         }
-/*stage('Push Docker Image') {
-    steps {
-        script {
-            // Login to Docker Hub (using credentials stored in Jenkins)
-            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                // Ensure successful login
-                sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
+
+        /*stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
+                }
+                sh 'docker push 223jmt2638/alpine:latest'
             }
-            
-            // Push the image to Docker Hub
-            sh 'docker push 223jmt2638/alpine:latest'
+        }*/
+
+        stage('Deploy with Docker Compose') {
+            steps {
+                script {
+                    // Check if docker-compose.yml exists
+                    sh 'ls -la docker-compose.yml'
+                    // Run Docker Compose
+                    sh 'docker compose up -d'
+                }
+            }
         }
-    }
-}*/
-  stage('Deploy with Docker Compose') {
-    steps {
-        script {
-            // List the contents of the current directory to confirm the presence of docker-compose.yml
-            sh 'ls -la'
-            // Run Docker Compose to bring up services from the file in the repository
-            // sh 'docker-compose -f ./docker-compose up.yml -d'
-            sh 'docker compose up -d'
-        }
-    }
-}
     }
 }
