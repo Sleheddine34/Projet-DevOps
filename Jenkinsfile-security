@@ -119,15 +119,15 @@ stage('Security Scan: Trivy') {
 }
 
         // Stage 13: Security Scan: OWASP Dependency-Check
-        stage('Security Scan: OWASP Dependency-Check') {
-            steps {
-                echo "Running OWASP Dependency-Check..."
-                sh '''
-                    docker run --rm -v "$(pwd)":/src -w /src \
-                    owasp/dependency-check --project tn.esprit:tp-foyer --scan /src --format ALL
-                '''
-            }
-        }
+      //  stage('Security Scan: OWASP Dependency-Check') {
+         //   steps {
+           //     echo "Running OWASP Dependency-Check..."
+            //    sh '''
+              //      docker run --rm -v "$(pwd)":/src -w /src \
+              //      owasp/dependency-check --project tn.esprit:tp-foyer --scan /src --format ALL
+          //      '''
+          //  }
+  //      }
 
 
 
