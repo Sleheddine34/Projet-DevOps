@@ -127,17 +127,23 @@ pipeline {
             }
         }
 
-        // Stage 13: Security Scan: OWASP Dependency-Check
+        // Stage 13: Security Scan: Snyk
         
-        stage('Security Scan: OWASP Dependency-Check') {
-            steps {
-                echo "Running OWASP Dependency-Check..."
+       stage('Security Scan: Snyk') {
+    steps {
+        echo "Scanning project with Snyk..."
+        script {
+            // Authenticate with Snyk using the provided API token
+            withCredentials([string(credentialsId: 'snyk-api-token', variable: 'SNYK_TOKEN')]) {
                 sh '''
-                docker run --rm -v "$(pwd)":/src -w /src \
-                owasp/dependency-check --project tn.esprit:tp-foyer --scan /src --format ALL
+                snyk auth 3d292798-c91b-4a89-9e00-c10c209f5b02   # Use your Snyk API token directly
+                snyk test --all-projects --severity-threshold=high
                 '''
             }
         }
+    }
+}
+
         
 
         // Stage 14: Email Notification
