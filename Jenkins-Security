@@ -56,6 +56,26 @@ stage('Pre-commit Security Hooks') {
 }
 
 
+stage('Security Scan: Trivy') {
+    steps {
+        script {
+            // Install Trivy if not already installed (uncomment if needed)
+            sh '''
+            if ! command -v trivy &> /dev/null
+            then
+                echo "Trivy not found, installing..."
+                curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.35.0/trivy_0.35.0_Linux-64bit.deb -o trivy.deb
+                sudo dpkg -i trivy.deb
+            fi
+            '''
+
+            echo "Scanning Docker image for vulnerabilities using Trivy..."
+            sh 'trivy image --no-progress --severity CRITICAL mohamed855/my-alpine:latest'
+        }
+    }
+}
+
+
 
 
 
