@@ -21,6 +21,20 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
+
+          stage('Check and Start Prometheus') {
+                steps {
+                    script {
+                        def prometheusRunning = sh(script: 'docker ps -q -f name=prometheus', returnStdout: true).trim()
+                        if (prometheusRunning) {
+                            echo 'Prometheus is already running.'
+                        } else {
+                            echo 'Starting Prometheus container...'
+                            sh 'docker start prometheus'
+                      }
+                  }
+              }
+          }
         
         stage('Email Notification') {
             steps {
