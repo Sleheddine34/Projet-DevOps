@@ -7,20 +7,11 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+          stage('Git') {
             steps {
-                // Increase Git buffer size and retry checkout if necessary
-                sh 'git config --global http.postBuffer 1048576000' // 1GB buffer size
-                retry(3) {
-                    timeout(time: 10, unit: 'MINUTES') {
-                        checkout([$class: 'GitSCM', branches: [[name: '*/salih']], 
-                                  userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']],
-                                  extensions: [
-                                      [$class: 'CloneOption', shallow: true, depth: 1],
-                                      [$class: 'CheckoutOption', timeout: 15]
-                                  ]])
-                    }
-                }
+                echo "Getting project from GIT"
+                checkout([$class: 'GitSCM', branches: [[name: '*/salih']], 
+                          userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']]])
             }
         }
 
