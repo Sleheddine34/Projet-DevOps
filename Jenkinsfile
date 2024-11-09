@@ -21,11 +21,11 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
-      //   stage('JUnit/Mockito Tests') {
-        //   steps {
-          //      sh 'mvn test' 
-           // }
-       // }
+        stage('JUnit/Mockito Tests') {
+           steps {
+                sh 'mvn test' 
+            }
+        }
 
           stage('SonarQube Analysis') {
             steps {
