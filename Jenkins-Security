@@ -58,18 +58,8 @@ stage('Pre-commit Security Hooks') {
 
 stage('Security Scan: Trivy') {
     steps {
-        script {
-            // Install Trivy if not already installed (uncomment if needed)
-            sh '''
-            if ! command -v trivy &> /dev/null
-            then
-              
-            fi
-            '''
-
-            echo "Scanning Docker image for vulnerabilities using Trivy..."
-            sh 'trivy image --no-progress --severity CRITICAL mohamed855/my-alpine:latest'
-        }
+        echo "Scanning Docker image for vulnerabilities using Trivy..."
+        sh 'trivy image --no-progress --severity CRITICAL mohamed855/my-alpine:latest'
     }
 }
 
