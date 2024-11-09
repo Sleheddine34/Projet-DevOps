@@ -128,7 +128,7 @@ pipeline {
         }
 
         // Stage 13: Security Scan: OWASP Dependency-Check
-        /* 
+        
         stage('Security Scan: OWASP Dependency-Check') {
             steps {
                 echo "Running OWASP Dependency-Check..."
@@ -138,7 +138,7 @@ pipeline {
                 '''
             }
         }
-        */
+        
 
         // Stage 14: Email Notification
         /* 
