@@ -63,6 +63,22 @@ stage('Security Scan: Trivy') {
     }
 }
 
+/*  stage('Security Scan: OWASP Dependency-Check') {
+    steps {
+        echo "Running OWASP Dependency-Check..."
+        sh '''
+        docker run --rm -v "$(pwd)":/src -w /src owasp/dependency-check --project tn.esprit:tp-foyer --scan /src --format ALL
+        '''
+    } */
+
+stage('Security Scan: OWASP Dependency-Check') {
+    steps {
+        echo "Running OWASP Dependency-Check..."
+        sh '''
+        docker run --rm -v "${WORKSPACE}:/src" -w /src owasp/dependency-check --project mohamed855:my-alpine --scan /src --format ALL
+        '''
+    }
+}
 
 
 
