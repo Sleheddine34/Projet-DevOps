@@ -168,6 +168,11 @@
                           </execution>
                       </executions>
                   </plugin>
+                  <plugin>
+                           <groupId>org.apache.maven.plugins</groupId>
+                           <artifactId>maven-dependency-plugin</artifactId>
+                           <version>3.1.2</version> <!-- Assure-toi que la version est 2.2 ou plus -->
+                  </plugin>
         </plugins>
     </build>
 
