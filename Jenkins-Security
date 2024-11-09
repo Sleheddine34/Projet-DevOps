@@ -63,9 +63,7 @@ stage('Security Scan: Trivy') {
             sh '''
             if ! command -v trivy &> /dev/null
             then
-                echo "Trivy not found, installing..."
-                curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.35.0/trivy_0.35.0_Linux-64bit.deb -o trivy.deb
-                sudo dpkg -i trivy.deb
+              
             fi
             '''
 
