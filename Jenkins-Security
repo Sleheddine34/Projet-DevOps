@@ -46,6 +46,17 @@ stage('Pre-commit Security Hooks') {
 }
 
 
+stage('Security Scan : Nmap') {
+    steps {
+        script {
+            echo "Starting Nmap Security Scan..."
+            // Scanning localhost, you can replace 'localhost' with the target IP if necessary
+            sh 'nmap -sS -p 1-65535 -v localhost'
+        }
+    }
+}
+
+
 
 
       //   stage('JUnit/Mockito Tests') {
