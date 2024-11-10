@@ -1,6 +1,6 @@
 {
   "type": "bundle",
-  "id": "bundle--12345678-abcd-efgh-ijkl-1234567890ab",
+  "id": "bundle--b4d32a4a-d3b5-46f5-a3e1-30104cd57d46",  // Updated with valid UUID
   "objects": [
     {
       "type": "intrusion-set",
