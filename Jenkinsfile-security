@@ -40,6 +40,15 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
+stage('System Security Check - Lynis') {
+    steps {
+        script {
+            // Exécution du contrôle de sécurité avec Lynis
+            sh 'lynis audit system'
+        }
+    }
+}
+
 
         // Stage 4: Run JUnit/Mockito Tests
         stage('JUnit/Mockito Tests') {
