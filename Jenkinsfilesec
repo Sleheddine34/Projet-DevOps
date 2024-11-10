@@ -102,7 +102,7 @@ pipeline {
                             sh 'mvn test'  // Run JUnit tests
                         }
                     }
-            stage('Security Scan with Nmap') {
+            /*stage('Security Scan with Nmap') {
                         steps {
                             echo "Running Nmap security scan on IP 192.168.50.5..."
             
@@ -134,7 +134,16 @@ stage('Check and Start Prometheus') {
                       }
                   }
               }
-          }
+          }*/
+            stage('Security Scan with Trivy') {
+                        steps {
+                            echo "Starting Trivy vulnerability scan..."
+            
+                            // Run Trivy to scan for vulnerabilities in the Docker image
+                            sh '/home/vagrant/Projet-DevOps/bin/trivy image --exit-code 1 --severity HIGH,CRITICAL your-image-name:latest'
+                        }
+                    }
+
 /*stage('Send Email Notification') {
              steps {
                  script {
