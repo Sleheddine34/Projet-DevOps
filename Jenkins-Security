@@ -92,8 +92,14 @@ stage('System Security Check - Lynis') {
            // }
        // }
  // Stage 9: Build Docker Image
- stage('Build Docker Image') {
-            steps {  
+ stage('Build and Package Application') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
                 sh "docker build -t mohamed855/my-alpine:latest ."
             }
         }
