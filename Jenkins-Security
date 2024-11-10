@@ -58,10 +58,13 @@ stage('Pre-commit Security Hooks') {
 
 stage('Security Scan: Trivy') {
     steps {
-        echo "Scanning Docker image for vulnerabilities using Trivy..."
-        sh 'trivy image --no-progress --severity CRITICAL mohamed855/my-alpine:latest'
+        retry(3) {
+            echo "Scanning Docker image for vulnerabilities using Trivy..."
+            sh 'trivy image --no-progress --severity CRITICAL mohamed855/my-alpine:latest'
+        }
     }
 }
+
 
 /*  stage('Security Scan: OWASP Dependency-Check') {
     steps {
