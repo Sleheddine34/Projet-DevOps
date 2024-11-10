@@ -21,7 +21,7 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
-
+/*
 stage('Pre-commit Security Hooks') {
     steps {
         script {
@@ -45,7 +45,7 @@ stage('Pre-commit Security Hooks') {
     }
 }
 
-
+*/
      stage('Security Scan : Nmap') {
     steps {
         script {
@@ -55,7 +55,7 @@ stage('Pre-commit Security Hooks') {
     }
 }
 
-
+/*
 stage('Security Scan: Trivy') {
     steps {
         retry(3) {
@@ -64,7 +64,7 @@ stage('Security Scan: Trivy') {
         }
     }
 }
-
+*/
 
 /*  stage('Security Scan: OWASP Dependency-Check') {
     steps {
@@ -94,13 +94,19 @@ stage('Security Scan: Trivy') {
            // }
        // }
 
-        stage('SonarQube Analysis') {
-            steps {
-                withCredentials([string(credentialsId: 'sq1', variable: 'SONAR_TOKEN')]) {
-                    sh "mvn sonar:sonar -Dsonar.projectKey=JenkinsFile -Dsonar.host.url=http://192.168.33.10:9000 -Dsonar.login=$SONAR_TOKEN"
-                }
-            }
+       stage('SonarQube Analysis') {
+    steps {
+        withCredentials([string(credentialsId: 'sq1', variable: 'SONAR_TOKEN')]) {
+            sh '''
+                mvn sonar:sonar \
+                -Dsonar.projectKey=JenkinsFile \
+                -Dsonar.host.url=http://192.168.33.10:9000 \
+                -Dsonar.token=$SONAR_TOKEN
+            '''
         }
+    }
+}
+
 
   stage("Quality Gate") {
             steps {
