@@ -173,7 +173,7 @@ stage('System Security Check - Lynis') {
     }
     
     // Uncomment and configure post actions if required
-    /* 
+     
     post {
         success {
             emailext (
@@ -200,5 +200,5 @@ stage('System Security Check - Lynis') {
             )
         }
     }
-    */
+    
 }
