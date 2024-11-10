@@ -2,7 +2,7 @@ import stix2
 
 # Example: Load a STIX 2.0 bundle (this can be downloaded or generated)
 # Update the path to where your STIX file is located
-stix_file = "stix_files/your_stix_file.json"  # Path to your STIX 2.0 data file
+stix_file = "stix_file.json"  # Path to your STIX 2.0 data file
 
 # Parse the STIX file
 with open(stix_file, 'r') as file:
