@@ -63,6 +63,7 @@ class EtudiantServiceTest {
 
         // When
         Etudiant result = etudiantService.retrieveEtudiant(1L);
+         //Etudiant result = etudiantService.retrieveEtudiant(1L);
 
         // Then
         assertNotNull(result);
