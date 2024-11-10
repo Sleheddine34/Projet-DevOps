@@ -4,6 +4,7 @@ pipeline {
         jdk 'JAVA_HOME'
         maven 'M2_HOME'
     }
+  // Stage 1: Checkout Code
     stages {
         stage('Checkout') {
             steps {
@@ -11,7 +12,7 @@ pipeline {
                           userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']]])
             }
         }
-
+ // Stage 2: Compile Code with Maven
   stage('MVN CLEAN & COMPILE') {
             steps {
                 echo "Cleaning and compiling project with Maven"
@@ -19,8 +20,7 @@ pipeline {
             }
         }
 
-
-/*
+ // Stage 3: Pre-commit Security Hooks
 stage('Pre-commit Security Hooks') {
     steps {
         script {
@@ -43,8 +43,7 @@ stage('Pre-commit Security Hooks') {
         }
     }
 }
-
-*/
+  // Stage 4: Security Scan with Nmap
      stage('Security Scan : Nmap') {
     steps {
         script {
@@ -53,8 +52,54 @@ stage('Pre-commit Security Hooks') {
         }
     }
 }
+ // Stage 5: SQL Injection Attack (Gauntlt)
+ stage('SQL Injection Attack (Gauntlt)') {
+            steps {
+                script {
+                    // Run Gauntlt SQL Injection attack from the correct directory, display output to console and save it to a file
+                    sh 'gauntlt /var/lib/jenkins/workspace/sonar/gauntlt-attacks/sql_in.attack | tee sql_injection_output.txt'
+                    
+                    // Archive the output file
+                    archiveArtifacts artifacts: 'sql_injection_output.txt', allowEmptyArchive: true
+                }
+            }
+        }
 
-/*
+ // Stage 6: System Security Check - Lynis
+stage('System Security Check - Lynis') {
+    steps {
+        script {
+            // Run system security audit with Lynis
+            sh 'lynis audit system | tee lynis_audit_output.txt'
+            
+            // Archive the output for later review
+            archiveArtifacts artifacts: 'lynis_audit_output.txt', allowEmptyArchive: true
+        }
+    }
+}
+ // Stage 7: Scan with SonarQube
+  stage('Scan : SonarQube') {
+            steps {
+                withSonarQubeEnv('sq1') {  // Make sure this is the correct SonarQube server config name
+                    sh 'mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
+                }
+            }
+        }
+  // Stage 8: Quality and Unit Testing
+         stage('JUnit/Mockito Tests') {
+           steps {
+                sh 'mvn test' 
+            }
+        }
+ // Stage 9: Build Docker Image
+ stage('Build Docker Image') {
+            steps {  
+                sh "docker build -t mohamed855/my-alpine:latest ."
+            }
+        }
+ // Stage 10: Trivy Security Scan for Docker Image
+
+
 stage('Security Scan: Trivy') {
     steps {
         retry(3) {
@@ -63,15 +108,21 @@ stage('Security Scan: Trivy') {
         }
     }
 }
-*/
+
+ // Stage 11: Deploy with Docker Compose
+
+      stage('Deploy with Docker Compose') {
+            steps {
+                script {
+                    sh 'ls -la'
+                    sh 'docker compose -f ./docker-compose.yml up -d'
+                }
+            }
+        }
 
 
-      //   stage('JUnit/Mockito Tests') {
-        //   steps {
-          //      sh 'mvn test' 
-           // }
-       // }
 
+/*
 /*
 stage('System Security Check - Lynis') {
     steps {
@@ -86,20 +137,6 @@ stage('System Security Check - Lynis') {
 }
 */
 
-
- stage('SQL Injection Attack (Gauntlt)') {
-            steps {
-                script {
-                    // Run Gauntlt SQL Injection attack from the correct directory, display output to console and save it to a file
-                    sh 'gauntlt /var/lib/jenkins/workspace/sonar/gauntlt-attacks/sql_in.attack | tee sql_injection_output.txt'
-                    
-                    // Archive the output file
-                    archiveArtifacts artifacts: 'sql_injection_output.txt', allowEmptyArchive: true
-                }
-            }
-        }
-
-
    stage('Scan : SonarQube') {
             steps {
                 withSonarQubeEnv('sq1') {  // Make sure this is the correct SonarQube server config name
@@ -107,17 +144,6 @@ stage('System Security Check - Lynis') {
                 }
             }
         }
-
-  stage("Quality Gate") {
-            steps {
-                timeout(time: 2, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true 
-                }
-            }
-        }
-
-
-
   /*
          stage('Deploy to Nexus') {
           steps {
@@ -131,12 +157,7 @@ stage('System Security Check - Lynis') {
                 sh 'ls target'
             }
         }
-
-            stage('Build Docker Image') {
-            steps {  
-                sh "docker build -t mohamed855/my-alpine:latest ."
-            }
-        } */
+       */
 
       /*   stage('Push Docker Image') {
              steps {
@@ -148,17 +169,7 @@ stage('System Security Check - Lynis') {
                 }
             }
         }
-
-              stage('Deploy with Docker Compose') {
-            steps {
-                script {
-                    sh 'ls -la'
-                    sh 'docker compose -f ./docker-compose.yml up -d'
-                }
-            }
-        } */
-        
-
+         */
           stage('Check and Start Prometheus') {
                 steps {
                     script {
@@ -185,6 +196,7 @@ stage('System Security Check - Lynis') {
                         }
                     }
                 }
+*/
         
         stage('Email Notification') {
             steps {
