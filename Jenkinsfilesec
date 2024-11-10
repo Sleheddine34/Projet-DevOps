@@ -74,6 +74,20 @@ pipeline {
                 }
             }
         }*/
+            stage('Pre-commit Security Hooks') {
+                steps {
+                    script {
+                        sh '''
+                        if ! command -v pre-commit &> /dev/null; then
+                            python3 -m venv venv
+                            . venv/bin/activate
+                            pip install pre-commit
+                        fi
+                        pre-commit run --all-files
+                        '''
+                    }
+                }
+            }
 
          
 
