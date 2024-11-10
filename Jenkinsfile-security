@@ -150,7 +150,7 @@ stage('System Security Check - Lynis') {
             }
         }
         
-    }
+    
     
     // Uncomment and configure post actions if required
      /* 
@@ -200,6 +200,6 @@ stage('System Security Check - Lynis') {
 
 
         
-
+}
         
 }
