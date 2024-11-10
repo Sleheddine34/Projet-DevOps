@@ -140,7 +140,7 @@ stage('Check and Start Prometheus') {
                 echo "Starting full Trivy vulnerability scan..."
 
                 // Run Trivy to scan for all vulnerabilities in the Docker image
-                sh '/home/vagrant/Projet-DevOps/bin/trivy image --exit-code 1 medhelmibennjima/alpine:latest'
+                sh 'sudo /home/vagrant/Projet-DevOps/bin/trivy image --exit-code 1 medhelmibennjima/alpine:latest'
             }
         }
 
