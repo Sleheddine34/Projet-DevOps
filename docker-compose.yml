@@ -31,7 +31,7 @@ services:
         "server.servlet.context-path": "/tpfoyer",
         "logging.level.org.springframework": "DEBUG",
         "management.endpoints.web.exposure.include" : "prometheus",
-        "management.endpoint.prometheus.enabled" : "true" ,
+        "management.endpoint.prometheus.enabled" : "true" 
       }'
     stdin_open: true
     tty: true
