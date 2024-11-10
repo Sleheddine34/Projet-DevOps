@@ -112,45 +112,12 @@ pipeline {
         }
 
         // Stage 11: Security Scan: Nmap
-        stage('Security Scan: Nmap') {
-    steps {
-        script {
-            echo "Starting Nmap security scan..."
-            
-            // Run the Nmap scan and capture the output
-            def nmapOutput = sh(script: 'nmap -sT -p 1-65535 -v localhost', returnStdout: true)
-
-            // Print Nmap output in the Jenkins console
-            echo "Nmap Scan Results:\n${nmapOutput}"
-
-            // Write Nmap output to HTML file
-            writeFile file: 'nmap-report.html', text: """
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Nmap Security Scan Report</title>
-            </head>
-            <body>
-                <h1>Nmap Security Scan Results</h1>
-                <pre>${nmapOutput}</pre>
-            </body>
-            </html>
-            """
+         stage('Security Scan: Nmap') {
+            steps {
+                echo "Starting Nmap security scan..."
+                sh 'nmap -sT -p 1-65535 -v localhost'
+            }
         }
-
-        // Publish the HTML report
-        publishHTML(target: [
-            allowMissing: false,
-            alwaysLinkToLastBuild: true,
-            keepAll: true,
-            reportDir: '.',
-            reportFiles: 'nmap-report.html',
-            reportName: 'Nmap Security Scan Report'
-        ])
-    }
-}
 
 
 
