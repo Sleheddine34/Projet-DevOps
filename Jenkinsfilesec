@@ -72,8 +72,7 @@ pipeline {
                 }
             }
         }*/
-pipeline {
-    agent any
+
 
     stages {
         stage('Pre-commit Security Hooks') {
