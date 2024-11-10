@@ -16,6 +16,13 @@ pipeline {
             }
         }
 
+  stage('MVN CLEAN & COMPILE') {
+            steps {
+                echo "Cleaning and compiling project with Maven"
+                sh 'mvn clean compile'
+            }
+        }
+
     /*    stage('Compile Stage') {
             steps {
                 sh 'mvn clean compile'
