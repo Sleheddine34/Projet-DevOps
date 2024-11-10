@@ -72,7 +72,7 @@ stage('Security Scan: Trivy') {
            // }
        // }
 
-
+/*
 stage('System Security Check - Lynis') {
     steps {
         script {
@@ -84,10 +84,10 @@ stage('System Security Check - Lynis') {
         }
     }
 }
+*/
 
 
 
-/*
    stage('Scan : SonarQube') {
             steps {
                 withSonarQubeEnv('sq1') {  // Make sure this is the correct SonarQube server config name
@@ -95,7 +95,14 @@ stage('System Security Check - Lynis') {
                 }
             }
         }
-*/
+
+  stage("Quality Gate") {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true 
+                }
+            }
+        }
 
 
 
