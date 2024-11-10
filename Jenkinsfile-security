@@ -113,33 +113,12 @@ stage('System Security Check - Lynis') {
         */
 
         // Stage 10: Start Monitoring Containers
-       stage('Start Monitoring Containers') {
-    steps {
-        echo "Starting monitoring containers..."
-        script {
-            def containerStatus = sh(script: 'docker inspect -f {{.State.Running}} aab0f831dce5', returnStdout: true).trim()
-            if (containerStatus == 'true') {
-                echo "Container is already running."
-            } else {
+      stage('Start Monitoring Containers') {
+            steps {
+                echo "Starting monitoring containers..."
                 sh 'docker start aab0f831dce5'
             }
-
-            // Run health check
-            def containerHealth = sh(script: 'docker inspect --format "{{.State.Health.Status}}" aab0f831dce5', returnStdout: true).trim()
-            if (containerHealth == 'healthy') {
-                echo "Container is healthy."
-            } else {
-                echo "Container health check failed. Status: ${containerHealth}"
-            }
-
-            // Logs container output (if applicable)
-            sh 'docker logs aab0f831dce5'
-            
-            // Display container resource usage
-            sh 'docker stats aab0f831dce5 --no-stream'
-        }
-    }
-}
+        } 
 
 
         // Stage 11: Security Scan: Nmap
