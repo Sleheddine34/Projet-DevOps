@@ -18,7 +18,8 @@
       "type": "indicator",
       "id": "indicator--5e02f059-c20c-4654-bb05-d69899b15594",
       "pattern": "[file:path='C:\\Windows\\System32\\calc.exe']",
-      "valid_from": "2024-01-01T00:00:00Z"
+      "valid_from": "2024-01-01T00:00:00Z",
+      "labels": ["malicious-file", "spearphishing"]  // Adding the required "labels" property
     }
   ]
 }
