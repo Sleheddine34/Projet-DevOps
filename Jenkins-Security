@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    environment {
-        SMTP_USERNAME = 'chouaibimohamed87@gmail.com'  // replace with your Gmail address
-        SMTP_PASSWORD = 'bzax aqyg viby gkai'    // replace with your Gmail App password
-    }
     tools {
         jdk 'JAVA_HOME'
         maven 'M2_HOME'
@@ -23,11 +19,7 @@ pipeline {
             }
         }
 
-    /*    stage('Compile Stage') {
-            steps {
-                sh 'mvn clean compile'
-            }
-        } */
+
 /*
 stage('Pre-commit Security Hooks') {
     steps {
@@ -73,27 +65,6 @@ stage('Security Scan: Trivy') {
 }
 */
 
-/*  stage('Security Scan: OWASP Dependency-Check') {
-    steps {
-        echo "Running OWASP Dependency-Check..."
-        sh '''
-        docker run --rm -v "$(pwd)":/src -w /src owasp/dependency-check --project tn.esprit:tp-foyer --scan /src --format ALL
-        '''
-    } */
-
-/*   stage('Security Scan: OWASP Dependency-Check') {
-            steps {
-                echo "Running OWASP Dependency-Check..."
-                sh '''
-                docker run --rm -v "$(pwd)":/src -w /src \
-                owasp/dependency-check --project tn.esprit:tp-foyer --scan /src --format ALL
-                '''
-            }
-        }
-*/
-
-
-
 
       //   stage('JUnit/Mockito Tests') {
         //   steps {
@@ -101,6 +72,22 @@ stage('Security Scan: Trivy') {
            // }
        // }
 
+
+stage('System Security Check - Lynis') {
+    steps {
+        script {
+            // Run system security audit with Lynis
+            sh 'lynis audit system | tee lynis_audit_output.txt'
+            
+            // Archive the output for later review
+            archiveArtifacts artifacts: 'lynis_audit_output.txt', allowEmptyArchive: true
+        }
+    }
+}
+
+
+
+/*
    stage('Scan : SonarQube') {
             steps {
                 withSonarQubeEnv('sq1') {  // Make sure this is the correct SonarQube server config name
@@ -108,21 +95,8 @@ stage('Security Scan: Trivy') {
                 }
             }
         }
-
-/*
-       stage('SonarQube Analysis') {
-    steps {
-        withCredentials([string(credentialsId: 'sq1', variable: 'SONAR_TOKEN')]) {
-            sh '''
-                mvn sonar:sonar \
-                -Dsonar.projectKey=JenkinsFile \
-                -Dsonar.host.url=http://192.168.33.10:9000 \
-                -Dsonar.token=$SONAR_TOKEN
-            '''
-        }
-    }
-}
 */
+
 
 
   /*
