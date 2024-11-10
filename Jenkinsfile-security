@@ -116,11 +116,14 @@ pipeline {
     steps {
         script {
             echo "Starting Nmap security scan..."
-
+            
             // Run the Nmap scan and capture the output
             def nmapOutput = sh(script: 'nmap -sT -p 1-65535 -v localhost', returnStdout: true)
 
-            // Generate an HTML file with inline CSS to display the Nmap results
+            // Print Nmap output in the Jenkins console
+            echo "Nmap Scan Results:\n${nmapOutput}"
+
+            // Write Nmap output to HTML file
             writeFile file: 'nmap-report.html', text: """
             <!DOCTYPE html>
             <html lang="en">
@@ -128,50 +131,16 @@ pipeline {
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Nmap Security Scan Report</title>
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        background-color: #f0f4f8;
-                        color: #333;
-                        padding: 20px;
-                        max-width: 800px;
-                        margin: auto;
-                    }
-                    h1 {
-                        text-align: center;
-                        color: #007bff;
-                    }
-                    pre {
-                        background-color: #e9ecef;
-                        padding: 15px;
-                        border-radius: 8px;
-                        border: 1px solid #ccc;
-                        overflow-x: auto;
-                        font-size: 14px;
-                        line-height: 1.5;
-                    }
-                    .scan-info {
-                        margin-bottom: 20px;
-                        padding: 10px;
-                        background-color: #d4edda;
-                        border: 1px solid #c3e6cb;
-                        border-radius: 5px;
-                        color: #155724;
-                    }
-                </style>
             </head>
             <body>
                 <h1>Nmap Security Scan Results</h1>
-                <div class="scan-info">
-                    <strong>Scan Details:</strong> Nmap TCP Connect Scan on localhost (Ports 1-65535)
-                </div>
                 <pre>${nmapOutput}</pre>
             </body>
             </html>
             """
         }
-        
-        // Publish the HTML report in Jenkins
+
+        // Publish the HTML report
         publishHTML(target: [
             allowMissing: false,
             alwaysLinkToLastBuild: true,
@@ -182,6 +151,7 @@ pipeline {
         ])
     }
 }
+
 
 
         // Stage 12: Security Scan: Trivy (Docker Image Vulnerabilities)
