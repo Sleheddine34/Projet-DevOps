@@ -15,4 +15,4 @@ for obj in bundle.objects:
     if obj['type'] == 'attack-pattern':  # Example: Extracting attack techniques
         print(f"Attack Technique: {obj['name']}")
     if obj['type'] == 'indicator':  # Example: Extracting indicators (e.g., IP addresses)
-        
+        print(f"Indicator: {obj['pattern']}")
