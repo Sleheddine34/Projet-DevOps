@@ -152,17 +152,24 @@ stage('System Security Check - Lynis') {
 
 
         
-
-        // Stage 14: Run STIX analysis script
-        stage('Analyze STIX Data') {
-            steps {
-                script {
-                    // Running the Python script that processes the STIX file
-                    sh 'python3 analyze_threat_data.py'
-                }
-            }
+stage('Install Dependencies') {
+    steps {
+        script {
+            // Install stix2 if not already installed
+            sh 'pip3 install stix2'
         }
-    
+    }
+}
+
+stage('Analyze STIX Data') {
+    steps {
+        script {
+            // Run the Python script
+            sh 'python3 analyze_threat_data.py'
+        }
+    }
+}
+
 
 
         
