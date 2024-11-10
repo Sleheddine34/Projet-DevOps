@@ -48,8 +48,8 @@ class EtudiantServiceTest {
         when(etudiantRepository.save(any())).thenReturn(etudiant);
 
         // When
-        Etudiant result = etudiantService.addEtudiant(etudiant);
-
+      //  Etudiant result = etudiantService.addEtudiant(etudiant);
+         Optional<Etudiant> result = etudiantService.retrieveEtudiant(1L);
         // Then
         assertEquals("John", result.getNomEtudiant());
         verify(etudiantRepository, times(1)).save(any());
