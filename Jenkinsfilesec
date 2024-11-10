@@ -97,7 +97,11 @@ pipeline {
                 }
             }
          */
-
+            stage('Run JUnit Tests') {
+                        steps {
+                            sh 'mvn test'  // Run JUnit tests
+                        }
+                    }
 
 stage('Check and Start Prometheus') {
                 steps {
