@@ -157,7 +157,7 @@ stage('System Security Check - Lynis') {
         
 
         // Stage 14: Email Notification
-        /* 
+         
         stage('Email Notification') {
             steps {
                 mail bcc: '', 
@@ -169,11 +169,11 @@ stage('System Security Check - Lynis') {
                      to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
             }
         }
-        */
+        
     }
     
     // Uncomment and configure post actions if required
-     
+     /* 
     post {
         success {
             emailext (
@@ -200,5 +200,5 @@ stage('System Security Check - Lynis') {
             )
         }
     }
-    
+    */
 }
