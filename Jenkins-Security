@@ -16,11 +16,11 @@ pipeline {
             }
         }
 
-        stage('Compile Stage') {
+    /*    stage('Compile Stage') {
             steps {
                 sh 'mvn clean compile'
             }
-        }
+        } */
 /*
 stage('Pre-commit Security Hooks') {
     steps {
