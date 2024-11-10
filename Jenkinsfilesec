@@ -21,7 +21,7 @@ pipeline {
             }
         }
 
-        /*stage('SonarQube Analysis') {
+        stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh "mvn clean verify sonar:sonar -DskipTests -Dsonar.projectKey=tp-foyer -Dsonar.host.url=http://192.168.50.5:9000 -Dsonar.login=\$SONAR_TOKEN"
@@ -46,7 +46,7 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
+       /* stage('Push Docker Image') {
             steps {
                 script {
                     // Login to Docker Hub (using credentials stored in Jenkins)
@@ -88,7 +88,7 @@ pipeline {
                     }
                 }
             }
-            stage('System Security Check - Lynis') {
+            /*stage('System Security Check - Lynis') {
                 steps {
                     script {
                         // Exécution du contrôle de sécurité avec Lynis
@@ -96,7 +96,7 @@ pipeline {
                     }
                 }
             }
-         
+         */
 
 
 stage('Check and Start Prometheus') {
