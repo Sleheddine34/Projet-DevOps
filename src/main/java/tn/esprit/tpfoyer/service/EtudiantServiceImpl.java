@@ -19,9 +19,9 @@ public class EtudiantServiceImpl implements IEtudiantService {
         return etudiantRepository.findAll();
     }
 
-  public Optional<Etudiant> retrieveEtudiant(Long etudiantId) {
-    return etudiantRepository.findById(etudiantId);
-}
+ public Etudiant retrieveEtudiant(Long etudiantId) {
+        return etudiantRepository.findById(etudiantId).orElse(null); // Use orElse to avoid NullPointerException
+    }
 
     public Etudiant addEtudiant(Etudiant etudiant) {
         return etudiantRepository.save(etudiant);
