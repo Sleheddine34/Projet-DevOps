@@ -5,7 +5,7 @@ repos:
       - id: secrets_filecontent
         name: Detect secrets in file content
         description: Checks for potential secrets in the content of staged files.
-        files: \.(txt|aws\.file|password\.file|\.pem|\.key|\.env|\.log)$  # Files to check (including .log)
+        files: \.(txt|aws\.file|password\.file|\.pem|\.key|\.env|\.log|\.java)$  # Files to check (including .log)
         exclude: ^(README\.md|config\.json)$  # Exclude README.md and config.json
 
       - id: secrets_filename
