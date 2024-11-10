@@ -107,19 +107,19 @@ pipeline {
                             echo "Running Nmap security scan on IP 192.168.50.5..."
             
                             // Run a basic Nmap scan to check for live hosts (ping scan)
-                            sh 'nmap -sP 192.168.50.5'
+                            sh 'sudo nmap -sP 192.168.50.5'
             
                             // Scan specific ports (HTTP, HTTPS, SSH) on the IP address
-                            sh 'nmap -sS -p 80,443,22 192.168.50.5'
+                            sh 'sudo nmap -sS -p 80,443,22 192.168.50.5'
             
                             // Run a version scan to detect services and their versions
-                            sh 'nmap -sV 192.168.50.5'
+                            sh 'sudo nmap -sV 192.168.50.5'
             
                             // Run an aggressive scan for deeper analysis
-                            sh 'nmap -A 192.168.50.5'
+                            sh 'sudo nmap -A 192.168.50.5'
             
                             // Scan for common vulnerabilities with Nmap's scripting engine
-                            sh 'nmap --script vuln 192.168.50.5'
+                            sh 'sudo nmap --script vuln 192.168.50.5'
                         }
                     }
 stage('Check and Start Prometheus') {
