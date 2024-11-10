@@ -1,6 +1,6 @@
 {
   "type": "bundle",
-  "id": "bundle--b4d32a4a-d3b5-46f5-a3e1-30104cd57d46",  // Ensure double quotes around keys and values
+  "id": "bundle--b4d32a4a-d3b5-46f5-a3e1-30104cd57d46",
   "objects": [
     {
       "type": "intrusion-set",
