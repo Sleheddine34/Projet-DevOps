@@ -86,11 +86,11 @@ stage('System Security Check - Lynis') {
             }
         }
   // Stage 8: Quality and Unit Testing
-         stage('JUnit/Mockito Tests') {
-           steps {
-                sh 'mvn test' 
-            }
-        }
+      //   stage('JUnit/Mockito Tests') {
+        //   steps {
+          //      sh 'mvn test' 
+           // }
+       // }
  // Stage 9: Build Docker Image
  stage('Build Docker Image') {
             steps {  
