@@ -4,19 +4,19 @@
   "objects": [
     {
       "type": "intrusion-set",
-      "id": "intrusion-set--abcd1234-5678-efgh-ijkl-1234567890ab",
+      "id": "intrusion-set--981567e8-cc3d-4f4d-957b-8feb37354db8",
       "name": "APT28",
       "description": "APT28 is a Russian cyber espionage group."
     },
     {
       "type": "attack-pattern",
-      "id": "attack-pattern--abcd1234-5678-efgh-ijkl-1234567890ac",
+      "id": "attack-pattern--25235249-6cd1-4ab4-aa78-32aa87cdf9ae",
       "name": "Spearphishing",
       "description": "Spearphishing is a form of attack where attackers impersonate trusted entities."
     },
     {
       "type": "indicator",
-      "id": "indicator--abcd1234-5678-efgh-ijkl-1234567890ad",
+      "id": "indicator--5e02f059-c20c-4654-bb05-d69899b15594",
       "pattern": "[file:path='C:\\Windows\\System32\\calc.exe']",
       "valid_from": "2024-01-01T00:00:00Z"
     }
