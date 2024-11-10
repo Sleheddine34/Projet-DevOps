@@ -12,6 +12,7 @@ repos:
         name: Detect sensitive filenames
         description: Detect files with names indicating sensitive data (e.g. *.key, *.pem, etc.).
         files: \.(pem|key|env|password|log)$  # Files with extensions indicating secrets (including .log)
+        exclude: 'path/to/ignore/.*'
 
       - id: hooks_version_check
         name: Check pre-commit hook versions
