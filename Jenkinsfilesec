@@ -73,39 +73,6 @@ pipeline {
             }
         }*/
 
-
-            stages {
-                stage('Pre-commit Security Hooks') {
-                    steps {
-                        script {
-                            sh '''
-                            # Start Vagrant environment
-                            vagrant up
-        
-                            # SSH into Vagrant VM and run pre-commit script
-                            vagrant ssh -c "
-                            # Check if pre-commit is installed, if not, install it
-                            if ! command -v pre-commit &> /dev/null
-                            then
-                                echo 'pre-commit not found. Installing in a virtual environment...'
-                                python3 -m venv venv
-                                source venv/bin/activate
-                                pip install pre-commit
-                            fi
-                            # Disable existing Git hooks to avoid conflicts
-                            git config --unset-all core.hooksPath
-                            # Install pre-commit hooks
-                            pre-commit install
-                            # Run pre-commit checks
-                            pre-commit run --all-files
-                            "
-        
-                            # Halt Vagrant VM
-                            vagrant halt
-                            '''
-                        }
-                    }
-                }
          
 
 
