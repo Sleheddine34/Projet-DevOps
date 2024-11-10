@@ -87,6 +87,18 @@ stage('System Security Check - Lynis') {
 */
 
 
+ stage('SQL Injection Attack (Gauntlt)') {
+            steps {
+                script {
+                    // Run Gauntlt SQL Injection attack from the correct directory, display output to console and save it to a file
+                    sh 'gauntlt /var/lib/jenkins/workspace/sonar/gauntlt-attacks/sql_in.attack | tee sql_injection_output.txt'
+                    
+                    // Archive the output file
+                    archiveArtifacts artifacts: 'sql_injection_output.txt', allowEmptyArchive: true
+                }
+            }
+        }
+
 
    stage('Scan : SonarQube') {
             steps {
