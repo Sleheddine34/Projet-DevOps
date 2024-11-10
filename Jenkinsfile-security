@@ -149,6 +149,22 @@ stage('System Security Check - Lynis') {
                      to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
             }
         }
+
+
+        
+
+        // Stage 14: Run STIX analysis script
+        stage('Analyze STIX Data') {
+            steps {
+                script {
+                    // Running the Python script that processes the STIX file
+                    sh 'python3 analyze_threat_data.py'
+                }
+            }
+        }
+    
+
+
         
     
     
