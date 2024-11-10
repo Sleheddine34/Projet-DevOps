@@ -101,6 +101,15 @@ stage('Security Scan: Trivy') {
            // }
        // }
 
+   stage('Scan : SonarQube') {
+            steps {
+                withSonarQubeEnv('sq1') {  // Make sure this is the correct SonarQube server config name
+                    sh 'mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
+                }
+            }
+        }
+
+/*
        stage('SonarQube Analysis') {
     steps {
         withCredentials([string(credentialsId: 'sq1', variable: 'SONAR_TOKEN')]) {
@@ -113,8 +122,7 @@ stage('Security Scan: Trivy') {
         }
     }
 }
-
-
+*/
 
 
   /*
