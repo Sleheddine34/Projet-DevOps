@@ -151,34 +151,7 @@ stage('System Security Check - Lynis') {
         }
 
 
-stage('Install Dependencies') {
-            steps {
-                script {
-                    sh 'pip install -r requirements.txt'  // Use requirements.txt for easy dependency management
-                }
-            }
-        }
 
-        // Stage 2: Checkout code from GitHub
-        stage('Checkout Code') {
-            steps {
-                git url: 'https://github.com/Sleheddine34/Projet-DevOps.git', branch: 'joseph'  // Replace with your repository URL
-            }
-        }
-
-
-stage('Analyze STIX Data') {
-    steps {
-        script {
-            // Run the Python script
-            sh 'python3 analyze_threat_data.py'
-        }
-    }
-}
-
-
-
-        
     
     
     // Uncomment and configure post actions if required
