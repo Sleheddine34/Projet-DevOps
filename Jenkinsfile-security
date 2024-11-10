@@ -140,7 +140,7 @@ stage('System Security Check - Lynis') {
         }
     }
 }
-}
+
 
         // Stage 11: Security Scan: Nmap
           stage('Security Scan: Nmap') {
