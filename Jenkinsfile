@@ -54,6 +54,16 @@ pipeline {
                 }
             }
         }
+        stage('Send Email Notification') {
+            steps {
+                script {
+                    // Envoi d'un email de notification
+                    mail to: 'sleheddinedhaouadi@gmail.com',
+                         subject: 'Jenkins Notification: Docker Image Pushed',
+                         body: 'A new Docker image has been successfully pushed to DockerHub.'
+                }
+            }
+        }
         stage('Clean Up Previous Containers') {
             steps {
                 script {
@@ -76,16 +86,6 @@ pipeline {
             }
         }
         
-        // stage('Send Email Notification') {
-        //     steps {
-        //         script {
-        //             // Envoi d'un email de notification
-        //             mail to: 'sleheddinedhaouadi@gmail.com',
-        //                  subject: 'Jenkins Notification: Docker Image Pushed',
-        //                  body: 'A new Docker image has been successfully pushed to DockerHub.'
-        //         }
-        //     }
-        // }
             stage('Check and Start Prometheus') {
                 steps {
                     script {
