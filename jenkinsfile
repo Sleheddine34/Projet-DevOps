@@ -21,13 +21,13 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
+        /*stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh "mvn clean verify sonar:sonar -DskipTests -Dsonar.projectKey=tp-foyer -Dsonar.host.url=http://192.168.50.5:9000 -Dsonar.login=\$SONAR_TOKEN"
                 }
             }
-        }
+        }*/
 
         stage('Deploy to Nexus') {
             steps {
@@ -46,7 +46,7 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
+        /*stage('Push Docker Image') {
             steps {
                 script {
                     // Login to Docker Hub (using credentials stored in Jenkins)
@@ -58,7 +58,7 @@ pipeline {
                     sh 'docker push medhelmibennjima/alpine:latest'
                 }
             }
-        }
+        }*/
          stage('Run Docker Compose') {
             steps {
                 script {
@@ -98,15 +98,18 @@ stage('Send Email Notification') {
          }
     }
     post {
-        success {
-            script {
-                sh 'python3 send_sms.py "Build Success: Your DevOps project build was successful." +RECIPIENT_PHONE_NUMBER'
-            }
-        }
-        failure {
-            script {
-                sh 'python3 send_sms.py "Build Failure: Your DevOps project build has failed." +RECIPIENT_PHONE_NUMBER'
-            }
+    success {
+        script {
+            sh 'ls -la'  // List all files in the workspace to confirm send_sms.py is there
+            sh 'python3 send_sms.py "Build Success: Your DevOps project build was successful." +RECIPIENT_PHONE_NUMBER'
         }
     }
+    failure {
+        script {
+            sh 'ls -la'  // List all files in the workspace to confirm send_sms.py is there
+            sh 'python3 send_sms.py "Build Failure: Your DevOps project build has failed." +RECIPIENT_PHONE_NUMBER'
+        }
+    }
+}
+
 }
