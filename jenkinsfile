@@ -102,7 +102,7 @@ stage('Check and Start Prometheus') {
         script {
             sh 'pwd'
             sh 'ls -la'
-            sh "python3 send_sms.py'"
+            sh 'python3 send_sms.py'
 
         }
     }
