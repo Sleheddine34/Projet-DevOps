@@ -43,13 +43,7 @@ pipeline {
             }
         }
 
-        stage('Image Security Scan: Trivy') {
-            steps {
-                script {
-                    sh 'trivy image --no-progress --format json -o trivy-report-tpfoyer.json 223jmt2638/alpine:latest'
-                }
-            }
-        }
+        
 
         stage('Security Scan: Nmap') {
             steps {
@@ -140,6 +134,13 @@ pipeline {
                 }
             }
         }
+        stage('Image Security Scan: Trivy') {
+                    steps {
+                        script {
+                            sh 'trivy image --no-progress --format json -o trivy-report-tpfoyer.json 223jmt2638/alpine:latest'
+                        }
+                    }
+                }
     }
 
     post {
