@@ -100,9 +100,12 @@ stage('Check and Start Prometheus') {
     post {
     success {
         script {
-            sh 'pwd'
-            sh 'ls -la'
-            sh 'python3 send_sms.py'
+            sh '''
+            
+            pip install twilio
+            python3 send_sms.py
+            '''
+
 
         }
     }
