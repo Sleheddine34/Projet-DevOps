@@ -15,19 +15,19 @@ pipeline {
             }
         }
         
-        stage('Compile Stage') {
+        /*stage('Compile Stage') {
             steps {
                 sh 'mvn clean compile'
             }
         }
 
-        /*stage('SonarQube Analysis') {
+        stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh "mvn clean verify sonar:sonar -DskipTests -Dsonar.projectKey=tp-foyer -Dsonar.host.url=http://192.168.50.5:9000 -Dsonar.login=\$SONAR_TOKEN"
                 }
             }
-        }*/
+        }
 
         stage('Deploy to Nexus') {
             steps {
@@ -46,7 +46,7 @@ pipeline {
             }
         }
 
-        /*stage('Push Docker Image') {
+        stage('Push Docker Image') {
             steps {
                 script {
                     // Login to Docker Hub (using credentials stored in Jenkins)
