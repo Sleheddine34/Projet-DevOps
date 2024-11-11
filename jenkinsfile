@@ -100,13 +100,15 @@ stage('Send Email Notification') {
     post {
     success {
         script {
-            
+            sh 'pwd'
+            sh 'ls -la'
             sh 'python3 ./Projet-DevOps/send_sms.py "Build Success: Your DevOps project build was successful." +RECIPIENT_PHONE_NUMBER'
         }
     }
     failure {
         script {
-            
+            sh 'pwd'
+            sh 'ls -la'
             sh 'python3 ./Projet-DevOps/send_sms1.py "Build Failure: Your DevOps project build has failed." +RECIPIENT_PHONE_NUMBER'
         }
     }
