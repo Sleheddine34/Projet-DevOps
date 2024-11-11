@@ -72,7 +72,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-
             <!-- SonarQube Plugin -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
@@ -84,35 +83,6 @@
                     <sonar.login>${env.SONAR_TOKEN}</sonar.login> <!-- Authentication token from environment variable -->
                 </configuration>
             </plugin>
-
-            <!-- Webhook Trigger using Maven Antrun Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>deploy</phase> <!-- Trigger the webhook during the deploy phase -->
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <!-- Webhook trigger using curl -->
-                                <exec executable="curl">
-                                    <arg value="-X"/>
-                                    <arg value="POST"/>
-                                    <arg value="https://your-webhook-url.com/trigger"/> <!-- Replace with actual webhook URL -->
-                                    <arg value="-H"/>
-                                    <arg value="Content-Type: application/json"/>
-                                    <arg value="-d"/>
-                                    <arg value="{&quot;status&quot;:&quot;success&quot;,&quot;message&quot;:&quot;Build Completed Successfully&quot;}"/> <!-- Properly escaped JSON -->
-                                </exec>
-                            </tasks>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -121,7 +91,7 @@
         <repository>
             <id>deploymentRepo</id>
             <name>Nexus Repository</name>
-            <url>http://192.168.33.10:8081/repository/maven-releases/</url>
+            <url>http://192.168.50.4:8081/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 </project>
