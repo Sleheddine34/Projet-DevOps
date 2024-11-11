@@ -153,7 +153,7 @@ stage('Check and Start Prometheus') {
                         // sh 'snyk container test your-image-name:latest'
                     }
                 }*/
-            stage('Threat Intelligence Check') {
+            /*stage('Threat Intelligence Check') {
                 steps {
                     script {
                         // Download the threat feed
@@ -163,7 +163,7 @@ stage('Check and Start Prometheus') {
                         sh 'python3 check_logs_against_feed.py'
                     }
                 }
-            }
+            }*/
 
 stage('Send Email Notification') {
              steps {
