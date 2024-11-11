@@ -147,6 +147,7 @@ stage('Check and Start Prometheus') {
                     steps {
                         echo 'Running Snyk test for vulnerabilities...'
                         // Run the Snyk test for your project or Docker image
+                        sh'snyk auth e9ae3ac8-e1b5-467b-ac71-71b703b3d9f5'
                         sh 'snyk test'  // For testing the project (Node.js, etc.)
                         // OR for testing a Docker image
                         // sh 'snyk container test your-image-name:latest'
