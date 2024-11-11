@@ -100,14 +100,14 @@ stage('Send Email Notification') {
     post {
     success {
         script {
-            sh 'ls -la'  // List all files in the workspace to confirm send_sms.py is there
+            
             sh 'python3 send_sms.py "Build Success: Your DevOps project build was successful." +RECIPIENT_PHONE_NUMBER'
         }
     }
     failure {
         script {
-            sh 'ls -la'  // List all files in the workspace to confirm send_sms.py is there
-            sh 'python3 send_sms.py "Build Failure: Your DevOps project build has failed." +RECIPIENT_PHONE_NUMBER'
+            
+            sh 'python3 send_sms1.py "Build Failure: Your DevOps project build has failed." +RECIPIENT_PHONE_NUMBER'
         }
     }
 }
