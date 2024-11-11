@@ -33,11 +33,11 @@ stage('Pre-commit Security Hooks') {
                 . venv/bin/activate  # Use dot instead of source if source is not found
                 pip install pre-commit
             fi
-            # Désactiver les hooks Git existants pour éviter les conflits
+           
             git config --unset-all core.hooksPath
-            # Installer les hooks de pre-commit
+        
             pre-commit install
-            # Exécuter les hooks de pre-commit pour vérifier tous les fichiers
+           
             pre-commit run --all-files
             '''
         }
@@ -56,10 +56,10 @@ stage('Pre-commit Security Hooks') {
  stage('SQL Injection Attack (Gauntlt)') {
             steps {
                 script {
-                    // Run Gauntlt SQL Injection attack from the correct directory, display output to console and save it to a file
+                 
                     sh 'gauntlt /var/lib/jenkins/workspace/sonar/gauntlt-attacks/sql_in.attack | tee sql_injection_output.txt'
                     
-                    // Archive the output file
+                 
                     archiveArtifacts artifacts: 'sql_injection_output.txt', allowEmptyArchive: true
                 }
             }
@@ -69,10 +69,10 @@ stage('Pre-commit Security Hooks') {
 stage('System Security Check - Lynis') {
     steps {
         script {
-            // Run system security audit with Lynis
+          
             sh 'lynis audit system | tee lynis_audit_output.txt'
             
-            // Archive the output for later review
+         
             archiveArtifacts artifacts: 'lynis_audit_output.txt', allowEmptyArchive: true
         }
     }
@@ -80,7 +80,7 @@ stage('System Security Check - Lynis') {
  // Stage 7: Scan with SonarQube
   stage('Scan : SonarQube') {
             steps {
-                withSonarQubeEnv('sq1') {  // Make sure this is the correct SonarQube server config name
+                withSonarQubeEnv('sq1') { 
                     sh 'mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
                 }
             }
@@ -123,82 +123,6 @@ stage('Security Scan: Trivy') {
        // }
 
 
-
-/*
-
-stage('System Security Check - Lynis') {
-    steps {
-        script {
-            // Run system security audit with Lynis
-            sh 'lynis audit system | tee lynis_audit_output.txt'
-            
-            // Archive the output for later review
-            archiveArtifacts artifacts: 'lynis_audit_output.txt', allowEmptyArchive: true
-        }
-    }
-}
-
-
-   stage('Scan : SonarQube') {
-            steps {
-                withSonarQubeEnv('sq1') {  // Make sure this is the correct SonarQube server config name
-                    sh 'mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
-                }
-            }
-        }
- 
-         stage('Deploy to Nexus') {
-          steps {
-                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8082/repository/maven-releases/'
-            }
-        } 
-
-      stage('Build') {
-            steps {
-                sh 'mvn clean package'
-                sh 'ls target'
-            }
-        }
-       
-
-         stage('Push Docker Image') {
-             steps {
-              script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
-                    }
-                    sh 'docker push mohamed855/my-alpine:latest'
-                }
-            }
-        }
-         
-          stage('Check and Start Prometheus') {
-                steps {
-                    script {
-                        def prometheusRunning = sh(script: 'docker ps -q -f name=prometheus', returnStdout: true).trim()
-                        if (prometheusRunning) {
-                            echo 'Prometheus is already running.'
-                        } else {
-                            echo 'Starting Prometheus container...'
-                            sh 'docker start prometheus'
-                      }
-                  }
-              }
-          }
-          stage('Check and Start Grafana') {
-                    steps {
-                        script {
-                            def grafanaRunning = sh(script: 'docker ps -q -f name=grafana', returnStdout: true).trim()
-                            if (grafanaRunning) {
-                                echo 'Grafana is already running.'
-                            } else {
-                                echo 'Starting Grafana container...'
-                                sh 'docker start grafana'
-                            }
-                        }
-                    }
-                }
-*/
         
         stage('Email Notification') {
             steps {
