@@ -106,7 +106,7 @@
                                     <arg value="-H"/>
                                     <arg value="Content-Type: application/json"/>
                                     <arg value="-d"/>
-                                    <arg value="{\"status\":\"success\",\"message\":\"Build Completed Successfully\"}"/> <!-- Properly escaped JSON -->
+                                    <arg value="{&quot;status&quot;:&quot;success&quot;,&quot;message&quot;:&quot;Build Completed Successfully&quot;}"/> <!-- Properly escaped JSON -->
                                 </exec>
                             </tasks>
                         </configuration>
