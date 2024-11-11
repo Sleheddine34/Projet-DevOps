@@ -86,7 +86,7 @@ stage('Check and Start Prometheus') {
                   }
               }
           }
-stage('Send Email Notification') {
+/*stage('Send Email Notification') {
              steps {
                  script {
                      // Envoi d'un email de notification
@@ -95,7 +95,7 @@ stage('Send Email Notification') {
                          body: 'A new Docker image has been successfully pushed to DockerHub.'
                 }
              }
-         }
+         }*/
     }
     post {
     success {
