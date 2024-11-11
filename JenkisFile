@@ -65,14 +65,24 @@ pipeline {
             }
         }
 
-        /*stage('Push Docker Image') {
+         stage('Push Docker Image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                     sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
                 }
                 sh 'docker push 223jmt2638/alpine:latest'
             }
-        }*/
+        }
+          stage('Send Email Notification') {
+                                    steps {
+                                         script {
+                                             // Envoi d'un email de notification
+                                             mail to: 'Salah.BenThabet@esprit.tn',
+                                                  subject: 'Jenkins Notification: Docker Image Pushed',
+                                                  body: 'A new Docker image has been successfully pushed to DockerHub.'
+                                         }
+                                     }
+                                 }
 
         stage('Deploy with Docker Compose') {
             steps {
@@ -84,5 +94,6 @@ pipeline {
                 }
             }
         }
+            
     }
 }
