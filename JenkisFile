@@ -37,7 +37,12 @@ pipeline {
                 sh 'mvn test'
             }
         }
-
+        stage('Dependency Scan') {
+                    steps {
+                        echo "Running Dependency Scanning"
+                        sh 'mvn org.owasp:dependency-check-maven:check'
+                        }
+                    }
         stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token2', variable: 'SONAR_TOKEN')]) {
