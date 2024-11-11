@@ -55,14 +55,12 @@ pipeline {
             }
         }
 
-        stage('Security Scan: Nmap') {
+         stage('Security Scan: Nmap') {
             steps {
-                script {
-                    echo "Starting Nmap Security Scan..."
-                    sh 'nmap -sS -p 1-65535 -v localhost'
-                }
+                echo "Starting Nmap security scan..."
+                sh 'nmap -sT -p 1-65535 -v 192.168.33.10'
             }
-        }
+}
 
         // Stage 9: Deploy to Nexus repository
         stage('Deploy to Nexus') {
