@@ -58,7 +58,7 @@ pipeline {
                     sh 'docker push medhelmibennjima/alpine:latest'
                 }
             }
-        }*/
+        }
                 
 
          /*stage('Run Docker Compose') {
@@ -141,8 +141,8 @@ stage('Check and Start Prometheus') {
 
                 // Run Trivy to scan for all vulnerabilities in the Docker image
                 sh 'sudo /home/vagrant/Projet-DevOps/bin/trivy image --exit-code 1 medhelmibennjima/alpine:latest'
-            }*/
-        }
+            }
+        }*/
          /*stage('Run Snyk Test') {
                     steps {
                         echo 'Running Snyk test for vulnerabilities...'
