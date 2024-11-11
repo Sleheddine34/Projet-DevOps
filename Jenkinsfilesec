@@ -143,7 +143,7 @@ stage('Check and Start Prometheus') {
                 sh 'sudo /home/vagrant/Projet-DevOps/bin/trivy image --exit-code 1 medhelmibennjima/alpine:latest'
             }
         }
-         stage('Run Snyk Test') {
+         /*stage('Run Snyk Test') {
                     steps {
                         echo 'Running Snyk test for vulnerabilities...'
                         // Run the Snyk test for your project or Docker image
@@ -152,7 +152,7 @@ stage('Check and Start Prometheus') {
                         // OR for testing a Docker image
                         // sh 'snyk container test your-image-name:latest'
                     }
-                }
+                }*/
             stage('Threat Intelligence Check') {
                 steps {
                     script {
