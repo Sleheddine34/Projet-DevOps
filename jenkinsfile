@@ -108,6 +108,5 @@ stage('Send Email Notification') {
                 sh 'python3 send_sms.py "Build Failure: Your DevOps project build has failed." +RECIPIENT_PHONE_NUMBER'
             }
         }
-}
-
+    }
 }
