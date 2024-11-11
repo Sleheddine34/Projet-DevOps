@@ -105,8 +105,17 @@ pipeline {
                 }
             }
         }
+                // Operations Phase: Container and Pipeline Monitoring
 
-        // Stage 13: Send Email Notification
+        // Stage 13: Monitoring Containers
+
+         stage('Start Monitoring Containers') {
+            steps {
+                sh 'docker start aab0f831dce5'
+            }
+        }
+
+        // Stage 14: Send Email Notification
         stage('Email Notification') {
             steps {
                 mail bcc: '', 
