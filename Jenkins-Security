@@ -85,6 +85,11 @@ stage('System Security Check - Lynis') {
                 }
             }
         }
+   stage('Deploy to Nexus') {
+          steps {
+                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8082/repository/maven-releases/'
+            }
+        }
   // Stage 8: Quality and Unit Testing
       //   stage('JUnit/Mockito Tests') {
         //   steps {
