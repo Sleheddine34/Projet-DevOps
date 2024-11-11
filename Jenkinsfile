@@ -42,8 +42,6 @@ pipeline {
             }
         }
 
-        
-
         // Stage 8: MVN SONARQUBE analysis
         stage('MVN SONARQUBE') {
             steps {
@@ -109,6 +107,23 @@ pipeline {
                     mail to: 'fakhfakh4321@gmail.com',
                          subject: 'Jenkins Notification: Docker Image Pushed',
                          body: 'A new Docker image has been successfully pushed to DockerHub.'
+                }
+            }
+        }
+
+        // Stage 14: Webhook Notification
+        stage('Webhook Notification') {
+            steps {
+                script {
+                    echo "Triggering Webhook Notification"
+                    // Replace the URL with your webhook endpoint
+                    def webhookUrl = 'https://your-webhook-url.com/trigger'
+                    def payload = '{"status": "success", "message": "Build Completed Successfully"}'
+                    
+                    // Send POST request to the webhook URL
+                    sh """
+                        curl -X POST ${webhookUrl} -H "Content-Type: application/json" -d '${payload}'
+                    """
                 }
             }
         }
