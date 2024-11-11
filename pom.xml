@@ -20,13 +20,46 @@
     </properties>
 
     <dependencies>
-        <!-- Dependencies remain unchanged -->
-        <!-- ... (existing dependencies) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.3.5</version>  <!-- Updated version -->
+        </dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Existing Plugins -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -39,25 +72,27 @@
                     </excludes>
                 </configuration>
             </plugin>
+
             <!-- SonarQube Plugin -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.9.0.2155</version>
+                <version>3.9.0.2155</version> <!-- Use the latest version -->
                 <configuration>
-                    <sonar.projectKey>tn.esprit:tp-foyer</sonar.projectKey>
-                    <sonar.host.url>http://192.168.33.10:9000</sonar.host.url>
-                    <sonar.login>${env.SONAR_TOKEN}</sonar.login>
+                    <sonar.projectKey>tn.esprit:tp-foyer</sonar.projectKey> <!-- Project Key -->
+                    <sonar.host.url>http://192.168.33.10:9000</sonar.host.url> <!-- SonarQube server URL -->
+                    <sonar.login>${env.SONAR_TOKEN}</sonar.login> <!-- Authentication token from environment variable -->
                 </configuration>
             </plugin>
-            <!-- Maven Antrun Plugin for Webhook Trigger -->
+
+            <!-- Webhook Trigger using Maven Antrun Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>3.0.0</version>
                 <executions>
                     <execution>
-                        <phase>deploy</phase> <!-- This is when the webhook is triggered -->
+                        <phase>deploy</phase> <!-- Trigger the webhook during the deploy phase -->
                         <goals>
                             <goal>run</goal>
                         </goals>
@@ -71,7 +106,7 @@
                                     <arg value="-H"/>
                                     <arg value="Content-Type: application/json"/>
                                     <arg value="-d"/>
-                                    <arg value="{\"status\":\"success\",\"message\":\"Build Completed Successfully\"}"/>
+                                    <arg value="{\"status\":\"success\",\"message\":\"Build Completed Successfully\"}"/> <!-- Properly escaped JSON -->
                                 </exec>
                             </tasks>
                         </configuration>
