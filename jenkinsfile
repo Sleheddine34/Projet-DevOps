@@ -102,7 +102,7 @@ stage('Check and Start Prometheus') {
         script {
             sh 'pwd'
             sh 'ls -la'
-           sh "python3 \"/var/lib/jenkins/workspace/Med Helmi Ben Njima/Projet-DevOps/send_sms.py\" 'Build Success: Your DevOps project build was successful.' +RECIPIENT_PHONE_NUMBER"
+            sh "python3 send_sms.py'"
 
         }
     }
@@ -110,7 +110,7 @@ stage('Check and Start Prometheus') {
         script {
             sh 'pwd'
             sh 'ls -la'
-            sh "python3 \"/var/lib/jenkins/workspace/Med Helmi Ben Njima/Projet-DevOps/send_sms1.py\" 'Build Success: Your DevOps project build was successful.' +RECIPIENT_PHONE_NUMBER"
+            sh 'python3 ./Projet-DevOps/send_sms.py "Build Success: Your DevOps project build was successful." +RECIPIENT_PHONE_NUMBER'
 
         }
     }
