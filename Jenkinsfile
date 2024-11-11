@@ -34,7 +34,35 @@ pipeline {
             }
         }
 
-         
+        // Stage 5: Running tests and generating JaCoCo report
+        stage('MVN TEST') {
+            steps {
+                echo "Running tests with JaCoCo report generation"
+                sh 'mvn test'
+            }
+        }
+
+        // Stage 6: Generating JaCoCo coverage report
+        stage('JaCoCo Report') {
+            steps {
+                echo "Generating JaCoCo coverage report"
+                sh 'mvn jacoco:report'
+            }
+        }
+
+        // Stage 7: Publishing JaCoCo coverage report
+        stage('JaCoCo coverage report') {
+            steps {
+                step([$class: 'JacocoPublisher',
+                      execPattern: '**/target/jacoco.exec', // Fichier de couverture généré par JaCoCo
+                      classPattern: '**/classes', // Modèle des classes compilées
+                      sourcePattern: '**/src', // Modèle des sources du projet
+                      exclusionPattern: '*/target/**/,**/*Test*,**/*_javassist/**' // Exclusions des fichiers à ignorer
+                ])
+            }
+        }
+
+        // Stage 8: MVN SONARQUBE analysis
         stage('MVN SONARQUBE') {
             steps {
                 echo "Analyzing code quality with SonarQube"
@@ -46,8 +74,8 @@ pipeline {
                 '''
             }
         }
-        
 
+        // Stage 9: Deploy to Nexus repository
         stage('Deploy to Nexus') {
             steps {
                 echo "Deploying artifacts to Nexus repository"
@@ -57,9 +85,8 @@ pipeline {
                 '''
             }
         }
-       
 
-        // Stage 5: Building Docker image
+        // Stage 10: Building Docker image
         stage('Building Docker Image') {
             steps {
                 echo "Building Docker image for project"
@@ -67,7 +94,7 @@ pipeline {
             }
         }
 
-        // Stage 6: Pushing Docker image to Docker Hub
+        // Stage 11: Pushing Docker image to DockerHub
         stage('Push Docker Image to DockerHub') {
             steps {
                 echo "Pushing Docker image to Docker Hub"
@@ -79,7 +106,9 @@ pipeline {
                 '''
             }
         }
-             stage('Run Docker Compose') {
+
+        // Stage 12: Run Docker Compose
+        stage('Run Docker Compose') {
             steps {
                 script {
                     sh '''
@@ -89,16 +118,18 @@ pipeline {
                 }
             }
         }
-         stage('Send Email Notification') {
-             steps {
-                 script {
-                     // Envoi d'un email de notification
-                       mail to: 'fakhfakh4321@gmail.com',
-                            subject: 'Jenkins Notification: Docker Image Pushed',
-                            body: 'A new Docker image has been successfully pushed to DockerHub.'
-                  }
-               }
-           }
+
+        // Stage 13: Send Email Notification
+        stage('Send Email Notification') {
+            steps {
+                script {
+                    // Envoi d'un email de notification
+                    mail to: 'fakhfakh4321@gmail.com',
+                         subject: 'Jenkins Notification: Docker Image Pushed',
+                         body: 'A new Docker image has been successfully pushed to DockerHub.'
+                }
+            }
+        }
     }
 
     post {
