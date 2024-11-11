@@ -25,7 +25,7 @@ services:
         "spring.datasource.username" : "root",
         "spring.datasource.password" : null,
         "spring.jpa.show-sql": "true",
-        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
+        "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQL5InnoDBDialect",
         "spring.jpa.hibernate.ddl-auto" : "update",
         "server.port": 8089,
         "server.servlet.context-path": "/tpfoyer",
