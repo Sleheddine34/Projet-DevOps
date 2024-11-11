@@ -94,11 +94,11 @@ stage('System Security Check - Lynis') {
  // Stage 9: Build Docker Image
 
 
-        stage('Build Docker Image') {
-            steps {
-                sh "docker build -t mohamed855/my-alpine:latest ."
-            }
-        }
+      //  stage('Build Docker Image') {
+       //     steps {
+         //       sh "docker build -t mohamed855/my-alpine:latest ."
+          //  }
+       // }
  // Stage 10: Trivy Security Scan for Docker Image
 
 
@@ -113,14 +113,14 @@ stage('Security Scan: Trivy') {
 
  // Stage 11: Deploy with Docker Compose
 
-      stage('Deploy with Docker Compose') {
-            steps {
-                script {
-                    sh 'ls -la'
-                    sh 'docker compose -f ./docker-compose.yml up -d'
-                }
-            }
-        }
+    //  stage('Deploy with Docker Compose') {
+      //      steps {
+        //        script {
+          //          sh 'ls -la'
+            //        sh 'docker compose -f ./docker-compose.yml up -d'
+              //  }
+           // }
+       // }
 
 
 
