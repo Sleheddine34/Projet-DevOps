@@ -42,25 +42,7 @@ pipeline {
             }
         }
 
-        // Stage 6: Generating JaCoCo coverage report
-        stage('JaCoCo Report') {
-            steps {
-                echo "Generating JaCoCo coverage report"
-                sh 'mvn jacoco:report'
-            }
-        }
-
-        // Stage 7: Publishing JaCoCo coverage report
-        stage('JaCoCo coverage report') {
-            steps {
-                step([$class: 'JacocoPublisher',
-                      execPattern: '**/target/jacoco.exec', // Fichier de couverture généré par JaCoCo
-                      classPattern: '**/classes', // Modèle des classes compilées
-                      sourcePattern: '**/src', // Modèle des sources du projet
-                      exclusionPattern: '*/target/**/,**/*Test*,**/*_javassist/**' // Exclusions des fichiers à ignorer
-                ])
-            }
-        }
+        
 
         // Stage 8: MVN SONARQUBE analysis
         stage('MVN SONARQUBE') {
