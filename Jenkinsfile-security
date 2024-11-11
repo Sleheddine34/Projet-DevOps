@@ -114,23 +114,12 @@ pipeline {
         */
 
         // Stage 11: Security Scan: Trivy (Docker Image Vulnerabilities)
-        stage('Security Scan: Trivy') {
-    steps {
-        echo "Scanning Docker image for vulnerabilities using Trivy..."
-        
-        // Run the Trivy scan and redirect output to an HTML file
-        sh '''
-            trivy image --no-progress --severity CRITICAL yousseeef/tp-foyer:5.0.0 > trivy_scan_output.txt
-            # Convert the output to HTML format (you can use a simple conversion method or a tool)
-            echo "<html><body><h1>Trivy Scan Results</h1><pre>" > trivy_scan_report.html
-            cat trivy_scan_output.txt >> trivy_scan_report.html
-            echo "</pre></body></html>" >> trivy_scan_report.html
-        '''
-        
-        // Archive the HTML report as an artifact in Jenkins
-        archiveArtifacts artifacts: 'trivy_scan_report.html', allowEmptyArchive: true
-    }
-}
+      stage('Security Scan: Trivy') {
+            steps {
+                echo "Scanning Docker image for vulnerabilities using Trivy..."
+                sh 'trivy image --no-progress --severity CRITICAL yousseeef/tp-foyer:5.0.0'
+            }
+        }
 
         //==================== Phase 3 : Acceptance ====================
 
