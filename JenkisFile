@@ -43,6 +43,18 @@ pipeline {
                         sh 'mvn org.owasp:dependency-check-maven:check'
                         }
                     }
+         stage('Image Security Scan: Trivy') {
+                                                steps {
+                                                    script {
+                                                    sh 'trivy image --no-progress --format json -o trivy-report-tpfoyer.json 223jmt2638/alpine:latest'
+                                                    }
+                                                }
+                                            }
+        stage('Security Scan: Nmap') {
+                        steps {
+                            echo "Starting Nmap security scan..."
+                            sh 'nmap -sT -p 1-65535 -v localhost'
+                }
         stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token2', variable: 'SONAR_TOKEN')]) {
@@ -124,6 +136,17 @@ pipeline {
                             }
                         }
                     }
-                }     
+                }    
+            
     }
+
+          post {
+                    success {
+                        archiveArtifacts artifacts: 'target/dependency-check-report.html', allowEmptyArchive: false
+                       
+                    }
+                    always {
+                        archiveArtifacts artifacts: 'trivy-report-tpfoyer.json', allowEmptyArchive: true
+                            }
+                }
 }
