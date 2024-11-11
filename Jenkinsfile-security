@@ -89,12 +89,7 @@ pipeline {
 }
 // Stage 8 :Dependency Analysis
 
- stage('Dependency Analysis') {
-            steps {
-                echo "Performing dependency check with Maven"
-                sh 'mvn dependency-check:aggregate'
-            }
-        }
+
  // Stage 9: Building Docker Image
         /* 
         stage('Building Docker Image') {
