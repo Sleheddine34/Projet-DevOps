@@ -11,8 +11,6 @@ pipeline {
             steps {
                 // Increase Git buffer size and retry checkout if necessary
                 sh 'git config --global http.postBuffer 1048576000' // 1GB buffer size
-                // Optional: Disable SSL verification for troubleshooting purposes (use with caution)
-                // sh 'git config --global http.sslVerify false'
                 retry(3) {
                     timeout(time: 10, unit: 'MINUTES') {
                         checkout([$class: 'GitSCM', branches: [[name: '*/salih']], 
@@ -37,24 +35,29 @@ pipeline {
                 sh 'mvn test'
             }
         }
+
         stage('Dependency Scan') {
-                    steps {
-                        echo "Running Dependency Scanning"
-                        sh 'mvn org.owasp:dependency-check-maven:check'
-                        }
-                    }
-         stage('Image Security Scan: Trivy') {
-                                                steps {
-                                                    script {
-                                                    sh 'trivy image --no-progress --format json -o trivy-report-tpfoyer.json 223jmt2638/alpine:latest'
-                                                    }
-                                                }
-                                            }
-        stage('Security Scan: Nmap') {
-                        steps {
-                            echo "Starting Nmap security scan..."
-                            sh 'nmap -sT -p 1-65535 -v localhost'
+            steps {
+                echo "Running Dependency Scanning"
+                sh 'mvn org.owasp:dependency-check-maven:check'
+            }
+        }
+
+        stage('Image Security Scan: Trivy') {
+            steps {
+                script {
+                    sh 'trivy image --no-progress --format json -o trivy-report-tpfoyer.json 223jmt2638/alpine:latest'
                 }
+            }
+        }
+
+        stage('Security Scan: Nmap') {
+            steps {
+                echo "Starting Nmap security scan..."
+                sh 'nmap -sT -p 1-65535 -v localhost'
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token2', variable: 'SONAR_TOKEN')]) {
@@ -82,7 +85,7 @@ pipeline {
             }
         }
 
-         stage('Push Docker Image') {
+        stage('Push Docker Image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                     sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
@@ -90,63 +93,61 @@ pipeline {
                 sh 'docker push 223jmt2638/alpine:latest'
             }
         }
-          stage('Send Email Notification') {
-                                    steps {
-                                         script {
-                                             // Envoi d'un email de notification
-                                             mail to: 'Salah.BenThabet@esprit.tn',
-                                                  subject: 'Jenkins Notification: Docker Image Pushed',
-                                                  body: 'A new Docker image has been successfully pushed to DockerHub.'
-                                         }
-                                     }
-                                 }
+
+        stage('Send Email Notification') {
+            steps {
+                script {
+                    mail to: 'Salah.BenThabet@esprit.tn',
+                         subject: 'Jenkins Notification: Docker Image Pushed',
+                         body: 'A new Docker image has been successfully pushed to DockerHub.'
+                }
+            }
+        }
 
         stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    // Check if docker-compose.yml exists
                     sh 'ls -la docker-compose.yml'
-                    // Run Docker Compose
                     sh 'docker compose up -d'
                 }
             }
         }
+
         stage('Check and Start Prometheus') {
-                steps {
-                    script {
-                        def prometheusRunning = sh(script: 'docker ps -q -f name=prometheus', returnStdout: true).trim()
-                        if (prometheusRunning) {
-                            echo 'Prometheus is already running.'
-                        } else {
-                            echo 'Starting Prometheus container...'
-                            sh 'docker start prometheus'
-                      }
-                  }
-              }
-          }
-          stage('Check and Start Grafana') {
-                    steps {
-                        script {
-                            def grafanaRunning = sh(script: 'docker ps -q -f name=grafana', returnStdout: true).trim()
-                            if (grafanaRunning) {
-                                echo 'Grafana is already running.'
-                            } else {
-                                echo 'Starting Grafana container...'
-                                sh 'docker start grafana'
-                            }
-                        }
+            steps {
+                script {
+                    def prometheusRunning = sh(script: 'docker ps -q -f name=prometheus', returnStdout: true).trim()
+                    if (prometheusRunning) {
+                        echo 'Prometheus is already running.'
+                    } else {
+                        echo 'Starting Prometheus container...'
+                        sh 'docker start prometheus'
                     }
-                }    
-            
+                }
+            }
+        }
+
+        stage('Check and Start Grafana') {
+            steps {
+                script {
+                    def grafanaRunning = sh(script: 'docker ps -q -f name=grafana', returnStdout: true).trim()
+                    if (grafanaRunning) {
+                        echo 'Grafana is already running.'
+                    } else {
+                        echo 'Starting Grafana container...'
+                        sh 'docker start grafana'
+                    }
+                }
+            }
+        }
     }
 
-          post {
-                    success {
-                        archiveArtifacts artifacts: 'target/dependency-check-report.html', allowEmptyArchive: false
-                       
-                    }
-                    always {
-                        archiveArtifacts artifacts: 'trivy-report-tpfoyer.json', allowEmptyArchive: true
-                            }
-                }
+    post {
+        success {
+            archiveArtifacts artifacts: 'target/dependency-check-report.html', allowEmptyArchive: false
+        }
+        always {
+            archiveArtifacts artifacts: 'trivy-report-tpfoyer.json', allowEmptyArchive: true
+        }
+    }
 }
