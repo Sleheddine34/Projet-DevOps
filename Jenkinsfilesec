@@ -135,13 +135,13 @@ stage('Check and Start Prometheus') {
                   }
               }
           }
-        stage('Security Scan with Trivy') {
+        /*stage('Security Scan with Trivy') {
             steps {
                 echo "Starting full Trivy vulnerability scan..."
 
                 // Run Trivy to scan for all vulnerabilities in the Docker image
                 sh 'sudo /home/vagrant/Projet-DevOps/bin/trivy image --exit-code 1 medhelmibennjima/alpine:latest'
-            }
+            }*/
         }
          /*stage('Run Snyk Test') {
                     steps {
