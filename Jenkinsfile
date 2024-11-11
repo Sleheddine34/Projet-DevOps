@@ -55,6 +55,15 @@ pipeline {
             }
         }
 
+        stage('Security Scan: Nmap') {
+            steps {
+                script {
+                    echo "Starting Nmap Security Scan..."
+                    sh 'sudo nmap -sS -p 1-65535 -v localhost'
+                }
+            }
+        }
+
         // Stage 9: Deploy to Nexus repository
         stage('Deploy to Nexus') {
             steps {
@@ -100,14 +109,15 @@ pipeline {
         }
 
         // Stage 13: Send Email Notification
-        stage('Send Email Notification') {
+        stage('Email Notification') {
             steps {
-                script {
-                    // Envoi d'un email de notification
-                    mail to: 'fakhfakh4321@gmail.com',
-                         subject: 'Jenkins Notification: Docker Image Pushed',
-                         body: 'A new Docker image has been successfully pushed to DockerHub.'
-                }
+                mail bcc: '', 
+                     body: '''Final Report: The pipeline has completed successfully. No action required.''', 
+                     cc: '', 
+                     from: '', 
+                     replyTo: '', 
+                     subject: 'Succès de la pipeline DevOps Project', 
+                     to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
             }
         }
 /*
