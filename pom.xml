@@ -93,7 +93,13 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>prepare-agent</goal>
+                            <goal>prepare-agent</goal> <!-- Prepares JaCoCo agent for code coverage -->
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase> <!-- Runs after tests and generates a code coverage report -->
+                        <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
