@@ -47,7 +47,6 @@ pipeline {
                 sh 'mvn compile'
             }
         }
-        
 
         // Stage 4: JUnit test
         stage('JUnit/Mockito Tests') {
@@ -55,11 +54,8 @@ pipeline {
                 sh 'mvn test' 
             }
         }
-    
-
 
         // Stage 8: MVN SONARQUBE analysis
-        
         stage('MVN SONARQUBE') {
             steps {
                 echo "Analyzing code quality with SonarQube"
@@ -71,14 +67,14 @@ pipeline {
                 '''
             }
         }
-        // Acceptance Phase: Security Scanning Tools
 
-         stage('Security Scan: Nmap') {
+        // Acceptance Phase: Security Scanning Tools
+        stage('Security Scan: Nmap') {
             steps {
                 echo "Starting Nmap security scan..."
                 sh 'nmap -sT -p 1-65535 -v 192.168.33.10'
             }
-}
+        }
 
         // Stage 9: Deploy to Nexus repository
         stage('Deploy to Nexus') {
@@ -123,11 +119,10 @@ pipeline {
                 }
             }
         }
-                // Operations Phase: Container and Pipeline Monitoring
 
+        // Operations Phase: Container and Pipeline Monitoring
         // Stage 13: Monitoring Containers
-
-         stage('Start Monitoring Containers') {
+        stage('Start Monitoring Containers') {
             steps {
                 sh 'docker start aab0f831dce5'
             }
@@ -145,7 +140,9 @@ pipeline {
                      to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
             }
         }
- post {
+    }
+
+    post {
         success {
             script {
                 emailext (
@@ -172,17 +169,15 @@ pipeline {
                     subject: "Build Notification: ${currentBuild.fullDisplayName}",
                     body: "Consultez les détails du build à ${env.BUILD_URL}",
                     recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']],
-                     to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
+                    to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
                 )
             }
         }
     }
-           post {
+
+    post {
         always {
             echo "Job Finished"
         }
     }
-    }
-
- 
 }
