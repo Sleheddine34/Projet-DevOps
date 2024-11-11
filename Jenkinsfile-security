@@ -136,7 +136,7 @@ stage('System Security Check - Lynis') {
           stage('Security Scan: Nmap') {
             steps {
                 echo "Starting Nmap security scan..."
-                sh 'nmap -sT -p 1-65535 -v localhost'
+                sh 'nmap -sT -p 1-65535 -v 192.168.33.10'
             }
 }
 
