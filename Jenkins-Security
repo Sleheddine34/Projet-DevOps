@@ -4,7 +4,7 @@ pipeline {
         jdk 'JAVA_HOME'
         maven 'M2_HOME'
     }
-  // Stage 1: Checkout Code
+  // : Checkout Code
     stages {
         stage('Checkout') {
             steps {
@@ -12,7 +12,7 @@ pipeline {
                           userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']]])
             }
         }
- // Stage 2: Compile Code with Maven
+ //  Compile Code with Maven
   stage('MVN CLEAN & COMPILE') {
             steps {
                 echo "Cleaning and compiling project with Maven"
@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
- // Stage 3: Pre-commit Security Hooks
+ //  Pre-commit Security Hooks
 stage('Pre-commit Security Hooks') {
     steps {
         script {
@@ -43,7 +43,7 @@ stage('Pre-commit Security Hooks') {
         }
     }
 }
-  // Stage 4: Security Scan with Nmap
+  //  Security Scan with Nmap
      stage('Security Scan : Nmap') {
     steps {
         script {
@@ -52,7 +52,7 @@ stage('Pre-commit Security Hooks') {
         }
     }
 }
- // Stage 5: SQL Injection Attack (Gauntlt)
+ //  SQL Injection Attack (Gauntlt)
  stage('SQL Injection Attack (Gauntlt)') {
             steps {
                 script {
@@ -65,7 +65,7 @@ stage('Pre-commit Security Hooks') {
             }
         }
 
- // Stage 6: System Security Check - Lynis
+ //  System Security Check - Lynis
 stage('System Security Check - Lynis') {
     steps {
         script {
@@ -77,7 +77,7 @@ stage('System Security Check - Lynis') {
         }
     }
 }
- // Stage 7: Scan with SonarQube
+ //  Scan with SonarQube
   stage('Scan : SonarQube') {
             steps {
                 withSonarQubeEnv('sq1') { 
@@ -90,13 +90,13 @@ stage('System Security Check - Lynis') {
                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8082/repository/maven-releases/'
             }
         }
-  // Stage 8: Quality and Unit Testing
+  //  Quality and Unit Testing
       //   stage('JUnit/Mockito Tests') {
         //   steps {
           //      sh 'mvn test' 
            // }
        // }
- // Stage 9: Build Docker Image
+ //  Build Docker Image
 
 
       //  stage('Build Docker Image') {
@@ -104,7 +104,7 @@ stage('System Security Check - Lynis') {
          //       sh "docker build -t mohamed855/my-alpine:latest ."
           //  }
        // }
- // Stage 10: Trivy Security Scan for Docker Image
+ //  Trivy Security Scan for Docker Image
 
 
 stage('Security Scan: Trivy') {
@@ -116,7 +116,7 @@ stage('Security Scan: Trivy') {
     }
 }
 
- // Stage 11: Deploy with Docker Compose
+ //  Deploy with Docker Compose
 
     //  stage('Deploy with Docker Compose') {
       //      steps {
