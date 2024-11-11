@@ -6,11 +6,26 @@ pipeline {
         maven 'M2_HOME'
     }
 
+    environment {
+        TARGET_BRANCH = 'testSleh'
+    }
+
     stages {
+        stage('Check Branch') {
+            when {
+                expression {
+                    return env.BRANCH_NAME == TARGET_BRANCH
+                }
+            }
+            steps {
+                echo "Branch check passed. Current branch: ${env.BRANCH_NAME}"
+            }
+        }
+        
         stage('Git') {
             steps {
                 echo "Getting project from GIT"
-                checkout([$class: 'GitSCM', branches: [[name: '*/testSleh']], 
+                checkout([$class: 'GitSCM', branches: [[name: "*/${TARGET_BRANCH}"]], 
                           userRemoteConfigs: [[url: 'https://github.com/Sleheddine34/Projet-DevOps.git']]])
             }
         }
@@ -57,7 +72,6 @@ pipeline {
         stage('Send Email Notification') {
             steps {
                 script {
-                    // Envoi d'un email de notification
                     mail to: 'sleheddinedhaouadi@gmail.com',
                          subject: 'Jenkins Notification: Docker Image Pushed',
                          body: 'A new Docker image has been successfully pushed to DockerHub.'
@@ -67,7 +81,6 @@ pipeline {
         stage('Clean Up Previous Containers') {
             steps {
                 script {
-                    // Supprime tous les conteneurs liés à ce projet pour éviter des conflits
                     sh 'docker-compose down -v || true'
                 }
             }
@@ -86,31 +99,43 @@ pipeline {
             }
         }
         
-            stage('Check and Start Prometheus') {
-                steps {
-                    script {
-                        def prometheusRunning = sh(script: 'docker ps -q -f name=prometheus', returnStdout: true).trim()
-                        if (prometheusRunning) {
-                            echo 'Prometheus is already running.'
-                        } else {
-                            echo 'Starting Prometheus container...'
-                            sh 'docker start prometheus'
-                      }
-                  }
-              }
-          }
-             stage('Check and Start Grafana') {
-                    steps {
-                        script {
-                            def grafanaRunning = sh(script: 'docker ps -q -f name=grafana', returnStdout: true).trim()
-                            if (grafanaRunning) {
-                                echo 'Grafana is already running.'
-                            } else {
-                                echo 'Starting Grafana container...'
-                                sh 'docker start grafana'
-                            }
-                        }
+        stage('Check and Start Prometheus') {
+            steps {
+                script {
+                    def prometheusRunning = sh(script: 'docker ps -q -f name=prometheus', returnStdout: true).trim()
+                    if (prometheusRunning) {
+                        echo 'Prometheus is already running.'
+                    } else {
+                        echo 'Starting Prometheus container...'
+                        sh 'docker start prometheus'
                     }
                 }
+            }
+        }
+        stage('Check and Start Grafana') {
+            steps {
+                script {
+                    def grafanaRunning = sh(script: 'docker ps -q -f name=grafana', returnStdout: true).trim()
+                    if (grafanaRunning) {
+                        echo 'Grafana is already running.'
+                    } else {
+                        echo 'Starting Grafana container...'
+                        sh 'docker start grafana'
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            script {
+                if (env.BRANCH_NAME != TARGET_BRANCH) {
+                    echo "Skipping build as this pipeline is configured only to run for branch: ${TARGET_BRANCH}"
+                    currentBuild.result = 'NOT_BUILT'
+                    error("Pipeline stopped as it is not configured for branch ${env.BRANCH_NAME}")
+                }
+            }
+        }
     }
 }
