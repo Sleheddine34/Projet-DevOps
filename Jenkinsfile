@@ -145,6 +145,7 @@ pipeline {
                      to: 'fakhfakh4321@gmail.com, youssef.fakhfakh@esprit.tn'
             }
         }
+       /* 
  post {
         success {
             script {
@@ -177,6 +178,7 @@ pipeline {
             }
         }
     }
+        */
     }    
     
     
