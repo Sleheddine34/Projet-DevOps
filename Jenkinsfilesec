@@ -46,7 +46,7 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
+       /* stage('Push Docker Image') {
             steps {
                 script {
                     // Login to Docker Hub (using credentials stored in Jenkins)
@@ -58,10 +58,10 @@ pipeline {
                     sh 'docker push medhelmibennjima/alpine:latest'
                 }
             }
-        }
+        }*/
                 
 
-         stage('Run Docker Compose') {
+         /*stage('Run Docker Compose') {
             steps {
                 script {
                     sh '''
@@ -73,7 +73,7 @@ pipeline {
                     '''
                 }
             }
-        }
+        }*/
             stage('Pre-commit Security Hooks') {
                 steps {
                     script {
