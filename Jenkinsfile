@@ -178,11 +178,7 @@ pipeline {
         }
     }
     }    
-    post {
-        always {
-            echo "Job Finished"
-        }
-    }
+    
     
 
  
