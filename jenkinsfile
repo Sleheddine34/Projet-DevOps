@@ -86,13 +86,7 @@ stage('Check and Start Prometheus') {
                   }
               }
           }
-         stage('JaCoCo Coverage Report') {
-                    steps {
-                        // Collect and publish JaCoCo reports
-                        jacoco()
-                    }
-                }
-            }
+         
 
 /*stage('Send Email Notification') {
              steps {
