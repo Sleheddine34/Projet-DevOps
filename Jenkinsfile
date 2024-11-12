@@ -22,16 +22,24 @@ pipeline {
         }
         stage('Test Stage') {
             steps {
-                sh 'mvn test'
+                sh 'mvn clean verify'
             }
         }
         stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml'
+                }
+            }
+        }
+
+       /* stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh "mvn sonar:sonar -DskipTests -Dsonar.projectKey=JenkinsFile -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=\$SONAR_TOKEN"
                 }
             }
-        }
+        } */
         // stage('Deploy to Nexus') {
         //     steps {
         //         sh 'mvn deploy -DaltDeploymentRepository=deploymentRepo::default::http://192.168.50.4:8081/repository/maven-releases/'
@@ -72,19 +80,19 @@ pipeline {
                 }
             }
         }
-        stage('Run Docker Compose') {
-            steps {
-                script {
-                    sh '''
-                        pwd
-                        ls -la
-                        docker-compose down -v
-                        docker-compose up -d
-                        docker-compose ps
-                    '''
-                }
-            }
-        }
+        // stage('Run Docker Compose') {
+        //     steps {
+        //         script {
+        //             sh '''
+        //                 pwd
+        //                 ls -la
+        //                 docker-compose down -v
+        //                 docker-compose up -d
+        //                 docker-compose ps
+        //             '''
+        //         }
+        //     }
+        // }
         
             stage('Check and Start Prometheus') {
                 steps {
