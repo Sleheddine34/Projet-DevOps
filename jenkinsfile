@@ -15,7 +15,7 @@ pipeline {
             }
         }
         
-        /*stage('Compile Stage') {
+        stage('Compile Stage') {
             steps {
                 sh 'mvn clean compile'
             }
@@ -58,7 +58,7 @@ pipeline {
                     sh 'docker push medhelmibennjima/alpine:latest'
                 }
             }
-        }*/
+        }
          stage('Run Docker Compose') {
             steps {
                 script {
@@ -102,23 +102,13 @@ stage('Check and Start Prometheus') {
     post {
     success {
         script {
-            sh '''
-            
-            pip install twilio
-            python3 send_sms.py
-            '''
+            sh 'python3 send_sms.py'
 
 
         }
     }
-    failure {
-        script {
-            sh 'pwd'
-            sh 'ls -la'
-            sh 'python3 ./Projet-DevOps/send_sms.py "Build Success: Your DevOps project build was successful." +RECIPIENT_PHONE_NUMBER'
+    
 
-        }
-    }
 }
 
 }
