@@ -32,28 +32,28 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to Nexus') {
-            steps {
-                sh 'mvn deploy -DaltDeploymentRepository=deploymentRepo::default::http://192.168.50.4:8081/repository/maven-releases/'
-            }
-        }
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t sleheddine/tp-foyer:5.0.0 .'
-            }
-        }
-        stage('Push Docker Image to DockerHub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh '''
-                        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-                        docker tag sleheddine/tp-foyer:5.0.0 sleheddine/tp-foyer:latest
-                        docker push sleheddine/tp-foyer:5.0.0
-                        docker push sleheddine/tp-foyer:latest
-                    '''
-                }
-            }
-        }
+        // stage('Deploy to Nexus') {
+        //     steps {
+        //         sh 'mvn deploy -DaltDeploymentRepository=deploymentRepo::default::http://192.168.50.4:8081/repository/maven-releases/'
+        //     }
+        // }
+        // stage('Build Docker Image') {
+        //     steps {
+        //         sh 'docker build -t sleheddine/tp-foyer:5.0.0 .'
+        //     }
+        // }
+        // stage('Push Docker Image to DockerHub') {
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+        //             sh '''
+        //                 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        //                 docker tag sleheddine/tp-foyer:5.0.0 sleheddine/tp-foyer:latest
+        //                 docker push sleheddine/tp-foyer:5.0.0
+        //                 docker push sleheddine/tp-foyer:latest
+        //             '''
+        //         }
+        //     }
+        // }
         stage('Send Email Notification') {
             steps {
                 script {
