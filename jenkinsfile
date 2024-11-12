@@ -99,14 +99,14 @@ stage('Check and Start Prometheus') {
              }
          }*/
     }
-    post {
+    /*post {
     success {
         script {
             sh 'python3 send_sms.py'
 
 
         }
-    }
+    }*/
     
 
 }
