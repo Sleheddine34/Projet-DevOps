@@ -15,8 +15,8 @@
     <name>tp-foyer</name>
     <description>tp-foyer</description>
     <properties>
-        <java.version>17</java.version>
-        <sonar.jacoco.reportPaths>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPaths>
+             <java.version>17</java.version>
+             <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
     <dependencies>
         <!-- Spring Boot Dependencies -->
