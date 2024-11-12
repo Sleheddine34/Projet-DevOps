@@ -106,9 +106,9 @@ stage('Check and Start Prometheus') {
 
 
         }
-    }*/
+    }
     
 
-}
+}*/
 
 }
