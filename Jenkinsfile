@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JAVA_HOME'
-        maven 'M2_HOME'
+        jdk 'JAVA_HOME' // Assurez-vous que 'JAVA_HOME' correspond bien au nom configuré
+        maven 'M2_HOME' // Assurez-vous que 'M2_HOME' correspond bien au nom configuré
     }
 
     stages {
@@ -16,8 +16,8 @@ pipeline {
         }
         stage('Compile Stage') {
             steps {
-                sh 'mvn clean compile -DskipTests'
-                sh 'mvn clean package'
+                sh 'mvn clean install -DskipTests'
+                sh 'mvn package -DskipTests'
             }
         }
         stage('Test Stage') {
@@ -46,7 +46,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
-                        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+                        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                         docker tag sleheddine/tp-foyer:5.0.0 sleheddine/tp-foyer:latest
                         docker push sleheddine/tp-foyer:5.0.0
                         docker push sleheddine/tp-foyer:latest
@@ -85,31 +85,31 @@ pipeline {
                 }
             }
         }
-            stage('Check and Start Prometheus') {
-                steps {
-                    script {
-                        def prometheusRunning = sh(script: 'docker ps -q -f name=prometheus', returnStdout: true).trim()
-                        if (prometheusRunning) {
-                            echo 'Prometheus is already running.'
-                        } else {
-                            echo 'Starting Prometheus container...'
-                            sh 'docker start prometheus'
-                      }
-                  }
-              }
-          }
-             stage('Check and Start Grafana') {
-                    steps {
-                        script {
-                            def grafanaRunning = sh(script: 'docker ps -q -f name=grafana', returnStdout: true).trim()
-                            if (grafanaRunning) {
-                                echo 'Grafana is already running.'
-                            } else {
-                                echo 'Starting Grafana container...'
-                                sh 'docker start grafana'
-                            }
-                        }
+        stage('Check and Start Prometheus') {
+            steps {
+                script {
+                    def prometheusRunning = sh(script: 'docker ps -q -f name=prometheus', returnStdout: true).trim()
+                    if (prometheusRunning) {
+                        echo 'Prometheus is already running.'
+                    } else {
+                        echo 'Starting Prometheus container...'
+                        sh 'docker start prometheus'
                     }
                 }
+            }
+        }
+        stage('Check and Start Grafana') {
+            steps {
+                script {
+                    def grafanaRunning = sh(script: 'docker ps -q -f name=grafana', returnStdout: true).trim()
+                    if (grafanaRunning) {
+                        echo 'Grafana is already running.'
+                    } else {
+                        echo 'Starting Grafana container...'
+                        sh 'docker start grafana'
+                    }
+                }
+            }
+        }
     }
 }
